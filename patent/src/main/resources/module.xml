@@ -21,7 +21,9 @@
         <menu mkid="800500000" mkmc="客户管理" url="patent/khgl/index.html">
         </menu>
 
-        客户名称	单位名称	联系电话	邮箱	地址	主营范围	备注
+        <menu mkid="800600000" mkmc="财务往来" url="patent/cwwl/index.html">
+        </menu>
+
 
     </menu>
 

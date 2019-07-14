@@ -2571,3 +2571,40 @@ alter table KHGL with nocheck add
     (KHGL_ID) ON [PRIMARY]
 GO
 
+create table CWWL
+(
+    CWWL_ID varchar(32) not null ,
+    CWWL_YWRQ datetime null ,
+    CWWL_KH nvarchar(300) null ,
+    CWWL_YW nvarchar(200) null ,
+    CWWL_JE int null ,
+    CWWL_SKZH nvarchar(50) null ,
+    CWWL_SJSKJE int null ,
+    CWWL_FP int null ,
+    CWWL_QBCB int null ,
+    CWWL_GF int null ,
+    CWWL_YJ int null ,
+    CWWL_TC int null ,
+    CWWL_ZLMC nvarchar(1000) null ,
+    CWWL_WHRID varchar(20) not null ,
+    CWWL_WHR nvarchar(30) not null ,
+    CWWL_WHSJ datetime not null ,
+    CWWL_SYSVERSION int not null ,
+    CWWL_YWY varchar(30) null
+)
+GO
+alter table CWWL with nocheck add
+    CONSTRAINT DF_CWWL_CWWL_JE default(0) for CWWL_JE,
+    CONSTRAINT DF_CWWL_CWWL_SJSKJE default(0) for CWWL_SJSKJE,
+    CONSTRAINT DF_CWWL_CWWL_FP default(0) for CWWL_FP,
+    CONSTRAINT DF_CWWL_CWWL_QBCB default(0) for CWWL_QBCB,
+    CONSTRAINT DF_CWWL_CWWL_GF default(0) for CWWL_GF,
+    CONSTRAINT DF_CWWL_CWWL_YJ default(0) for CWWL_YJ,
+    CONSTRAINT DF_CWWL_CWWL_TC default(0) for CWWL_TC,
+    CONSTRAINT DF_CWWL_CWWL_WHSJ default(getdate()) for CWWL_WHSJ,
+    CONSTRAINT DF_CWWL_CWWL_SYSVERSION default(1) for CWWL_SYSVERSION
+GO
+alter table CWWL with nocheck add
+    CONSTRAINT PK_CWWL PRIMARY KEY CLUSTERED
+    (CWWL_ID) ON [PRIMARY]
+GO
