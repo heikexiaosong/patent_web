@@ -9,10 +9,10 @@
 	</parent>
 
 	<groupId>com.gavel.dc</groupId>
-	<artifactId>webapp</artifactId>
+	<artifactId>patent</artifactId>
 	<version>1.0.0</version>
 	<packaging>war</packaging>
-	<name>dashboard</name>
+	<name>patent</name>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -146,24 +146,6 @@
 			<version>2.1.0</version>
 		</dependency>
 
-		<dependency>
-			<groupId>com.gavel.dc</groupId>
-			<artifactId>dashboard-core</artifactId>
-			<version>1.0.0</version>
-		</dependency>
-
-		<dependency>
-			<groupId>com.gavel.dc</groupId>
-			<artifactId>dashboard-realtime</artifactId>
-			<version>1.0.0</version>
-		</dependency>
-
-		<dependency>
-			<groupId>com.gavel.dc</groupId>
-			<artifactId>dashboard-report</artifactId>
-			<version>1.0.0</version>
-		</dependency>
-
 	</dependencies>
 
 	<build>
@@ -201,7 +183,7 @@
 				<artifactId>maven-jetty-plugin</artifactId>
 				<version>6.1.22</version>
 				<configuration>
-					<contextPath>/dashboard</contextPath>
+					<contextPath>/patent</contextPath>
 					<scanIntervalSeconds>3</scanIntervalSeconds>
 					<scanTargetPatterns>
 						<scanTargetPattern>

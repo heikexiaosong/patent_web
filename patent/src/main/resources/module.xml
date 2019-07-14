@@ -1,8 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module>
-    <id>890000000</id>
-    <name>自定义功能</name>
-    <zjm>dashboard</zjm>>
+    <id>800000000</id>
+    <name>案件管理</name>
+    <zjm>ajgl</zjm>>
     <version>1.0</version>
+
+    <menu mkid="800000000" mkmc="案件管理">
+        <menu mkid="800100000" mkmc="案件信息" url="patent/ajxx/index.html">
+        </menu>
+
+        <menu mkid="800200000" mkmc="待缴费" url="patent/djf/index.html">
+        </menu>
+
+        <menu mkid="800300000" mkmc="已缴费" url="patent/yjf/index.html">
+        </menu>
+
+        <menu mkid="800400000" mkmc="待答复" url="patent/ddf/index.html">
+        </menu>
+
+        <menu mkid="800500000" mkmc="客户管理" url="patent/khgl/index.html">
+        </menu>
+    </menu>
 
 </module>
