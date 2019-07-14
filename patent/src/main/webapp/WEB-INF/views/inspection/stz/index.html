@@ -1,0 +1,61 @@
+<div id="inspectionStz" class="gui-div">
+    <table class="toolbar-table" data-options="id: 'inspectionStzTable',herf:'inspection/gridset/query'">
+    </table>
+    <div id="inspectionStzTable-toolbar" class="gui-toolbar" data-options="grid:{type:'datagrid',id:'inspectionStzTable'}">
+        <form action="" class="query-criteria" style="display: inline-block;margin-top: 4px">
+            <ul><li>
+                  <span >
+                     <label >取样日期：</label>
+                     <input type="text" data-toggle="gui-datebox" name="start" />
+                    </span>
+            </li></ul>
+        </form>
+        <a class="toolbar-reload search-right toolbar"  href="javascript:void(0)" style="display: inline-block">搜索</a>
+    </div>
+</div>
+<script>
+    $(function () {
+
+        $("#inspectionStz input[name='start']").iDatebox({value: new Date().Format("yyyy-MM-dd"),width:110});
+
+        var $div=$('#inspectionStz');
+        var options={
+            url:'inspection/stz',
+            queryParams:{
+                start: $div.find('form input[name="start"]').val()
+            },
+            columns:[[
+
+                {title: "PK字段", index: 10, field: "pk_stz", width: 160, halign:'center', align: 'left',  hidden: true },
+                {title: "名称", index: 20, field: "mc", width: 100, halign:'center', align: 'left',  hidden: false },
+                {title: "流水号", index: 30, field: "lsh", width: 120, halign:'center', align: 'left',  hidden: false },
+                {title: "日期", index: 40, field: "rq", width: 160, halign:'center', align: 'left',  hidden: false },
+                {title: "时间", index: 50, field: "sj", width: 160, halign:'center', align: 'left',  hidden: false },
+                {title: "类型", index: 60, field: "lx", width: 160, halign:'center', align: 'left',  hidden: false },
+                {title: "炉号", index: 70, field: "lh", width: 160, halign:'center', align: 'left',  hidden: false },
+                {title: "样号", index: 80, field: "yh", width: 60, halign:'center', align: 'right',  hidden: false },
+                {title: "C", index: 90, field: "c", width: 60, halign:'center', align: 'right',  hidden: false },
+                {title: "SI", index: 100, field: "si", width: 60, halign:'center', align: 'right',  hidden: false },
+                {title: "MN", index: 110, field: "mn", width: 60, halign:'center', align: 'right',  hidden: false },
+                {title: "P", index: 120, field: "p", width: 60, halign:'center', align: 'right',  hidden: false },
+                {title: "S", index: 130, field: "s", width: 60, halign:'center', align: 'right',  hidden: false },
+                {title: "TI", index: 140, field: "ti", width: 60, halign:'center', align: 'right',  hidden: false },
+                {title: "V", index: 150, field: "v", width: 60, halign:'center', align: 'right',  hidden: false },
+                {title: "AS", index: 160, field: "as", width: 60, halign:'center', align: 'right',  hidden: false },
+                {title: "BC", index: 170, field: "bc", width: 60, halign:'center', align: 'right',  hidden: false },
+                {title: "数据确认", index: 180, field: "sjqr", width: 80, halign:'center', align: 'right',  hidden: true },
+                {title: "数字签名", index: 190, field: "szqm", width: 80, halign:'center', align: 'right',  hidden: true },
+                {title: "检测人", index: 200, field: "jcr", width: 80, halign:'center', align: 'right',  hidden: true },
+                {title: "备注", index: 210, field: "bz", width: 160, halign:'center', align: 'left',  hidden:true}
+            ]],
+            dialog:{
+                id:'inspectionStzEdit',
+                width: 840,
+                height: 320,
+                href:'inspection/stz/edit'
+            }
+        };
+        $div.Container(options);
+    });
+
+</script>

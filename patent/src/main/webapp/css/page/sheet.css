@@ -1,0 +1,64 @@
+.formater_left {
+    width: 120px;
+    height: 300px;
+    display: inline-block;
+}
+.formater_left ul{
+    width: 120px;
+    overflow: auto;
+    border: 1px solid;
+    height:300px;
+}
+.formater_left ul li{
+    padding: 4px 2px;
+
+}
+.formater_left ul li a{
+    color: black;
+}
+
+.formater_left ul .active{
+    background-color:rgb(0,176,240);
+}
+.formater_left ul .active a{
+    color: white;
+}
+
+.formater_right{
+    float: right;
+    width: 420px;
+}
+.right_li{
+    height: 60px;
+    width: 420px;
+    border: 1px solid lightgrey;
+}
+.right_li label{
+    margin-top: -8px;
+    display: block;
+    margin-left: 2px;
+    width: 30px;
+    background-color: white;
+}
+.right_li input{
+    margin: 6px 2px;
+}
+.content2_ul{
+    border: 1px solid black;
+    height: 163px;
+}
+.content2_ul li{
+    padding: 2px;
+}
+.content2_ul .active{
+    background-color:rgb(0,176,240);
+}
+.content2_ul .active a{
+   color: white;
+}
+.content2_ul li a{
+    color: black;
+}
+.red{
+    color: red;
+}

@@ -1,0 +1,65 @@
+<div id="sjzxBom" class="gui-div">
+	<table  class="toolbar-table" data-options="id: 'sjzxBomTable',herf:'kzzx/gridset/query'" >
+	</table>
+	
+	<!-- 表格工具栏开始 -->
+	<div id="sjzxBomTable-toolbar" class="gui-toolbar"
+	     data-options="grid:{
+	           type:'datagrid',
+	           id:'sjzxBomTable'
+	       }">
+	    <a class="toolbar-reload toolbar"  href="javascript:void(0)" style="display: none"></a>
+	    <a class="toolbar-review toolbar" href="javascript:void(0)"></a>
+	    <a class="toolbar-add toolbar" href="javascript:void(0)"></a>
+	    <a class="toolbar-copy toolbar" href="javascript:void(0)"></a>
+	    <a class="toolbar-edit toolbar" href="javascript:void(0)"></a>
+	    <a class="toolbar-delete toolbar" href="javascript:void(0)"></a>
+	    <a type="submit" class="btn btn-primary serach toolbar-search"></a>
+	    <div class="bdsug" style="height: auto; display: none" >
+	        <form action="" class="query-criteria">
+	            <ul><li class="bdsug-store bdsug-overflow">
+	            	<span style="margin: 10px">
+                        <label >工厂：</label><input type="text" name="gcid"  data-toggle="gui-combobox" style="height: 30px">
+                    </span>
+                    <span style="margin: 10px">
+                        <label >产品结构：</label><input type="text" name="bom"  data-toggle="gui-textbox" style="height: 30px">
+                    </span>
+                    <button type="submit" class="btn btn-primary ng-binding datagrid-search" style="display: none">搜索</button>
+	            </li></ul>
+	        </form>
+	    </div>
+	</div>
+</div>
+<!-- 表格工具栏结束 -->
+<script>
+    /*js初始化*/
+    $(function () {
+    	var $div=$('#sjzxBom');
+        var options={
+            url:'sjzx/bom',
+            queryParams:{
+            	gc: $div.find('form input[name="gcid"]').val(),
+            	bom: $div.find('form input[name="bom"]').val()
+            },
+            columns:[[
+            	{title: "工厂", field: "gcmc", fieldType:"ftString", width: 140, hidden:false},
+                {title: "产品结构号", field: "bomid", fieldType:"ftString", width: 140, hidden:false},
+                {title: "产品结构名称", field: "bommc", fieldType:"ftString", width: 140, hidden:false},
+                {title: "物料编码", field: "wlid", fieldType:"ftString", width: 140, hidden:false},
+                {title: "物料名称", field: "wlmc", fieldType:"ftString", width: 140, hidden:false},
+                {title: "备注", field: "bz", fieldType:"ftString", width: 240, hidden:false},
+                {title: "维护人", field: "whr", fieldType:"ftString", width: 100, hidden:false},
+                {title: "维护时间", field: "whsj", fieldType:"ftDateTime", width: 180, hidden:false}
+            ]],
+            dialog:{
+                id:'sjzxBomEdit',
+                width: 600,
+                height:360,
+                href:'sjzx/bom/edit'
+            }
+        };
+        $div.Container(options); 
+    });
+
+
+</script>

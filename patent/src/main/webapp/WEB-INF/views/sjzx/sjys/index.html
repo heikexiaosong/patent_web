@@ -1,0 +1,111 @@
+<div id="sjzxSjys" class="gui-div">
+	<table  class="toolbar-table" data-options="id: 'sjzxSjysTable',herf:'kzzx/gridset/query'" >
+	</table>
+	
+	<!-- 表格工具栏开始 -->
+	<div id="sjzxSjysTable-toolbar" class="gui-toolbar"
+	     data-options="grid:{
+	           type:'datagrid',
+	           id:'sjzxSjysTable'
+	       }">
+	    <a class="toolbar-reload toolbar"  href="javascript:void(0)" style="display: none"></a>
+	    <a class="toolbar-review toolbar" href="javascript:void(0)"></a>
+	    <a class="toolbar-add-sjys toolbar" href="javascript:void(0)"></a>
+	    <a class="toolbar-edit toolbar" href="javascript:void(0)"></a>
+	    <a class="toolbar-delete toolbar" href="javascript:void(0)"></a>
+	    <a type="submit" class="btn btn-primary serach toolbar-search"></a>
+	    <div class="bdsug" style="height: auto; display: none" >
+	        <form action="" class="query-criteria">
+	            <ul><li class="bdsug-store bdsug-overflow">
+						<span style="margin: 10px">
+			                <label>年度：</label><input type="text" name="year" data-toggle="gui-numberbox">
+			            </span>
+                    <span style="margin: 10px">
+			                <label>月度：</label><input type="text" name="month" data-toggle="gui-numberbox">
+			            </span>
+                    <span style="margin: 10px">
+			                <label>物料：</label><input type="text" name="wlinfo" class="gui-textbox" data-toggle="gui-textbox">
+			            </span>
+                </li></ul>
+	        </form>
+	    </div>
+	</div>
+</div>
+<!-- 表格工具栏结束 -->
+<script>
+    /*js初始化*/
+    $(function () {
+    	var $div=$('#sjzxSjys');
+        var options={
+            url:'sjzx/sjys',
+            queryParams:{
+                year:$div.find('form input[name="year"]').val(),
+                month:$div.find('form input[name="month"]').val(),
+                wlinfo:$div.find('form input[name="wlinfo"]').val()
+            },
+            columns:[[
+                {title: "年度", field: "year", fieldType:"ftInteger", index: 0, width: 80, hidden:false},
+                {title: "月份", field: "month", fieldType:"ftInteger", index: 1, width: 80, hidden:false},
+                {title: "烧结厂", field: "sjid", fieldType:"ftString", index: 2, width: 140, hidden:false,formatter:function (value,index,row) {
+                    var map = {'1#': '1号烧结','2#': '2号烧结'};
+                    var text  = map[value];
+                    return text||"";
+                }},
+                {title: "物料编码", field: "wlid", fieldType:"ftString", index: 3, width: 140, hidden:false},
+                {title: "单位消耗", field: "dwxh", fieldType:"ftFloat", index: 4, width: 80, hidden:false},
+                {title: "单位价格", field: "jg", fieldType:"ftFloat", index: 5, width: 80, hidden:false},
+                {title: "单位成本", field: "dwcb", fieldType:"ftFloat", index: 6, width: 80, hidden:false},
+                {title: "维护人", field: "whr", fieldType:"ftString", index: 7, width: 140, hidden:false},
+                {title: "维护时间", field: "whsj", fieldType:"ftDateTime", index: 8, width: 180, hidden:false}
+            ]],
+            dialog:{
+                id:'sjzxSjysEdit',
+                width: 900,
+                height: 360,
+                href:'sjzx/sjys/edit'
+            }
+        };
+        $div.Container(options);
+		$div.find(".toolbar-add-sjys").iMenubutton({
+			event:'openDialog',
+			iconCls: 'fa fa-plus',
+			text:'新增',
+			dialog:{
+				title:'新增',
+				id:'sjzxSjysAdd',
+				width:900,
+				height: 506,
+				href:'sjzx/sjys/add',
+				tag:'add',
+				buttonsGroup:[
+					{	text:'保存',
+						iconCls:'fa fa-plus',
+						btnCls:'gui-btn-normal',
+						handler:function(){
+							var $dialog=$('#sjzxSjysAdd');$dialog.find('.mx').datagrid("acceptChanges");
+							var rows= $dialog.find('.mx').datagrid("getRows");
+							var queryParams=DataBind.collectData($dialog);
+							$.each(rows,function (i,row) {
+								row.month=queryParams["month"]||'';
+								row.year=queryParams["year"]||'';
+								row.sjid=queryParams["sjid"]||'';
+
+							});
+							HTTP.post("sjzx/sjys/saveData",{datas:rows},function (result) {
+								if(result["success"]){
+									$.messager.show({
+										title: "温馨提示",
+										msg: "操作成功"
+									});
+									$('#sjzxSjysAdd').iDialog("destroy");
+									$div.find(".toolbar-reload").click();
+								}
+							})
+						}
+					}]
+			}
+		});
+    });
+
+
+</script>

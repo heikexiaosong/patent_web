@@ -1,0 +1,218 @@
+<!--
+<div class="gui-fluid editTable" style="margin: 20px auto 20px">
+        <input type="hidden"  name="id">
+     <div id="assignRoleTree"  data-options="url:''"></div>
+
+ </div>
+<script>
+    $(function(){
+        var roleid=$("#kzzxRoleTable").iDatagrid("getSelected")['roleid'];
+        HTTP.post("kzzx/userroles/query/user/notinrole", {roleid: roleid}, function (result) {
+            if (result["success"] == true) {
+                var reords = result.data.records;
+                var data = [];
+                $.each(reords, function (i, record) {
+                    var node = {
+                        id: record["userid"],
+                        text: record["username"]
+                    };
+                    if (record["associate"] && record["associate"] == 'Y') {
+                        node["checked"] = true;
+                    }
+                    data.push(node);
+                });
+
+                $('#assignRoleTree').tree({
+                    data: data,
+                    checkbox: true
+                });
+            }})
+    })
+</script>-->
+<style>
+    .ww_commonImg{font-size:0;line-height:0;}
+    .ww_searchInput{display:block;position:relative;}
+    .ww_searchInput_icon{position:absolute;top:10px;left:10px;z-index:7;width:12px;height:12px;background-image:url(GUI/gui/image/search-s.png);}
+    .multiPickerDlg_search .ww_searchInput_text{width:776px;font-size:12px;line-height:18px;border-radius:2px;border:1px solid #c7c7c7;padding:3px 28px 3px 26px;}
+    .AD	i{display:inline-block;width:18px;height:18px;line-height:18px;text-align:center;}
+    .AD a{
+        display: block;float: left;color: #0a628f;
+        margin: 4px;
+    }
+    .AD{
+        height: 160px;
+    }
+    .AD-close{
+        width: 20px;
+        height: 20px;
+        top: 0;
+        right: 0;
+        z-index: 9999;
+        text-align: center;
+        font-size: 16px;
+        cursor: pointer;
+        color: #326da0;
+        display: inline-block;
+    }
+</style>
+    <div id="content_roseter" class="gui-layout" style="width:100%;height:100%;">
+        <div data-options="region:'north',title:'',collapsible:false,border:false" style="height:180px;">
+            <div class="layui-form-item"><div class="AD" ></div></div>
+        </div>
+        <div data-options="region:'west',title:'部门',collapsible:false,border:false" style="width:300px;">
+            <div id="tree_roster"></div>
+        </div>
+        <div data-options="region:'center',title:'人员',collapsible:false,border:false" style="padding:5px;background:#eee;">
+            <div class="multiPickerDlg_search"><span class="ww_searchInput"><span class="ww_commonImg ww_commonImg_Search ww_searchInput_icon" href="javascript:;"></span>
+                <input type="text" id="memberSearchInput" name="user" style="width:100%;padding-left: 30px"  class="qui_inputText ww_inputText ww_searchInput_text" placeholder="搜索人员"></span></div>
+            <div class="view"></div>
+        </div>
+    </div>
+<script>
+    $(function () {
+        var dialog=$('#content_roseter');
+        var roleid=$("#kzzxRoleTable").iDatagrid("getSelected")['roleid'];
+        HTTP.post('kzzx/role/queryUserByRole',{roleid: roleid},function (result) {
+            if(result['success']&&result['data']['records'].length>0){
+                var map=result['data']['records'];
+                $.each(map,function (i,item) {
+                    var span=$('<a href="javascript:void(0)" onclick="this.remove()" class="label"><span>'+item['username']+'</span><input type="hidden" name="fileIds"  value="'+item['userid']+'"><i class="AD-close">x</i></a>');
+                    dialog.find('.AD').append(span);
+                })
+            }
+        });
+        HTTP.post('kzzx/org/query',{},function (result) {
+            if(result['success']){
+                var totalData=result.data.records;
+                totalData.push({
+                    bmid:'',bmmc:'所有'
+                });
+                var treeData = buildTree(totalData, "bmid", "bmmc", "shbmid");
+                dialog.find('#tree_roster').tree({
+                    data: treeData,
+                    onSelect:function (node) {
+                        var roster=[];
+                        if(dialog.find('input[name="fileIds"]').length>0){
+                            dialog.find('input[name="fileIds"]').each(function () {
+                                roster.push($(this).val());
+                            })
+                        }
+                        dialog.find('input[name="user"]').val('');
+                        HTTP.post("kzzx/user/query",{bmid:node['data']['bmid'],usercx:dialog.find('input[name="user"]').val()},function (result) {
+                            if(result['success']){
+                                var columns=[[
+                                    {title: "用户编码",  index: 2, field: "userid",fieldType:'code',width:120},
+                                    {title: "姓名", index: 3, field: "username", width:130},
+                                    {title: "助记码",  index: 4, field: "zjm", width:70,hidden:true},
+                                    {title: "所属组织",  index: 5, field: "bmid", width:180 },
+                                    {title: "电话",  index:7, field: "phone", width:150},
+                                    {title: "邮箱",  index: 8, field: "email", width:200},
+                                    {title: "状态",  index:9, field: "tybz", width:60,formatter:function (value,index,row) {
+                                            var map = {Y: '停用', N: "启用"};
+                                            var text  = map[value];
+                                            return text||"启用";
+                                        }},
+                                    {title: "停用日期", index: 10, field: "tyrq", fieldType:'ftDate',width:120,formatter:function (value) {
+                                            if ( value==undefined || value =='' ){
+                                                return "";
+                                            }
+                                            var date = new Date(parseInt(value));
+                                            if ( isNaN(date) ){
+                                                return ""
+                                            }
+                                            return date.Format("yyyy-MM-dd" );
+                                        }},
+                                    {title: "备注", index: 11, field: "bz", width:80},
+                                    {title: "维护人编码",  index: 13, field: "whrid", fieldType:'code',width:40, hidden:true},
+                                    {title: "维护人",  index: 14, field: "whr", width:80},
+                                    {title: "维护时间",  index: 15, field: "whsj", fieldType:'ftDateTime', width:120,formatter:function (value) {
+                                            if ( value==undefined || value =='' ){
+                                                return "";
+                                            }
+                                            var date = new Date(parseInt(value));
+                                            if ( isNaN(date) ){
+                                                return ""
+                                            }
+                                            return date.Format("yyyy-MM-dd hh:mm:ss" );
+                                        }},
+                                    {title: "创建人编码",  index: 16, field: "cjrid", hidden:true, width:130},
+                                    {title: "创建人",  index: 17, field: "cjr", hidden:true, width:120},
+                                    {title: "创建时间",  index: 18, field: "cjsj", hidden:true,fieldType:'ftDateTime', width:120,formatter:function (value) {
+                                            if ( value==undefined || value =='' ){
+                                                return "";
+                                            }
+                                            var date = new Date(parseInt(value));
+                                            if ( isNaN(date) ){
+                                                return ""
+                                            }
+                                            return date.Format("yyyy-MM-dd hh:mm:ss" );
+                                        }}
+                                ]];
+                                dialog.find('.view').datagrid({
+                                    columns:columns,
+                                    rownumbers:true,
+                                    singleSelect:true,
+                                    pagination:true,
+                                    height:'92%',
+                                    toolbar:[{
+                                        text:'全部添加',
+                                        handler: function(){
+                                            if(result.data.records&&result.data.records.length>0){
+                                                var dataArray=result.data.records;
+                                                $.each(dataArray,function (i,data) {
+                                                    if(roster.indexOf(data['userid'])==-1){
+                                                        var span=$('<a href="javascript:void(0)" onclick="this.remove()" class="label"><span>'+data['username']+'</span><input type="hidden" name="fileIds"  value="'+data['userid']+'"><i class="AD-close">x</i></a>');
+                                                        dialog.find('.AD').append(span);
+                                                    }
+                                                })
+                                            };
+                                        }
+                                    }],
+                                    onDblClickRow:function (rowIndex,rowData) {
+                                        if(dialog.find('input[name="fileIds"]').length>0){
+                                            dialog.find('input[name="fileIds"]').each(function () {
+                                                roster.push($(this).val());
+                                            })
+                                        }
+                                        if(roster.indexOf(rowData['userid'])==-1){
+                                            var span=$('<a href="javascript:void(0)" onclick="this.remove()" class="label"><span>'+rowData['username']+'</span><input type="hidden" name="fileIds"  value="'+rowData['userid']+'"><i class="AD-close">x</i></a>');
+                                            dialog.find('.AD').append(span);
+                                        }
+                                    }});
+                                dialog.find('.view').datagrid('loadData', result.data.records||[]);
+
+                            }
+                        })
+
+                    },
+                    onLoadSuccess:function(node,data) {
+                        dialog.find('#tree_roster').tree("collapseAll");
+                    }
+                });
+            }
+        });
+        dialog.find('.multiPickerDlg_search .ww_commonImg_Search').unbind().bind('click',function () {
+            var value=dialog.find('input[name="user"]').val();
+            var node=  dialog.find('#tree_roster').tree('getSelected');
+            treeUser(value,node.id);
+        });
+        $('#memberSearchInput').textbox({
+            inputEvents: $.extend({}, $.fn.textbox.defaults.inputEvents, {
+                keypress: function test() {
+                    var value=dialog.find('input[name="user"]').val();
+                    var node= dialog.find('#tree_roster').tree('getSelected');
+                    treeUser(value,node.id);
+                }
+            })
+        });
+        function treeUser(value,node) {
+            HTTP.post('kzzx/user/query',{usercx:value,bmid:node},function (result) {
+                if(result['success']&&result['data']['records']){
+                    dialog.find('.view').datagrid('loadData', result.data.records||[]);
+                }
+            })
+        }
+    })
+
+
+</script>

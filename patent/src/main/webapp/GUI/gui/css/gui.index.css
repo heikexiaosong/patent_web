@@ -1,0 +1,7 @@
+body{
+font-size: "Helvetica Neue", "Luxi Sans", "DejaVu Sans", Tahoma, "Hiragino Sans GB", STHeiti, "Microsoft YaHei"
+}
+
+#west .accordion .accordion-header{
+    height: 40px!important;
+}

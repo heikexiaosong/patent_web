@@ -1,0 +1,170 @@
+﻿<div class="sjgycx-draw-date">
+    <div class="gui-row">
+        <div class="gui-col-sm12">
+            <label class="gui-form-label" for="">日期：</label>
+            <div class="gui-input-block">
+                <input type="text" name="date" data-toggle="gui-textbox"  style="width:60%">
+                <a class="toolbar tool-serach-draw"  href="javascript:void(0)">查询</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div style="width: 100%;position: relative">
+    <table style="height: 100%; width:100%;display: inline-block" class="sjgycx-draw">
+        <tr valign="top">
+            <td style="width: 50%;display: inline-block">
+                <div id="map_A"></div>
+            </td>
+            <td style="width: 50%;display: inline-block">
+                <div id="map_B"></div>
+            </td>
+        </tr>
+        <tr >
+            <td style="width: 50%;display: inline-block">
+                <div id="map_A1"></div>
+            </td>
+            <td style="width: 50%;display: inline-block">
+                <div id="map_B1"></div>
+            </td>
+        </tr>
+    </table>
+</div>
+
+
+
+
+<!--<script type="text/javascript" src="thirdparty/charts/loader.js"></script>-->
+<script src="GUI/static/plugins/echarts/echarts.min.js"></script>
+<script type="text/javascript">
+
+    $(function () {
+        var draw=$('.sjgycx-draw');
+        var date=new Date();
+        date.setDate(date.getDate()-1);
+    
+        HTTP.post('common/datetime',{},function (result) {
+        	if(result['success']&&result['data']['data']){
+        		date = new Date(result['data']['data']);
+        		date.setDate(date.getDate()-1); 
+        	}
+        	$('.sjgycx-draw-date').find('input[name="date"]').iDatebox({value:date.Format("yyyy-MM-dd")});
+        });
+        var arry=["A","B","A1","B1"];
+        var cilentWidth=$('#center').find('.panel-body').width(),clientHeight=$('#center').find('.panel-body').height();
+        $.each(arry,function (i,r) {
+            $('#map_'+r).css('width',cilentWidth/2.1);
+            $('#map_'+r).css('height',clientHeight/2.2);
+        })
+
+       var A=configDraw('searchdata/sjgycx/queryZxpbPie',{name:"1#",date: new Date($('.sjgycx-draw-date').find('input[name="date"]').val()).getTime()},'A',"1#烧结执行配比");
+        var B=configDraw('searchdata/sjgycx/queryZxpbPie',{name:"2#",date: new Date($('.sjgycx-draw-date').find('input[name="date"]').val()).getTime()},'B',"2#烧结执行配比");
+       var C=configDraw('searchdata/sjgycx/querySjkzlPie',{name:"1#",date: new Date($('.sjgycx-draw-date').find('input[name="date"]').val()).getTime()},'A1',"1#烧结矿质量");
+       var D= configDraw('searchdata/sjgycx/querySjkzlPie',{name:"2#",date: new Date($('.sjgycx-draw-date').find('input[name="date"]').val()).getTime()},'B1',"2#烧结矿质量");
+        $('.sjgycx-draw-date').find('.tool-serach-draw').iMenubutton({
+            onClick:function () {
+                refreshData(A,'searchdata/sjgycx/queryZxpbPie',{name:"1#",date: new Date($('.sjgycx-draw-date').find('input[name="date"]').val()).getTime()});
+                refreshData(B,'searchdata/sjgycx/queryZxpbPie',{name:"2#",date: new Date($('.sjgycx-draw-date').find('input[name="date"]').val()).getTime()});
+                refreshData(C,'searchdata/sjgycx/querySjkzlPie',{name:"1#",date: new Date($('.sjgycx-draw-date').find('input[name="date"]').val()).getTime()});
+                refreshData(D,'searchdata/sjgycx/querySjkzlPie',{name:"2#",date: new Date($('.sjgycx-draw-date').find('input[name="date"]').val()).getTime()});
+            }
+        });
+
+        /*更新数据*/
+        function refreshData(chart,url,params){
+            if(!chart){
+                return;
+            }
+            var res=[];
+            chart.showLoading({
+                text: '数据正在努力加载...',
+                textStyle: { fontSize : 30 , color: '#444' },
+                effectOption: {backgroundColor: 'rgba(0, 0, 0, 0)'}
+            });
+            HTTP.post(url,params,function (result) {
+                if(result['success']&&result['data']['records']){
+                    $.each(result['data']['records'],function (i,item) {
+                        res.push({
+                            name:item["name"],
+                            value:parseFloat(item["value"]).toFixed(2)
+                        })
+                    });
+                    var option = chart.getOption();
+                    chart.hideLoading();
+                    option.series[0]['data'] =res;
+                    chart.setOption(option);
+            }},true,true);
+
+
+        }
+        /*构建OPTIONS*/
+        function ec(config) {
+            return {
+                title : {
+                    text: config.title||'',
+                    textStyle:{
+                        color:'#ccc',
+                        fontStyle:'normal',
+                        fontSize:18
+                    },
+                    left:'center'
+                },
+                tooltip : {
+                    trigger: 'item',
+                    formatter: "{a} <br/>{b} : {c} ({d}%)"
+                },
+                legend: { orient : 'vertical',
+                    x : 'left',data:config.name||[]},
+            /*    toolbox: {show : true, left:20, top:10, feature : {
+                        mark : {show: true},
+                        dataView : {show: true, readOnly: true},
+                        restore : {show: true}, saveAsImage : {show: true}
+                    }},*/
+                calculable : true,
+                series : [
+                    {
+                        name:config.title||'',
+                        type:'pie',
+                        radius : '55%',
+                        center: ['50%', '60%'],
+                        data:config.data||[]
+                    }
+                ]
+            };
+        }
+        function configDraw(url,params,i,title) {
+            if(!url||url==='')return;
+            var myChart = echarts.init(document.getElementById('map_'+i));
+            myChart.clear();
+            var res=[];
+            myChart.setOption(ec({title:title}));
+            myChart.showLoading({
+                text: '数据正在努力加载...',
+                textStyle: { fontSize : 30 , color: '#444' },
+                effectOption: {backgroundColor: 'rgba(0, 0, 0, 0)'}
+            });
+            HTTP.post(url,params,function (result) {
+                if(result['success']&&result['data']['records']){
+                    var names=[];
+                    $.each(result['data']['records'],function (i,item) {
+                        names.push(item["name"]);
+                       res.push({
+                           name:item["name"],
+                           value:parseFloat(item["value"]).toFixed(2)
+                       })
+                    });
+                    myChart.hideLoading();
+                    myChart.setOption(ec({title:title,data:res,name:names}));
+                }else{
+                    $.messager.alert('提示','初始化失败');
+                    return false;
+                }
+            },null,true);
+
+            return myChart;
+        }
+
+
+    })
+
+
+</script>

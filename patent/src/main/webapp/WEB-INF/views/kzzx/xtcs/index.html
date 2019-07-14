@@ -1,0 +1,1349 @@
+<!--<style>
+        .dialog_xtcs li{
+                margin: 10px;
+                list-style: none;
+                width: 100%;
+        }
+        .dialog_xtcs li input{
+             width: 73%;
+        }
+        .dialog_xtcs li textarea{
+                width: 78%;
+                height: 58px;
+                border:1px #95b8e7 solid;
+                margin-left: 10px;
+        }
+       .list li{
+            margin: 4px 6px;
+        }
+</style>
+<div id="xtcsontainer">
+        <div class="datagrid-toolbar">
+                <a href="#" class="easyui-linkbutton " plain="true" iconCls="icon-reload" onclick="reload_paramter()">查询</a>
+                <span class="datagrid-btn-separator" style="vertical-align: middle; height: 15px;display:inline-block;float:none"></span>
+                <a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-edit" onclick="Edit_parameter()">编辑</a>
+                &lt;!&ndash;<a href="#" class="easyui-linkbutton toolbar-add" plain="true" iconCls="icon-add">新增</a>&ndash;&gt;
+
+        </div>
+
+</div>
+
+<script>
+
+
+    var xtcsontainer = Utils.buildSingleTable("xtcsontainer", {
+        module: "kzzx/xtcs",
+        customize: true,
+        reload: function (params) {
+            var centerView = this.centerview;
+            centerView.html("");
+            var _html=' <div class="easyui-layout" style="width: 100%; height: 100%">' +
+                '     <div data-options="region:\'west\', border: false" style="width: 18%; height: 100%;padding-top: 10px" ><p style="margin-top: -10px;padding:10px 0 10px 10px">' +
+                    ' <input class="easyui-searchbox gzxxkeyword"  style="width:190px;">'+
+                '</p><ul id="cs_tree"></div>' +
+                '     <div data-options="region:\'east\', border: false" style="width:80%; height: 100%;border: 1px lightgrey solid"><table style="height: 100%" class="east_table_cs"/></div>' +
+                '</div>';
+            centerView.append($(_html));
+        },
+
+        reload_parameter:function (params) {
+            var dataTable = $('.east_table_cs');
+            var form = this.searchForm;
+            var handler = function (result) {
+                var fields = result.data.fields;
+                if ( fields !=null && fields.length>0 ){
+                    var vector = new Vector();
+                    $.each(fields, function (i, field) {
+                        if ( field["showlist"]!=null && field["showlist"]==true ) {
+                            vector.add({
+                                field: field["name"],
+                                title: field["caption"],
+                                width: (field["width"]||20)*8,
+                                halign: "center",
+                                index: field["index"]
+                            });
+                        }
+                    });
+                }
+                var index = dataTable.data("index");
+                dataTable.datagrid({rownumbers: true, columns: [vector.sort("index")],singleSelect:true,pagination:true,pageList: [10,20,50,100]});
+                dataTable.datagrid('clientPaging', {data: result.data.records});
+                dataTable.datagrid('doCellTip',{cls:{},delay:500});
+            };
+            var _params = $.extend(params||{}, DataBind.collectData(form));
+            var url = params["url"] || this.options["module"] + "/query";
+            HTTP.post(url, JSON.stringify(_params), handler);
+        },
+        onAdd: function (params) {
+            var that = this;
+            function resultHandler(response) {
+                if (response["success"] != null && response["success"] == true) {
+                    that.$el.window('close');
+                    $.messager.alert("提示信息", "操作成功");
+                    reload_paramter();
+                } else {
+                    $.messager.alert("提示信息", response['message']);
+                }
+            }
+            var _master = this.collectMasterData();
+            var data = JSON.stringify({
+                "master": _master
+            });
+            HTTP.post(this.options["module"] + "/add", data, resultHandler);
+        },
+        edit_parameter:function (params) {
+            var _that = $('.east_table_cs');
+            var selectedRow = _that.datagrid("getSelected");
+            var _content='';
+            var xtcsOptions,xtcsDialog;
+            var zlx='';
+            if ( selectedRow==null ){
+                $.messager.alert("提示信息", "请先选择需要处理的数据.");
+                return ;
+            }
+            if(selectedRow['xtcszlx']){
+                zlx=selectedRow['xtcszlx'];
+            }
+            if(zlx=='S'){
+                var zy=selectedRow['xtcszy'];
+                if(zy==''||zy==null){
+                    _content = '<form class="dialog_xtcs" method="post" style="padding: 2px 10px 0px">' +
+                        '<ul>' +
+                        '<li><label style="color: red">参数值：</label><input class="" name="csz" style="width: 78%"><hr style="margin-left: -40%;margin-top:10px;height:1px;border:none;border-top:1px dashed #95B8E7;  "></li>'+
+                        '<li>参数ID：<input type="text" name="csid"  style="width: 25%;"><span style="width: 10px;height: 10px;margin-left: 10px">  </span>参数名称：<input type="text" name="xtcscsmc" style="width: 40%"></li>'+
+                        '<li>当前值：<input type="text" class="dqz" style="width:78%"></li>'+
+                        '<li style="position: relative;height: 60px"><label style="position: absolute;top: 25%;left: 2%">说明：</label><textarea name="xtcscssm" style="position: absolute;left:7%"></textarea></li>'+
+                        '</ul><div style="background-color: lightgrey;position: absolute;width: 100%;height: 180px;top:72px;left:0;opacity: 0.4"></div></form>';
+                    xtcsOptions = {
+                        title: "系统参数设置",
+                        content: _content,
+                        width:600,
+                        height:300,
+                        onInit: function ($container) {
+                            var str=selectedRow['xtcszy'];
+                            str=str.replace(/^[\(]/,"").replace(/[\)]$/,"");
+                            var datas=str.split(",");
+                            var json={};
+                            var arr=[];
+                            $.each(datas,function (i,value) {
+                                value=value.split(":");
+                                json={
+                                    value:value[0],
+                                    text:value[1]
+                                };
+                                arr.push(json);
+                            });
+
+                            $container.find("input[name='csz']").textbox({value:selectedRow['csz']});
+                            $container.find("input[name='csid']").textbox({value:selectedRow['csid']});
+                            $container.find("input[name='xtcscsmc']").textbox({value:selectedRow['xtcscsmc']});
+                            $container.find(".dqz").textbox({value:selectedRow['csz']});
+                            $container.find("textarea[name='xtcscssm']").text(selectedRow['xtcscssm']);
+
+                            $container.find("textarea[name='xtcscssm']").attr('readonly','readonly');
+                            $container.find("input[name='csid']").prev().attr('readonly','readonly');
+                            $container.find("input[name='xtcscsmc']").prev().attr('readonly','readonly');
+                            $container.find(".dqz").next().children('input').attr('readonly','readonly');
+
+
+                        }
+                    };
+                }else{
+                    _content = '<form class="dialog_xtcs" method="post" style="padding: 2px 10px 0px">' +
+                        '<ul>' +
+                        '<li><label style="color: red">参数值：</label><input class="" name="csz" style="width: 78%"><hr style="margin-left: -40%;margin-top:10px;height:1px;border:none;border-top:1px dashed #95B8E7;  "></li>'+
+                        '<li>参数ID：<input type="text" name="csid"  style="width: 25%;"><span style="width: 10px;height: 10px;margin-left: 10px">  </span>参数名称：<input type="text" name="xtcscsmc" style="width: 40%"></li>'+
+                        '<li>当前值：<input type="text" class="dqz" style="width:78%"></li>'+
+                        '<li style="position: relative;height: 60px"><label style="position: absolute;top: 25%;left: 2%">说明：</label><textarea name="xtcscssm" style="position: absolute;left:7%"></textarea></li>'+
+                        '</ul></form>';
+                    xtcsOptions = {
+                        title: "系统参数设置",
+                        content: _content,
+                        width:600,
+                        height:300,
+                        onInit: function ($container) {
+                            var str=selectedRow['xtcszy'];
+                            str=str.replace(/^[\(]/,"").replace(/[\)]$/,"");
+                            var datas=str.split(",");
+                            var json={};
+                            var arr=[];
+                            $.each(datas,function (i,value) {
+                                value=value.split(":");
+                                json={
+                                    value:value[0],
+                                    text:value[1]
+                                };
+                                arr.push(json);
+                            });
+
+                            ComboBox.init($container.find("input[name='csz']"), {datasy:arr, defaultValue: selectedRow['csz']});
+                            $container.find("input[name='csid']").textbox({value:selectedRow['csid']});
+                            $container.find("input[name='xtcscsmc']").textbox({value:selectedRow['xtcscsmc']});
+                            $container.find(".dqz").textbox({value:selectedRow['csz']});
+                            $container.find("textarea[name='xtcscssm']").text(selectedRow['xtcscssm']);
+
+                            $container.find("textarea[name='xtcscssm']").attr('readonly','readonly');
+                            $container.find("input[name='csid']").prev().attr('readonly','readonly');
+                            $container.find("input[name='xtcscsmc']").prev().attr('readonly','readonly');
+                            $container.find(".dqz").next().children('input').attr('readonly','readonly');
+                        }
+                    };
+                }
+
+                xtcsDialog = Dialog.buildDialog(xtcsOptions);
+                 xtcsDialog.regResultHandler(
+                    function (dlgContainer) {
+                        var datas = DataBind.collectData(dlgContainer.find("form"));
+                        selectedRow['csz']=datas['csz'];
+                        HTTP.post("kzzx/xtcs/update",{master:selectedRow},  function (result) {
+                            if ( result["success"]==true ) {
+                                $.messager.alert("提示信息",result['message']||"参数修改成功" );
+                                edit_reload();
+
+                            } else {
+                                $.messager.alert("提示信息",result['message']||"参数修改失败" );
+                            }
+                        });
+                    }
+                );
+                xtcsDialog.show();
+            }
+            else if(zlx=='F'||zlx=='I'){
+                var zy=selectedRow['xtcszy'];
+                var zy_min; var zy_max;
+                if(zy==null||zy==''){
+                    return;
+                }else{
+                    zy=zy.split("..");
+                    zy_min=parseFloat(zy[0]);
+                    zy_max=parseFloat(zy[1]);
+
+                }
+
+                 _content = '<form class="dialog_xtcs" method="post" style="padding: 2px 10px 0px">' +
+                    '<ul>' +
+                    '<li><label style="color: red">参数值：</label><input class="" name="csz" type="number" style="width: 79% "><hr style="margin-left: -40%;margin-top:10px;height:1px;border:none;border-top:1px dashed #95B8E7;  "></li>'+
+                    '<li>参数ID：<input type="text" name="csid"  style="width: 25%;"><span style="width: 10px;height: 10px;margin-left: 10px">  </span>参数名称：<input type="text" name="xtcscsmc" style="width: 40%"></li>'+
+                    '<li>当前值：<input type="text" class="dqz" style="width:25%"><span style="width: 10px;height: 10px;margin-left: 10px">  </span>取值范围：<input type="text" class="qzfw" style="width:40%"></li>'+
+                    '<li style="position: relative;height: 60px"><label style="position: absolute;top: 25%;left: 2%">说明：</label><textarea name="xtcscssm" style="position: absolute;left:7%"></textarea></li>'+
+                    '</ul><div style="background-color: lightgrey;position: absolute;width: 100%;height: 180px;top:72px;left:0;opacity: 0.4"></div></form>';
+                 xtcsOptions = {
+                    title: "系统参数设置",
+                    content: _content,
+                    width:600,
+                    height:300,
+                    onInit: function ($container) {
+                        $container.find("input[name='csz']").textbox({value:selectedRow['csz']});
+                        $container.find("input[name='csid']").textbox({value:selectedRow['csid']});
+                        $container.find("input[name='xtcscsmc']").textbox({value:selectedRow['xtcscsmc']});
+                        $container.find(".dqz").textbox({value:selectedRow['csz']});
+                        $container.find(".qzfw").textbox({value:selectedRow['xtcszy']});
+
+                        $container.find("textarea[name='xtcscssm']").text(selectedRow['xtcscssm']);
+                        $container.find("textarea[name='xtcscssm']").attr('readonly','readonly');
+                        $container.find("input[name='csid']").prev().attr('readonly','readonly');
+                        $container.find("input[name='xtcscsmc']").prev().attr('readonly','readonly');
+                        $container.find(".dqz").next().children('input').attr('readonly','readonly');
+                        $container.find(".qzfw").next().children('input').attr('readonly','readonly');
+                        $container.find("input[name='csz']").prev().bind('input',function () {
+                          if (this.value<zy_min||this.value>zy_max){
+                             $.messager.alert('提醒','该值超出值域范围！');
+                              $(this).val('');
+                              $(this).next().val('');
+                                return;
+
+                          }
+                        })
+                    }
+                };
+
+                xtcsDialog = Dialog.buildDialog(xtcsOptions);
+                xtcsDialog.regResultHandler(
+                    function (dlgContainer) {
+                        var datas = DataBind.collectData(dlgContainer.find("form"));
+                        selectedRow['csz']=datas['csz'];
+                        HTTP.post("kzzx/xtcs/update", {master:selectedRow},  function (result) {
+                            if ( result["success"]==true ) {
+                                $.messager.alert("提示信息",result['message']||"参数修改成功" );
+                                edit_reload();
+
+                            } else {
+                                $.messager.alert("提示信息",result['message']||"参数修改失败" );
+                            }
+                        });
+                    }
+                );
+                xtcsDialog.show();
+            }
+            else if(zlx=='B'){
+               _content = '<form class="dialog_xtcs" method="post" style="padding: 2px 10px 0px">' +
+                   '<ul>' +
+                   '<li><label style="color: red">参数值：</label><input value="Y" name="csz" style="width: 3%" type="radio">是<input value="N"  name="csz" style="width:3%;margin-left: 10%" type="radio">否<hr style="margin-left: -40%;margin-top:10px;height:1px;border:none;border-top:1px dashed #95B8E7;  "></li>'+
+                   '<li>参数ID：<input type="text" name="csid"  style="width: 25%;"><span style="width: 10px;height: 10px;margin-left: 10px">  </span>参数名称：<input type="text" name="xtcscsmc" style="width: 40%"></li>'+
+                   '<li>当前值：<input type="text" class="dqz" style="width:79%"></li>'+
+                   '<li style="position: relative;height: 60px"><label style="position: absolute;top: 25%;left: 2%">说明：</label><textarea name="xtcscssm" style="position: absolute;left:7%"></textarea></li>'+
+                   '</ul><div style="background-color: lightgrey;position: absolute;width: 100%;height: 180px;top:64px;left:0;opacity: 0.4"></div></form>';
+               xtcsOptions = {
+                   title: "系统参数设置",
+                   content: _content,
+                   width:600,
+                   height:300,
+                   onInit: function ($container) {
+                       $container.find("input[name='csid']").textbox({value:selectedRow['csid']});
+                       $container.find(".dqz").textbox({value:selectedRow['csz']});
+                       $container.find("input[name='xtcscsmc']").textbox({value:selectedRow['xtcscsmc']});
+                       $container.find("textarea[name='xtcscssm']").text(selectedRow['xtcscssm']);
+                       if(selectedRow['csz']=='Y'){
+                           $container.find("input[name='csz']:eq(0)").attr('checked','checked');
+                       }else{
+                           $container.find("input[name='csz']:eq(1)").attr('checked','checked');
+                        }
+
+                       $container.find("textarea[name='xtcscssm']").attr('readonly','readonly');
+                       $container.find("input[name='csid']").prev().attr('readonly','readonly');
+                       $container.find("input[name='xtcscsmc']").prev().attr('readonly','readonly');
+                       $container.find(".dqz").next().children('input').attr('readonly','readonly');
+
+                   }
+               };
+
+               xtcsDialog = Dialog.buildDialog(xtcsOptions);
+               xtcsDialog.regResultHandler(
+                   function (dlgContainer) {
+                       var datas = DataBind.collectData(dlgContainer.find("form"));
+                      datas['csz']=dlgContainer.find("input[name='csz']:checked").val();
+                      selectedRow['csz']=datas['csz'];
+                      if(selectedRow['csz']=='Y'){selectedRow['cszsm']='是'}else{
+                          selectedRow['cszsm']="否";
+                      }
+                       HTTP.post("kzzx/xtcs/update", {master:selectedRow},  function (result) {
+                           if ( result["success"]==true ) {
+                               $.messager.alert("提示信息",result['message']||"参数修改成功" );
+                               edit_reload();
+
+                           } else {
+                               $.messager.alert("提示信息",result['message']||"参数修改失败" );
+                           }
+                       });
+                   }
+               );
+               xtcsDialog.show();
+            }
+            else if(zlx=='E') {
+                var json=[];
+                var _content_middle='';
+                var _middle='';
+                HTTP.post('kzzx/xtcs/getzylist',{csid:selectedRow['csid'] }, function (result) {
+                    if(result['success']){
+                     var datas=result.data.records;
+                        $.each( datas,function (i,arr) {
+                            _middle= '<li style=" width:120px;"><input name="csz" style="width:10%;vertical-align: middle" type="checkbox" value="'+arr['value']+'"><label>'+arr['text']+'</label></li>';
+                            _content_middle=_content_middle+_middle;
+                        });
+                    }
+                });
+
+
+
+                var  _content_top = '<form class="dialog_xtcs" method="post" style="padding: 2px 10px 0px">' +
+                    '<ul ><li><label style="color: red;position:relative;top: -80px">参数值：</label><div id="list-item" style="height:168px;width:80%;overflow-x: auto;overflow-y:hidden;border:1px dashed #95B8E7;display: inline-block "><div class="list_inner" style="height: auto"><ol class="list" style="position: relative;float: left;height: 158px">';
+
+                var _content_bottom='</ol></div></div><hr style="margin-left: -40%;margin-top:10px;height:1px;border:none;border-top:1px dashed #95B8E7;"></li><li>参数ID：<input type="text" name="csid"  style="width: 25%;"><span style="width: 10px;height: 10px;margin-left: 10px">  </span>参数名称：<input type="text" name="xtcscsmc" style="width: 40%"></li>'+
+                    '<li>当前值：<input type="text" class="dqz" style="width:79%"></li>'+
+                    '<li style="position: relative;height60px"><label style="position: absolute;top: 25%;left: 2%">说明：</label><textarea name="xtcscssm" style="position: absolute;left:7%"></textarea></li>'+
+                    '</ul><div style="background-color: lightgrey;position: absolute;width: 100%;height: 230px;top:222px;left:0;opacity: 0.4"></div></form>';
+                var _content=_content_top+_content_middle+_content_bottom;
+                xtcsOptions = {
+                    title: "系统参数设置",
+                    content: _content,
+                    width:600,
+                    height:500,
+                    onInit: function ($container) {
+                        var str= selectedRow['csz'];
+                        str=str.replace(/^[\(]/,"").replace(/[\)]$/,"");
+                        var datas=str.split(",");
+                        var json={};
+                        var arr=[];
+                        $.each(datas,function (i,value) {
+                            value=value.split(":");
+                                  $container.find("input[name='csz']").each(function () {
+                                      if($(this).val()==value[0]) {
+                                          $(this).attr('checked','checked');
+                                      }
+                          })
+
+
+                        });
+
+                        $container.find("input[name='csid']").textbox({value:selectedRow['csid']});
+                        $container.find("input[name='xtcscsmc']").textbox({value:selectedRow['xtcscsmc']});
+                        $container.find(".dqz").textbox({value:selectedRow['csz']});
+                        $container.find("textarea[name='xtcscssm']").text(selectedRow['xtcscssm']);
+
+                        $container.find("textarea[name='xtcscssm']").attr('readonly','readonly');
+                        $container.find("input[name='csid']").prev().attr('readonly','readonly');
+                        $container.find("input[name='xtcscsmc']").prev().attr('readonly','readonly');
+                        $container.find(".dqz").next().children('input').attr('readonly','readonly');
+
+                        var i_height = $('.list li:first').height()+4;
+                        var i_width = $('.list li:first').width()+30;
+                        var o_height = $('.list').height();
+                        var len = $('.list li').length;
+                        var br = parseInt(o_height/i_height);
+                        $('.list_inner,.list').css('width',(parseInt(len/br)+1)*i_width+'px');
+                        for(var i = 0; i<len/br;i++){
+                            var dom = (i!=parseInt(len/br)?$('.list li').slice((i+1)*br,(i+2)*br+1):$('.list li:gt('+(i+1)*br+')'));
+                            $.each(dom,function(j,item){
+                                $(item).css({'position':'absolute','left':(i+1)*i_width+20+'px','top':j*i_height+'px'});
+                            });
+                        }
+
+                    }
+                };
+
+                xtcsDialog = Dialog.buildDialog(xtcsOptions);
+                xtcsDialog.regResultHandler(
+                    function (dlgContainer) {
+                        var data = DataBind.collectData(dlgContainer.find("form"));
+                        var check_val =[];
+                        var check_txt =[];
+                          var jsonarr='';
+                        $(dlgContainer.find('input[name="csz"]:checked')).each(function(){
+                            var json={};
+                            json[$(this).val()]=$(this).next().text();
+
+                            jsonarr+=JSON.stringify(json);
+                            jsonarr= jsonarr.replace(/}{/,",");
+                        });
+                        jsonarr= jsonarr.replace(/{/,"(");
+                        jsonarr= jsonarr.replace(/}/,")");
+                        jsonarr=jsonarr.replace(/\"/g,"");
+                        selectedRow['csz']=jsonarr;
+                        HTTP.post("kzzx/xtcs/update", {master:selectedRow},  function (result) {
+                            if ( result["success"]==true ) {
+                                $.messager.alert("提示信息",result['message']||"参数修改成功" );
+                                edit_reload();
+                            } else {
+                                $.messager.alert("提示信息",result['message']||"参数修改失败" );
+                            }
+                        });
+                    }
+                );
+                xtcsDialog.show();
+            }
+        }
+
+    });
+
+    $(function () {
+        function buildMenu(menuTree,id) {
+            $(id).tree({
+                data: menuTree,
+                onClick: function(node) {
+                    var  node1= $(id).tree('getParent',node.target);
+                    if(node1){
+                        $(node1.target).addClass('tree-node-selected')
+                    }
+
+                    var data = node["data"]||{};
+                    if  ( data["type"] ==null ){
+                        return
+                    }
+
+                    var url = "kzzx/xtcs/system/view";
+                    if (  data["type"] == "R" ) {
+                        url = "kzzx/xtcs/role/view";
+                    } else if ( data["type"] == "U" ) {
+                        url = "kzzx/xtcs/user/view";
+                    }
+                    xtcsontainer.singleTable("reload_parameter", $.extend({},data, {url: url}));
+                },
+                onSelect:function(node){
+
+                },
+                onLoadSuccess:function(node,data){
+                    $("#cs_tree li:eq(0)").find("div").addClass("tree-node-selected");   //设置第一个节点高亮
+                    var n = $(id).tree("getSelected");
+                    if(n!=null){
+                        $(id).tree("select",n.target);    //相当于默认点击了一下第一个节点，执行onSelect方法
+                        xtcsontainer.singleTable("reload_parameter", $.extend({},data[0].data, {url:"kzzx/xtcs/system/view"}));
+                    }
+
+                }
+            });
+        }
+        
+        function buildTree(keyword) {
+            var menus = [];
+            HTTP.post('kzzx/xtcs/gettreelist',{keyword: keyword},function (data) {
+                var records = data["data"]["records"];
+                $.each(records, function (i, record) {
+                    menus.push({parentNode: record["parentNode"], node: record["node"], name: record["name"], id: record["id"],  type: record["type"]});
+                });
+            });
+
+            var menuMap = {};
+            $.each(menus, function (i, menu) {
+                menuMap[menu.node] =  {
+                    id: menu["node"],
+                    text: menu["name"],
+                    children: [],
+                    data: menu
+                };
+            });
+
+            var rootNodes = [];
+            $.each(menus, function (i, menu) {
+                var curmenu = menuMap[menu.node];
+                var parent = menuMap[menu.parentNode];
+                if ( parent == null ){
+                    rootNodes.push(curmenu);
+                } else {
+                    parent.children.push(curmenu);
+                }
+            });
+            buildMenu(rootNodes,'#cs_tree');
+        }
+
+        xtcsontainer.singleTable("reload", {});
+
+        buildTree("");
+
+        $('.gzxxkeyword').searchbox({
+            searcher:function(value){
+                console.log(value);
+                buildTree(value);
+            }
+        });
+
+    });
+
+    function Edit_parameter() {
+        xtcsontainer.singleTable("edit_parameter", {});
+    }
+    function reload_paramter() {
+        xtcsontainer.singleTable("reload_parameter", {});
+    }
+    function edit_reload() {
+        var node=$('#cs_tree').tree('getSelected');
+        var data = node["data"]||{};
+        if  ( data["type"] ==null ){
+            return
+        }
+        var url = "kzzx/xtcs/system/view";
+        if (  data["type"] == "R" ) {
+            url = "kzzx/xtcs/role/view";
+        } else if ( data["type"] == "U" ) {
+            url = "kzzx/xtcs/user/view";
+        }
+        xtcsontainer.singleTable("reload_parameter", $.extend({},data, {url: url}));
+    }
+
+</script>-->
+<div id="kzzxXtcs" class="gui-div">
+<div data-toggle="gui-layout" data-options="fit:true">
+        <div data-options="region:'west',title:'',split:true,border:false,width:'20%',iconCls:'fa fa-sitemap',headerCls:'border_right',bodyCls:'border_right'">
+               <input class="easyui-searchbox gzxxkeyword" style="width: 98%"/>
+               <div style=""><ul id="cs_tree"></ul></div>
+        </div>
+        <div data-options="region:'center',iconCls:'icon-reload',title:'',split:true,border:false,bodyCls:'border_left'">
+            <table class="toolbar-table" data-options="id: 'kzzxXtcsTable',herf:'kzzx/gridset/query'"></table>
+            <div id="kzzxXtcsTable-toolbar" class="gui-toolbar" data-options="grid:{type:'datagrid',id:'kzzxXtcsTable'}">
+                <a class="toolbar-reload toolbar"style="display: none"></a>
+                <a id="sty_reload" href="javascript:void(0)" class="toolbar"></a>
+                <a id="sty_edit" href="javascript:void(0)" class="toolbar"></a>
+            </div>
+        </div>
+</div>
+</div>
+<script>
+        $(function () {
+                $(this).trigger(gui.eventType.initUI.base),
+                $(this).trigger(gui.eventType.initUI.base2),
+                $(this).trigger(gui.eventType.initUI.form),
+                $(this).trigger(gui.eventType.initUI.echarts);
+                var $dig=$('#kzzxXtcs');
+                var columns=[
+                    {title: "参数编码", index: 1, field: "csid", width: 160,align:'center'},
+                    {title: "参数名称", index: 2, field: "xtcscsmc", width: 160,align:'center'},
+                    {title: "参数值", index: 3, field: "csz", width: 160,align:'center'},
+                    {title: "参数类型", index: 3, field: "xtcscslx", width: 160,align:'center'},
+                    {title: "参数说明", index: 4, field: "xtcscssm", width: 240,align:'center'},
+                    {title: "值类型", index: 5, field: "xtcszlxzlx", width: 160,aign:'center'},
+                    {title: "值域", index: 6, field: "xtcszlxzy", width: 160,align:'center'},
+                    {title: "岗位ID", index: 8, field: "roleid", width: 160,align:'center',hidden:true},
+                    {title: "用户ID", index: 9, field: "userid", width: 160,align:'center',hidden:true},
+                    {title: "维护人ID", index: 8, field: "roleid", width: 160,align:'center',hidden:true},
+                    {title: "用户ID", index: 9, field: "userid", width: 160,align:'center',hidden:true},
+                ];
+            $dig.find('.toolbar-table').iDatagrid({
+                url: 'kzzx/xtcs/user/view',
+                columns:[columns],
+                checkOnSelect:true,
+                selectOnCheck:true,
+                singleSelect:true,
+                queryParams:{
+                    id:" "
+                },
+                onLoadSuccess:function (data) {
+                    var that=$(this).closest('.datagrid-view').find('div.datagrid-header-rownumber');
+                    that.css('position','relative');
+                    that.css('cursor','pointer');
+                    that.append($('<span class="tabs-icon fa fa-navicon"></span>'));
+                    that.unbind().bind('click',function (event) {
+                        event.stopPropagation();
+                        if( $dig.find('.product-nav-list').length>0){
+                            return false;
+                        }
+                        var columns= $dig.find('.toolbar-table').iDatagrid('options')["columns"][0];
+                        treeLine('kzzx/xtcz/query', $dig,columns);
+
+                    });
+                },
+            });
+
+            $('#sty_reload').iMenubutton({
+                event: 'query',
+                text:'刷新',
+                iconCls: 'fa fa-search',
+                grid: {type: 'datagrid', 'id': 'kzzxXtcsTable'}
+            });
+            $('#sty_edit').iMenubutton({
+                text:'编辑',
+               onClick:xtcs_Edit
+            });
+            buildTree('');
+            $('#cs_tree').tree('collapseAll');
+            $('.gzxxkeyword').searchbox({
+                searcher:function(value){
+                    buildTree(value);
+                }
+            });
+            function buildMenu(menuTree,id) {
+                $(id).tree({
+                    data: menuTree,
+                    onClick: function(node) {
+                        var  node1= $(id).tree('getParent',node.target);
+                        if(node1){
+                            $(node1.target).addClass('tree-node-selected')
+                        }
+
+                        var data = node["data"]||{};
+                        if  ( data["type"] ==null ){
+                            return
+                        }
+
+                        var url = "kzzx/xtcs/system/view";
+                        if (  data["type"] == "R" ) {
+                            url = "kzzx/xtcs/role/view";
+                        } else if ( data["type"] == "U" ) {
+                            url = "kzzx/xtcs/user/view";
+                        }
+                         $dig.find('.toolbar-table').iDatagrid("reload",$.extend({},data, {url: url}));
+                    },
+                    onSelect:function(node){
+
+                    },
+                    onLoadSuccess:function(node,data){
+                        $("#cs_tree li:eq(0)").find("div").addClass("tree-node-selected");   //设置第一个节点高亮
+                        var n = $(id).tree("getSelected");
+                        if(n!=null){
+                            $(id).tree("select",n.target);    //相当于默认点击了一下第一个节点，执行onSelect方法
+                             $dig.find('.toolbar-table').iDatagrid("reload", $.extend({},data[0].data, {url:"kzzx/xtcs/system/view"}));
+                        }
+
+                    }
+                });
+            }
+            function buildTree(keyword) {
+                var menus = [];
+                HTTP.post('kzzx/xtcs/gettreelist',{keyword: keyword},function (data) {
+                    var records = data["data"]["records"];
+                    $.each(records, function (i, record) {
+                        menus.push({parentNode: record["parentNode"], node: record["node"], name: record["name"], id: record["id"],  type: record["type"]});
+                    });
+                });
+
+                var menuMap = {};
+                $.each(menus, function (i, menu) {
+                    menuMap[menu.node] =  {
+                        id: menu["node"],
+                        text: menu["name"],
+                        children: [],
+                        data: menu
+                    };
+                });
+
+                var rootNodes = [];
+                $.each(menus, function (i, menu) {
+                    var curmenu = menuMap[menu.node];
+                    var parent = menuMap[menu.parentNode];
+                    if ( parent == null ){
+                        rootNodes.push(curmenu);
+                    } else {
+                        parent.children.push(curmenu);
+                    }
+                });
+                buildMenu(rootNodes,'#cs_tree');
+            }
+            function xtcs_Edit() {
+                var selectedRow =   $dig.find('.toolbar-table').iDatagrid('getSelected');
+                if (  selectedRow==null ){
+                    $.messager.alert("提示信息", "请先选择一条记录.");
+                    return ;
+                }
+                if(selectedRow["xtcszlx"]=='S'){
+                    $('<div id="parameter_s" style="position:relative"/>').iDialog({
+                        buttons: [{
+                            text: '确认',
+                            iconCls: 'fa fa-save',
+                            btnCls: 'gui-btn',
+                            handler: function () {
+                                var datas = DataBind.collectData($('#parameter_s').find("form"));
+                                selectedRow['csz']=datas['csz'];
+                                HTTP.post("kzzx/xtcs/update", {master:selectedRow},  function (result) {
+                                    if ( result["success"]==true ) {
+                                        $.messager.alert("提示信息",result['message']||"参数修改成功" );
+                                        $('#parameter_s').iDialog('close');
+
+                                        var data=$('#cs_tree').tree('getSelected').data;
+                                        var url = "kzzx/xtcs/system/view";
+                                        if (  data["type"] == "R" ) {
+                                            url = "kzzx/xtcs/role/view";
+                                        } else if ( data["type"] == "U" ) {
+                                            url = "kzzx/xtcs/user/view";
+                                        }
+                                         $dig.find('.toolbar-table').iDatagrid("reload",$.extend({},data, {url: url}));
+                                    } else {
+                                        $.messager.alert("提示信息",result['message']||"参数修改失败" );
+                                    }
+                                });
+                            }
+                        },{
+                            text:'取消',
+                            iconCls: "fa fa-close",
+                            btnCls: "gui-btn-danger",
+                            handler:function () {
+                                $('#parameter_s').iDialog('close');
+                            }
+                        }],
+                        onOpen:function () {
+                            $(this).find('input[name="csid"]').iTextbox({value:selectedRow['csid']||''});
+                            $(this).find('input[name="xtcscsmc"]').iTextbox({value:selectedRow['xtcscsmc']||''});
+                            $(this).find('input[name="csz"]').iTextbox({value:selectedRow['csz']||''});
+                            $(this).find('input[name="cszsm"]').iTextbox({value:selectedRow['cszsm']||''});
+                        },
+                        onClose: function () {
+                            $(this).form("clear");
+                            $(this).iDialog('destroy');
+                        }
+
+                    });
+                    var $div=$('<div class="gui-fluid editTable"><form>\n' +
+                        '    <div class="gui-row" style="display: inline-block;width:46%">\n' +
+                        '        <div class="gui-col-sm12">\n' +
+                        '            <label class="gui-form-label" for="">参数编码：</label>\n' +
+                        '            <div class="gui-input-block">\n' +
+                        '                <input type="text" name="csid" value="" data-options="required:true,disabled:true"  style="width: 100%">\n' +
+                        '            </div>\n' +
+                        '        </div>\n' +
+                        '    </div>\n' +
+                        '    <div class="gui-row" style="display: inline-block;width: 46%">\n' +
+                        '        <div class="gui-col-sm12">\n' +
+                        '            <label class="gui-form-label">参数名称：</label>\n' +
+                        '            <div class="gui-input-block">\n' +
+                        '                <input type="text" name="xtcscsmc"  data-options="required:true,disabled:true" style="width: 100%">\n' +
+                        '            </div>\n' +
+                        '        </div>\n' +
+                        '    </div>\n' +
+                        '    <div class="gui-row">\n' +
+                        '        <div class="gui-col-sm12" >\n' +
+                        '            <label class="gui-form-label">参数值：</label>\n' +
+                        '            <div class="gui-input-block">\n' +
+                        '                <input name="csz" type="text"  data-options="required:true" style="width: 90%">\n' +
+                        '            </div>\n' +
+                        '        </div>\n' +
+                        '    </div>\n' +
+                        '    <div class="gui-row">\n' +
+                        '        <div class="gui-col-sm12" >\n' +
+                        '            <label class="gui-form-label" for="">说明：</label>\n' +
+                        '            <div class="gui-input-block">\n' +
+                        '                <input type="text"  name="cszsm"\n' +
+                        '                       data-options="height:100,multiline:true,disabled:true" value="" style="width: 90%">\n' +
+                        '            </div>\n' +
+                        '        </div>\n' +
+                        '    </div>\n' +
+                        '</form></div>');
+                    $('#parameter_s').html('');
+                    $('#parameter_s').append($div);
+                    $('#parameter_s').iDialog('open');
+                }
+                else if(selectedRow["xtcszlx"]=='I'){
+                    $('<div id="parameter_I" style="position:relative"/>').iDialog({
+                        buttons: [{
+                            text: '确认',
+                            iconCls: 'fa fa-save',
+                            btnCls: 'gui-btn',
+                            handler: function () {
+                                if ($('#parameter_I').form('validate')) {
+                                var datas = DataBind.collectData($('#parameter_I').find("form"));
+                                selectedRow['csz']=datas['csz'];
+                                HTTP.post("kzzx/xtcs/update", {master:selectedRow},  function (result) {
+                                    if ( result["success"]==true ) {
+                                        $.messager.alert("提示信息",result['message']||"参数修改成功" );
+                                        $('#parameter_I').iDialog('close');
+                                        var data=$('#cs_tree').tree('getSelected').data;
+                                        var url = "kzzx/xtcs/system/view";
+                                        if (  data["type"] == "R" ) {
+                                            url = "kzzx/xtcs/role/view";
+                                        } else if ( data["type"] == "U" ) {
+                                            url = "kzzx/xtcs/user/view";
+                                        }
+                                         $dig.find('.toolbar-table').iDatagrid("reload",$.extend({},data, {url: url}));
+                                    } else {
+                                        $.messager.alert("提示信息",result['message']||"参数修改失败" );
+                                    }
+                                });}
+                            }
+                        },{
+                            text:'取消',
+                            iconCls: "fa fa-close",
+                            btnCls: "gui-btn-danger",
+                            handler:function () {
+                                $('#parameter_I').iDialog('close');
+                            }
+                        }],
+                        onOpen:function () {
+                            $(this).find('input[name="csid"]').iTextbox({value:selectedRow['csid']||''});
+                            $(this).find('input[name="xtcscsmc"]').iTextbox({value:selectedRow['xtcscsmc']||''});
+                            $(this).find('input[name="csz"]').iNumberbox({value:selectedRow['csz']||''});
+                            $(this).find('input[name="cszsm"]').iTextbox({value:selectedRow['cszsm']||''});
+                        },
+                        onClose: function () {
+                            $(this).form("clear");
+                            $(this).iDialog('destroy');
+                        }
+
+                    });
+                    var $div=$('<div class="gui-fluid editTable"><form>\n' +
+                        '    <div class="gui-row" style="display: inline-block;width:46%">\n' +
+                        '        <div class="gui-col-sm12">\n' +
+                        '            <label class="gui-form-label" for="">参数编码：</label>\n' +
+                        '            <div class="gui-input-block">\n' +
+                        '                <input type="text" name="csid" value="" data-options="required:true,disabled:true"  style="width: 100%">\n' +
+                        '            </div>\n' +
+                        '        </div>\n' +
+                        '    </div>\n' +
+                        '    <div class="gui-row" style="display: inline-block;width: 46%">\n' +
+                        '        <div class="gui-col-sm12">\n' +
+                        '            <label class="gui-form-label">参数名称：</label>\n' +
+                        '            <div class="gui-input-block">\n' +
+                        '                <input type="text" name="xtcscsmc"  data-options="required:true,disabled:true" style="width: 100%">\n' +
+                        '            </div>\n' +
+                        '        </div>\n' +
+                        '    </div>\n' +
+                        '    <div class="gui-row">\n' +
+                        '        <div class="gui-col-sm12" >\n' +
+                        '            <label class="gui-form-label">参数值：</label>\n' +
+                        '            <div class="gui-input-block">\n' +
+                        '                <input name="csz" type="text"  data-options="validType:\'number\',required:true,precision:0" style="width: 90%">\n' +
+                        '            </div>\n' +
+                        '        </div>\n' +
+                        '    </div>\n' +
+                        '    <div class="gui-row">\n' +
+                        '        <div class="gui-col-sm12" >\n' +
+                        '            <label class="gui-form-label" for="">说明：</label>\n' +
+                        '            <div class="gui-input-block">\n' +
+                        '                <input type="text"  name="cszsm"\n' +
+                        '                       data-options="height:100,multiline:true,disabled:true" value="" style="width: 90%">\n' +
+                        '            </div>\n' +
+                        '        </div>\n' +
+                        '    </div>\n' +
+                        '</form></div>');
+                    $('#parameter_I').html('');
+                    $('#parameter_I').append($div);
+                    $('#parameter_I').iDialog('open');
+                }
+                else if(selectedRow["xtcszlx"]=='E'){
+                    $('<div id="parameter_E" style="position:relative"/>').iDialog({
+                        height: 600,
+                        width:840,
+                        buttons: [{
+                            text: '确认',
+                            iconCls: 'fa fa-save',
+                            btnCls: 'gui-btn-save',
+                            handler: function () {
+                                if ($('#parameter_E').form('validate')) {
+                                    var row= $('#parameter_E').find('.multi-table').iDatagrid('getChecked');
+                                    var json=[];
+                                    if(row&&row.length>0){
+                                      $.each(row,function (i,r) {
+                                          json.push(r.SJZD_BM);
+                                      })
+                                    }
+                                    selectedRow['csz']=json.join(',');
+                                    HTTP.post("kzzx/xtcs/update", {master:selectedRow},  function (result) {
+                                        if ( result["success"]==true ) {
+                                            $.messager.alert("提示信息",result['message']||"参数修改成功" );
+                                            $('#parameter_E').iDialog('close');
+                                            reload_xtcs();
+
+                                        } else {
+                                            $.messager.alert("提示信息",result['message']||"参数修改失败" );
+                                        }
+                                    });}
+                            }
+                        },{
+                            text:'取消',
+                            iconCls: "fa fa-close",
+                            btnCls: "gui-btn-danger",
+                            handler:function () {
+                                $('#parameter_E').iDialog('close');
+                            }
+                        }],
+                        onOpen:function () {
+                            /*初值*/
+                            var str = selectedRow['csz'];
+                            str = str.replace(/^[\(]/, "").replace(/[\)]$/, "");
+                            var arry= str.split(",");
+                            /*数据表*/
+                            HTTP.post('kzzx/xtcs/getzylist', {csid: selectedRow['csid']}, function (result) {
+                                if (result['success']) {
+                                    var datas = result.data.records;
+                                    $('#parameter_E').find('.multi-table').iDatagrid({
+                                        columns:[[
+                                            {field:'CK',checkbox:true},
+                                            {field:'SJZD_BM',title:'编码',width:100},
+                                            {field:'SJZD_NAME',title:'名称',width:440},
+                                        ]],
+                                        data:datas,
+                                        pagination:false,
+                                        onLoadSuccess:function (data) {
+                                            if(data){
+                                                if(arry&&arry.length>0){
+                                                    for(var i =0;i<arry.length;i++){
+                                                        $.each(data.rows, function(index, item){
+                                                            if(item["SJZD_BM"]==arry[i]){
+                                                                $('#parameter_E').find('.multi-table').datagrid('checkRow', index);
+                                                                return false;
+                                                            }
+                                                        });
+                                                    }
+                                                }
+                                            }
+                                        }
+
+                                    });
+                                }
+                            });
+
+                            $(this).find('input[name="csid"]').iTextbox({value:selectedRow['csid']||''});
+                            $(this).find('input[name="xtcscsmc"]').iTextbox({value:selectedRow['xtcscsmc']||''});
+                            $(this).find('input[name="cszsm"]').iTextbox({value:selectedRow['cszsm']||''});
+                        },
+                        onClose: function () {
+                            $(this).form("clear");
+                            $(this).iDialog('destroy');
+                        }
+
+                    });
+                    var $div=$('<div class="gui-fluid editTable"><form>\n' +
+                        '    <div class="gui-row" style="display: inline-block;width:46%">\n' +
+                        '        <div class="gui-col-sm12">\n' +
+                        '            <label class="gui-form-label" for="">参数编码：</label>\n' +
+                        '            <div class="gui-input-block">\n' +
+                        '                <input type="text" name="csid" value="" data-options="required:true,disabled:true"  style="width: 100%">\n' +
+                        '            </div>\n' +
+                        '        </div>\n' +
+                        '    </div>\n' +
+                        '    <div class="gui-row" style="display: inline-block;width: 46%">\n' +
+                        '        <div class="gui-col-sm12">\n' +
+                        '            <label class="gui-form-label">参数名称：</label>\n' +
+                        '            <div class="gui-input-block">\n' +
+                        '                <input type="text" name="xtcscsmc"  data-options="required:true,disabled:true" style="width: 100%">\n' +
+                        '            </div>\n' +
+                        '        </div>\n' +
+                        '    </div>\n' +
+                        '    <div class="gui-row">\n' +
+                        '        <div class="gui-col-sm12" >\n' +
+                        '            <label class="gui-form-label">参数值：</label>\n' +
+                        '            <div style="height: 300px;width:78%">\n' +
+                        '               <table class="multi-table" style="height: 240px;"></table>' +
+                        '            </div>\n' +
+                        '        </div>\n' +
+                        '    </div>\n' +
+                        '    <div class="gui-row">\n' +
+                        '        <div class="gui-col-sm12" >\n' +
+                        '            <label class="gui-form-label" for="">说明：</label>\n' +
+                        '            <div class="gui-input-block">\n' +
+                        '                <input type="text"  name="cszsm"\n' +
+                        '                       data-options="height:100,multiline:true,disabled:true" value="" style="width: 90%">\n' +
+                        '            </div>\n' +
+                        '        </div>\n' +
+                        '    </div>\n' +
+                        '</form></div>');
+                    $('#parameter_E').html('');
+                    $('#parameter_E').append($div);
+                    $('#parameter_E').iDialog('open');
+                }
+                else if(selectedRow["xtcszlx"]=='L'){
+                    $('<div id="parameter_L" style="position:relative"/>').iDialog({
+                        height: 600,
+                        width:840,
+                        buttons: [{
+                            text: '确认',
+                            iconCls: 'fa fa-save',
+                            btnCls: 'gui-btn',
+                            handler: function () {
+                                if ($('#parameter_L').form('validate')) {
+
+                                    selectedRow['csz']=$('#parameter_L').find('.multi-table').iDatagrid('getSelected')['ID'];
+                                    HTTP.post("kzzx/xtcs/update", {master:selectedRow},  function (result) {
+                                        if ( result["success"]==true ) {
+                                            $.messager.alert("提示信息",result['message']||"参数修改成功" );
+                                            $('#parameter_L').iDialog('close');
+                                            var data=$('#cs_tree').tree('getSelected').data;
+                                            var url = "kzzx/xtcs/system/view";
+                                            if (  data["type"] == "R" ) {
+                                                url = "kzzx/xtcs/role/view";
+                                            } else if ( data["type"] == "U" ) {
+                                                url = "kzzx/xtcs/user/view";
+                                            }
+                                             $dig.find('.toolbar-table').iDatagrid("reload",$.extend({},data, {url: url}));
+                                        } else {
+                                            $.messager.alert("提示信息",result['message']||"参数修改失败" );
+                                        }
+                                    });}
+                            }
+                        },{
+                            text:'取消',
+                            iconCls: "fa fa-close",
+                            btnCls: "gui-btn-danger",
+                            handler:function () {
+                                $('#parameter_L').iDialog('close');
+                            }
+                        }],
+                        onOpen:function () {
+                            var arry=selectedRow['csz'];
+                            /*数据表*/
+                            HTTP.post('kzzx/xtcs/getzylist', {csid: selectedRow['csid']}, function (result) {
+                                if (result['success']) {
+                                    var datas = result.data.records;
+                                    $('#parameter_L').find('.multi-table').iDatagrid({
+                                        columns:[[
+                                            {field:'ID',title:'编码',width:100},
+                                            {field:'MC',title:'名称',width:440},
+                                        ]],
+                                        data:datas,
+                                        pagination:false,
+                                        onLoadSuccess:function (data) {
+                                            if(data){
+                                                if(arry&&arry.length>0){
+                                                        $.each(data.rows, function(index, item){
+                                                            if(item["ID"]==arry){
+                                                                $('#parameter_L').find('.multi-table').datagrid('selectRow', index);
+                                                                return false;
+                                                            }
+                                                        });
+                                                    }
+                                                }
+                                            }
+
+                                    });
+                                }
+                            });
+
+                            $(this).find('input[name="csid"]').iTextbox({value:selectedRow['csid']||''});
+                            $(this).find('input[name="xtcscsmc"]').iTextbox({value:selectedRow['xtcscsmc']||''});
+                            $(this).find('input[name="cszsm"]').iTextbox({value:selectedRow['cszsm']||''});
+                        },
+                        onClose: function () {
+                            $(this).form("clear");
+                            $(this).iDialog('destroy');
+                        }
+
+                    });
+                    var $div=$('<div class="gui-fluid editTable"><form>\n' +
+                        '    <div class="gui-row" style="display: inline-block;width:46%">\n' +
+                        '        <div class="gui-col-sm12">\n' +
+                        '            <label class="gui-form-label" for="">参数编码：</label>\n' +
+                        '            <div class="gui-input-block">\n' +
+                        '                <input type="text" name="csid" value="" data-options="required:true,disabled:true"  style="width: 100%">\n' +
+                        '            </div>\n' +
+                        '        </div>\n' +
+                        '    </div>\n' +
+                        '    <div class="gui-row" style="display: inline-block;width: 46%">\n' +
+                        '        <div class="gui-col-sm12">\n' +
+                        '            <label class="gui-form-label">参数名称：</label>\n' +
+                        '            <div class="gui-input-block">\n' +
+                        '                <input type="text" name="xtcscsmc"  data-options="required:true,disabled:true" style="width: 100%">\n' +
+                        '            </div>\n' +
+                        '        </div>\n' +
+                        '    </div>\n' +
+                        '    <div class="gui-row">\n' +
+                        '        <div class="gui-col-sm12" >\n' +
+                        '            <label class="gui-form-label">参数值：</label>\n' +
+                        '            <div style="height: 300px;width:78%">\n' +
+                        '               <table class="multi-table" style="height: 240px;"></table>' +
+                        '            </div>\n' +
+                        '        </div>\n' +
+                        '    </div>\n' +
+                        '    <div class="gui-row">\n' +
+                        '        <div class="gui-col-sm12" >\n' +
+                        '            <label class="gui-form-label" for="">说明：</label>\n' +
+                        '            <div class="gui-input-block">\n' +
+                        '                <input type="text"  name="cszsm"\n' +
+                        '                       data-options="height:100,multiline:true,disabled:true" value="" style="width: 90%">\n' +
+                        '            </div>\n' +
+                        '        </div>\n' +
+                        '    </div>\n' +
+                        '</form></div>');
+                    $('#parameter_L').html('');
+                    $('#parameter_L').append($div);
+                    $('#parameter_L').iDialog('open');
+                }
+        }
+        });
+
+    function reload_xtcs() {
+        var data=$('#cs_tree').tree('getSelected').data;
+        var url = "kzzx/xtcs/system/view";
+        if (  data["type"] == "R" ) {
+            url = "kzzx/xtcs/role/view";
+        } else if ( data["type"] == "U" ) {
+            url = "kzzx/xtcs/user/view";
+        }
+        $('#kzzxXtcs').find('.toolbar-table').iDatagrid("reload",$.extend({},data, {url: url}));
+    }
+        function lineSET(dialog,queryURL,data,ele) {
+            $('<div id="'+dialog+'" style="position:relative">').iDialog({
+                width:800,
+                height:480,
+                title:'列设置',
+                buttons: [{
+                    text: '确认',
+                    iconCls: 'fa fa-save',
+                    btnCls: 'gui-btn-save',
+                    handler: function (div) {
+                        var profiles=[];
+                        var data= $('#'+dialog).find('.setLine_datagrid').datagrid('getRows');
+                        $.each(data,function(index,item){$('#'+dialog).find('.setLine_datagrid').datagrid('endEdit',index)});
+                        HTTP.post("kzzx/gridset/save",{"listid":queryURL,data:data},function (result) {
+                            if(result['success']) {
+
+                                    $(div).remove();
+                                    ele.find('.toolbar-reload').click();
+                            }else{
+                                layer.message(result['message']||'设置失败');
+                            }
+                        });
+                        $('#'+dialog).iDialog('destroy');
+                    }
+                },{
+                    text:'取消',
+                    iconCls: "fa fa-close",
+                    btnCls: "gui-btn-danger",
+                    handler:function () {
+                        $('#'+dialog).iDialog('destroy');
+                    }
+                }],
+                onOpen:function () {
+                    var div=$('<div class="setLine_datagrid"></div>');
+                    $('#'+dialog).append(div);
+                    var columns=[
+                        { title: "序号",  index: 0, field: "position", width: 80,align:'center'},
+                        {
+                            title: "列名", index: 1, field: "caption", width: 160, align: 'center',editor: {
+                                type: 'textbox'
+                            }},
+                        { title: "编码",  index: 2, field: "id", width: 160,align:'center',editor: {
+                                type: 'textbox'
+                            }},
+                        { title: "显示",  index: 4, field: "show", width: 80,align:'center',editor: {
+                                type: 'checkbox',
+                                options: {required: true, zoom: '200%', on: true, off: false}
+                            }},
+                        { title: "列宽",  index: 4, field: "width", width: 160,align:'center',editor: {
+                                type: 'textbox'
+                            }}
+                    ];
+                    $(div).edatagrid({
+                        data:data||[],
+                        columns:[columns],
+                        height:400,
+                        toolbar: [{
+                            text:'上移',
+                            iconCls: 'fa fa-long-arrow-up',
+                            handler: function(){
+                                var $table=$(div);
+                                var rows=$table.edatagrid('getRows');
+                                var rowlength=rows.length;
+                                var selectrow=$table.edatagrid('getSelected');
+                                if(selectrow == null){
+                                    return false;
+                                }
+                                var rowIndex=$table.edatagrid('getRowIndex',selectrow);
+                                if(rowIndex==0){
+                                    $.messager.alert('提示', '顶行无法上移!', 'warning');
+                                }else{
+                                    $table.edatagrid('deleteRow', rowIndex);//删除一行
+                                    rowIndex--;
+                                    $table.edatagrid('insertRow', {
+                                        index:rowIndex,
+                                        row:selectrow
+                                    });
+                                    $table.edatagrid('selectRow', rowIndex);
+                                    $.each(rows,function (index, col) {
+                                        $table.edatagrid('updateRow',{
+                                            index:index,
+                                            row: {
+                                                position: index+1
+                                            }
+                                        });
+                                    })
+                                }
+                            }
+                        },'-',{
+                            text:'下移',
+                            iconCls:'fa fa-long-arrow-down',
+                            handler: function(){
+                                var $table=$(div);
+                                var rows=$table.edatagrid('getRows');
+                                var rowlength=rows.length;
+                                var selectrow=$table.edatagrid('getSelected');
+                                if(selectrow == null){
+                                    return false;
+                                }
+                                var rowIndex=$table.edatagrid('getRowIndex',selectrow);
+                                if(rowIndex==rowlength-1){
+                                    $.messager.alert('提示', '底行无法下移!', 'warning');
+                                }else{
+                                    $table.datagrid('deleteRow', rowIndex);//删除一行
+                                    rowIndex++;
+                                    $table.datagrid('insertRow', {
+                                        index:rowIndex,
+                                        row:selectrow
+                                    });
+                                    $table.datagrid('selectRow', rowIndex);
+                                }
+                                $.each(rows,function (index, col) {
+                                    $table.datagrid('updateRow',{
+                                        index:index,
+                                        row: {
+                                            position: index+1
+                                        }
+                                    });
+                                })
+
+
+                            }
+                        }]
+                    })
+
+                },
+                onClose: function () {
+                    $(this).form("clear");
+                    $(this).iDialog('destroy');
+                }
+
+            });
+            $('#'+dialog).iDialog('open');
+        }
+        function treeLine(queryURL,ele,columns,container) {
+            var div=$('<div class="product-nav-list"><a class="nav-header-to">高级设置</a><div class="product-content-list" style="overflow: auto;height: 380px"></div>' +
+                '<button class="btn btn-primary btn-bottom-right">确定</button></div>');
+            ele.append($(div));
+            $(div).addClass('animated bounceInLeft');
+            setTimeout(function(){
+                $(div).removeClass('bounceInLeft');
+            }, 2000);
+            var treeDatas = [];
+            $.each(columns, function (i, column) {
+                treeDatas.push({
+                    "id": column["field"],
+                    "param": column["field"],
+                    "text": column["title"],
+                    checked: (column["hidden"]!=true)
+                })
+            });
+            $(div).find(".product-content-list").tree({
+                data: treeDatas,
+                checkbox: true,
+                onLoadSuccess:function () {
+                    $(div).find("span[class^='tree-icon tree-file']").remove();
+                }
+            });
+
+            $(div).find('.nav-header-to').unbind().bind('click',function (event) {
+                var TreeObj = $(div).find(".product-content-list");
+                var profiles = [];
+                var data=[];
+                var roots = TreeObj.tree("getRoots");
+                $.each(roots, function (i, root) {
+                    var nodes = TreeObj.tree("getData",root.target);
+                    if ( root.checked ){
+                        data.push({
+                            id: root.param,
+                            show:true,
+                            caption: root.text,
+                            position: i
+                        });
+
+                    }  else {
+                        data.push({
+                            id: root.param,
+                            show:false,
+                            caption: root.text,
+                            position: i
+                        });
+                    }
+                });
+                if ( data.length==0 ){
+                    return
+                }
+                lineSET('lineSet',queryURL,data,ele);
+            });
+            $(div).find('.btn-bottom-right').unbind().bind('click',function () {
+                var TreeObj = $(div).find(".product-content-list");
+                var profiles = [];
+                var data=[];
+                var roots = TreeObj.tree("getRoots");
+                $.each(roots, function (i, root) {
+                    var nodes = TreeObj.tree("getData",root.target);
+                    if ( root.checked ){
+                        data.push({
+                            id: root.param,
+                            show:true,
+                            caption: root.text,
+                            position: i
+                        });
+
+                    }  else {
+                        data.push({
+                            id: root.param,
+                            show:false,
+                            caption: root.text,
+                            position: i
+                        });
+                    }
+                });
+                if ( data.length==0 ){
+                    return
+                }
+                HTTP.post("kzzx/gridset/save",{"listid":queryURL,data:data},function (result) {
+                    if(result['success']){
+                        $(div).remove();
+                        ele.find('.toolbar-reload').click();
+                    }
+                })
+
+            });
+            $(document).click(function(){
+                $(div).remove();
+            });
+            $(div).click(function (event) {
+                event.stopPropagation();
+            })
+        }
+
+</script>

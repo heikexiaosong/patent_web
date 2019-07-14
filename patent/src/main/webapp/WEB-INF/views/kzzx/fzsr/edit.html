@@ -1,0 +1,211 @@
+<div class="gui-fluid table-margin">
+    <div style="display: inline-block;width: 50%;margin-top: 2%">
+        <div style="width:100%;border-right: 1px silver dashed;padding-right: 4%">
+            <input type="hidden"  name="flag">
+            <input type="hidden"  name="id">
+            <div class="gui-row">
+                <div class="gui-col-sm12">
+                    <label class="gui-form-label" for="">辅助输入代码：</label>
+                    <div class="gui-input-block">
+                        <input type="text" name="code"  data-options="required:true" data-toggle="gui-textbox"  style="width: 100%">
+                    </div>
+                </div>
+            </div>
+            <div class="gui-row">
+                <div class="gui-col-sm12">
+                    <label class="gui-form-label" for="">代码名称：</label>
+                    <div class="gui-input-block">
+                        <input type="text" name="name"  data-options="required:true" data-toggle="gui-textbox" style="width: 100%">
+                    </div>
+                </div>
+            </div>
+            <div class="gui-row" >
+                <div class="gui-col-sm12">
+                    <label class="gui-form-label" >分类：</label>
+                    <div class="gui-input-block">
+                        <input type="text" name="flid" data-toggle="gui-combobox" style="width: 100%"/>
+                    </div>
+                </div>
+            </div>
+            <div class="gui-row">
+                <div class="gui-col-sm12">
+                    <label class="gui-form-label" for="">参照代码：</label>
+                    <div class="gui-input-block">
+                        <input type="text" name="yyid"  data-toggle="gui-textbox" style="width: 100%">
+                    </div>
+                </div>
+            </div>
+            <div class="gui-row">
+                <div class="gui-col-sm12">
+                    <label class="gui-form-label" for="">SQL语句：</label>
+                    <div class="gui-input-block">
+                        <input type="text" name="sql" data-toggle="gui-textarea" style="width: 100%;height:200px"/>
+                    </div>
+                </div>
+            </div>
+            <div class="gui-row">
+                <div class="gui-col-sm12">
+                    <label class="gui-form-label" for="">备注信息：</label>
+                    <div class="gui-input-block">
+                        <input type="text" name="bz" data-toggle="gui-textarea" style="width: 100%;height:30px">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="float: right;width: 48%;height: 100%;margin-top: 2%">
+        <table id="bzEditFzsrsz" style="width: 100%;" data-options="dgid:'FZSRSZ'"></table>
+    </div>
+
+</div>
+<script>
+    $(function () {
+        var $div=$('#kzzxFzsrEdit');
+        var  $fieldView=$('#bzEditFzsrsz');
+        $div.find('input[name="flid"]').iCombobox({
+            textField: "text",
+            valueField: "value",
+            data:[{text: "SQL查询",value: "A", selected:true},
+                {value: "B", text: "引用其他定义"}]
+        });
+
+        var parameter =$('#kzzxFzsrTable').datagrid('getSelected');
+        var columns=[
+            {title: "序号", index: 1, field: "xh", halign:'center',align:'center',width: 60},
+            {title: "id", index: 2, field: "id", width: 160,hidden:true},
+            {title: "辅助输入代码", index: 3, field: "code",halign:'center', width: 160, hidden:true},
+            {title: "字段", index: 4, field: "field", halign:'center',width: 158,editor:{
+                    type:'textbox'
+                }},
+
+            {title: "名称", index: 5, field: "caption", halign:'center', width: 220,editor:{
+                    type:'textbox'
+                }},
+            {title: "宽度", index: 6, field: "width", align:'center', width: 60,editor:{
+                    type:'textbox'
+                }},
+            {title: "返回", index: 7, field: "fh",  align:'center',width: 60,fieldType:{type:"radio",options:{Y:'Y',N:"N",mold:'column'}}},
+            {title: "维护人编码",  index: 8, field: "whrid", width: 160,halign:'center',hidden:true},
+            {title: "维护人",  index: 9, field: "whr", width: 160,halign:'center',hidden:true},
+            {title: "维护时间",  index: 10, field: "whsj", width: 160,halign:'center',hidden:true},
+            {title: "创建人编码",  index: 11, field: "cjrid", width: 160,halign:'center',hidden:true},
+            {title: "创建人",  index: 12, field: "cjr", width: 160,halign:'center',hidden:true},
+            {title: "创建时间",  index: 13, field: "cjsj", width: 160,halign:'center',hidden:true}
+        ];
+        var id='';
+        if(parameter){
+            id=parameter['id']
+        }
+        Edatagrid.init($fieldView,'kzzx/fzsr/query/detail', {mid:id},
+            {columns:[columns],rownumbers:false,height:404,toolbar:[{
+                    iconCls: 'fa fa-plus',
+                    text:'添加',
+                    handler: function(){
+                        var row= $fieldView.edatagrid('getRows');
+                        var xh =1;
+                        if(row['length']){
+                            xh=row['length']+1;
+                        }
+                        if(row['length']==0){
+                            $fieldView.edatagrid('insertRow',{
+                                row: {
+                                    xh: xh,
+                                    flag:'I',
+                                    width:80,
+                                    fh:'Y'
+                                }
+                            });
+                        }else{
+                            $fieldView.edatagrid('insertRow',{
+                                row: {
+                                    xh: xh,
+                                    flag:'I',
+                                    width:80
+                                }
+                            });
+                        }
+
+                    }
+                },
+                    '-',{
+                        iconCls: 'fa fa-file',
+                        text:'保存',
+                        handler: function(){
+                            $fieldView.edatagrid('acceptChanges');
+                        }
+                    },'-',{
+                        iconCls:'fa fa-trash',
+                        text:'删除',
+                        handler: function(){
+                            var cols = $fieldView.edatagrid('getRows');
+                            var aa=[];
+                            var selectrow=$fieldView.edatagrid('getSelected');
+                            if(selectrow == null){
+                                return false;
+                            }
+                            var delIndex=$fieldView.edatagrid('getRowIndex',selectrow);
+                            $.each(cols,function (i,col) {
+                                if( i==delIndex){
+                                    if(  cols[i]["flag"]!=null &&  cols[i]["flag"]=='I'){
+                                    } else {
+                                        cols[i]['flag'] = 'D';
+                                        aa.push(col);
+                                    }
+                                }
+                            });
+                            if($fieldView.data("mxData")){
+                                var bb=$fieldView.data("mxData");
+                                $.each(aa,function (i,item) {
+                                    bb.push(item);
+                                });
+                                $fieldView.data("mxData",bb);
+                            }else{
+                                $fieldView.data("mxData", aa);
+                            }
+
+                            $fieldView.datagrid('deleteRow', delIndex);
+
+                            $.each(cols,function (index, col) {
+                                $fieldView.datagrid('updateRow',{
+                                    index:index,
+                                    row: {
+                                        xh: index+1
+                                    }
+                                });
+                            })
+                        }
+                    },'-',{
+                        iconCls:'fa fa-bug',
+                        text:'SQl解析',
+                        handler: function(){
+                            var sqlText = $div.find('input[name="sql"]').val();
+                            HTTP.post('kzzx/fzsr/fieldbysql',{sql:sqlText},function (result) {
+                                if(result['success']){
+                                    var primaryRows=$fieldView.datagrid('getRows');
+                                    var fields=[];
+                                    $.each(primaryRows,function (i,row) {
+                                        fields.push(row['field'])
+                                    })
+                                    $.each(result['data']['records'],function (index, col) {
+                                        if(fields.indexOf(col['field'])==-1){
+                                            $fieldView.datagrid('appendRow',col);
+                                        }
+
+                                    })
+                                }
+                            });
+                            var cols = $fieldView.edatagrid('getRows');
+                            $.each(cols,function (index, col) {
+                                $fieldView.datagrid('updateRow',{
+                                    index:index,
+                                    row: {
+                                        xh: index+1
+                                    }
+                                });
+                            })
+                        }
+                    }]});
+
+    })
+
+</script>

@@ -1,0 +1,248 @@
+﻿<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge，chrome=1">
+    <title>陕钢集团汉钢数据中心与决策支持平台</title>
+    <link rel="SHORTCUT ICON" href="css/images/shccig.png"/>
+    <link rel="stylesheet" href="css/login.css?v=4">
+    <link rel="stylesheet" href="css/col.css">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <style>
+        .login-container .main-login{
+            right: 10%;
+        }
+    </style>
+</head>
+<body>
+<!--<div class="login-container active">
+    <div class="bg">
+        <header style="width: 100%;height: 80px;background-color: transparent;">
+            <div>
+                <img src="css/images/shccig.png" alt="" style="padding:30px 20px;display: inline-block;">
+                <span>陕钢集团汉中钢铁有限责任公司</span>
+            </div>
+        </header>
+    </div>
+    <div class="main-login col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-4 col-md-offset-4">
+            <div class="box-login">
+                <form class="form-login" action="/login" method="post">
+                    <fieldset>
+                        <div class="form-group">
+                            <p class="title form-group">数据中心与决策支持平台</p>
+                        </div>
+                        <div class="form-group" style="position: relative">
+                           <span class="input-icon">
+                                <i class="fa fa-user" style="height: 32px;width: 40px;top:1px;left:1px;border-top-left-radius:4px; border-bottom-left-radius:4px;"></i>
+                                <input type="text" name="userid" class=" form-control" id="name" onblur="GetPwdAndChk()" placeholder="用户名">
+
+                                </span>
+                        </div>
+                        <div class="form-group" style="position:relative;">
+                            <span class="input-icon">
+                                <i class="fa fa-lock" style="height: 32px;width: 40px;top:1px;left:1px;border-top-left-radius:4px; border-bottom-left-radius:4px;"></i>
+                            <input type="password" name="password"  class=" form-control"  id="pwd" onkeypress="EnterPress(event)" onkeydown="EnterPress()" placeholder="密码">
+
+                            </span>
+                        </div>
+                        <div class="form-group" style="border: 0">
+                            <input type="button" class="btn form-control " id="login_sub"  value="登  录" onclick="Login()">
+                        </div>
+                        <div id="chk" class="form-group form-inline">
+                            <input type="checkbox" id="chkRememberPwd" class="regular-checkbox" />
+                            <label> 记住密码</label>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+
+</div>-->
+<div class="login-container active">
+    <div class="bg">
+        <header style="width: 100%;height: 80px;background-color: transparent;">
+            <div>
+                <img src="css/images/shccig.png" alt="" style="padding:30px 20px;display: inline-block;">
+                <span>陕钢集团汉中钢铁有限责任公司</span>
+            </div>
+        </header>
+    </div>
+    <div class="main-login col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-4 col-md-offset-4">
+        <div class="box-login">
+            <form class="form-login" action="/login" method="post">
+                <fieldset>
+                    <div class="form-group" style="margin-top: 40px">
+                        <p class="form-group title">数据决策平台</p>
+                    </div>
+                    <div class="form-group" style="position: relative" >
+                        <label class="input-label">用户名：</label>
+                           <span class="input-icon ">
+                                <i class="fa fa-user" style="height: 32px;width: 40px;border-top-left-radius:4px; border-bottom-left-radius:4px;"></i>
+                                <input type="text" name="userid" class=" form-control" id="name" onblur="GetPwdAndChk()" placeholder="用户名">
+                                </span>
+                    </div>
+                    <div class="form-group" style="position:relative;">
+                        <label class="input-label">密&nbsp;&nbsp;&nbsp;码：</label>
+                            <span class="input-icon">
+                                <i class="fa fa-lock" style="height: 32px;width: 40px;border-top-left-radius:4px; border-bottom-left-radius:4px;"></i>
+                            <input type="password" name="password"  class=" form-control"  id="pwd" onkeypress="EnterPress(event)" onkeydown="EnterPress()" placeholder="密码">
+
+                            </span>
+                    </div>
+                    <div class="form-group" style="border: 0;margin-bottom: 60px">
+                        <input type="button" class="btn form-control " id="login_sub"  value="登  录" onclick="Login()">
+                        <div id="chk" class=" form-inline">
+                            <input type="checkbox" id="chkRememberPwd" class="regular-checkbox" />
+                            <label> 记住密码</label>
+                        </div>
+                    </div>
+
+                </fieldset>
+            </form>
+        </div>
+    </div>
+
+</div>
+</body>
+
+<script language="JavaScript" type="text/javascript" src="easyui/jquery.min.js" charset="utf-8"></script>
+<script language="JavaScript" type="text/javascript" src="easyui/jquery.easyui.min.js" charset="utf-8"></script>
+<script language="JavaScript" type="text/javascript" src="easyui/locale/easyui-lang-zh_CN.js"></script>
+
+<script language="JavaScript" type="text/javascript" src="js/common/http.js"></script>
+<script language="JavaScript" type="text/javascript" src="js/common/md5.min.js"></script>
+<script language="JavaScript" type="text/javascript" src="js/common/json2.js"></script>
+
+
+<!-- 	js控制居中 -->
+<script language="javascript">
+    /*回车事件*/
+    function EnterPress(e){ //传入 event
+        var e = e || window.event;
+        if(e.keyCode == 13){
+            Login();
+        }
+    }
+
+    function Login(){
+        var username = $("#name").val();
+        var password = $("#pwd").val();
+        if ( username==null || username=='' ){
+            $("#name").focus();
+            return
+        }
+        if ( password==null || password=='' ){
+            $("#pwd").focus();
+            return
+        }
+        username = username.toLowerCase();
+        var encodePWD = md5( username + "USER" + password + "PASSWORD");
+
+        $('#login_sub').attr('disabled', true);
+        $('#login_sub').val("登录中...");
+        HTTP.post(
+            "login",
+            JSON.stringify({
+                servername: $("#servername").val(),
+                userid: username,
+                password: encodePWD
+            }),
+            function(data){
+                $('#login_sub').attr('disabled',false);
+                $('#login_sub').val("登录");
+                if  (data.message == "") {
+                    var timer=new Date().getTime();
+                    window.location.href="index?t="+timer;
+                } else {
+                    alert(data.message);
+                }
+            },
+            false
+        );
+        var usr=$("#name").val();
+        SetLastUser(usr);
+        if(document.getElementById('chkRememberPwd').checked == true) {
+            var pwd = $('#pwd').val();
+            var expdate = new Date();
+            expdate.setTime(expdate.getTime() + 14 * (24 * 60 * 60 * 1000));
+            SetCookie(usr, pwd, expdate);
+        }
+        else {
+            ResetCookie();
+        }
+    }
+
+function SetLastUser(usr) {
+    var id = "49BAC005-7D5B-4231-8CEA-16939BEACD67";
+    var expdate = new Date();
+    expdate.setTime(expdate.getTime() + 14 * (24 * 60 * 60 * 1000));
+    SetCookie(id, usr, expdate);
+}
+
+function GetPwdAndChk() {
+    var usr = document.getElementById('name').value;
+    var pwd = GetCookie(usr);
+    if (pwd != null) {
+        document.getElementById('chkRememberPwd').checked = true;
+        document.getElementById('pwd').value = pwd;
+    }
+    else {
+        document.getElementById('chkRememberPwd').checked = false;
+        document.getElementById('pwd').value = "";
+    }
+}
+function GetCookie(name) {
+    var arg = name + "=";
+    var alen = arg.length;
+    var clen = document.cookie.length;
+    var i = 0;
+    while (i < clen) {
+        var j = i + alen;
+        if (document.cookie.substring(i, j) == arg) return getCookieVal(j);
+        i = document.cookie.indexOf(" ", i) + 1;
+        if (i == 0) break;
+    }
+    return null;
+}
+var isPostBack = "<%= IsPostBack %>";
+function getCookieVal(offset) {
+    var endstr = document.cookie.indexOf(";", offset);
+    if (endstr == -1) endstr = document.cookie.length;
+    return unescape(document.cookie.substring(offset, endstr));
+}
+
+function SetCookie(name, value, expires) {
+    var argv = SetCookie.arguments;
+//本例中length = 3
+    var argc = SetCookie.arguments.length;
+    var expires = (argc > 2) ? argv[2] : null;
+    var path = (argc > 3) ? argv[3] : null;
+    var domain = (argc > 4) ? argv[4] : null;
+    var secure = (argc > 5) ? argv[5] : false;
+    document.cookie = name + "=" + escape(value) + ((expires == null) ? "" : ("; expires=" + expires.toGMTString())) + ((path == null) ? "" : ("; path=" + path)) + ((domain == null) ? "" : ("; domain=" + domain)) + ((secure == true) ? "; secure" : "");
+}
+function ResetCookie() {
+    var usr = document.getElementById('name').value;
+    var expdate = new Date();
+    SetCookie(usr, null, expdate);
+}
+window.onload=function onLoginLoaded() {
+//    if (isPostBack == "False") {
+        GetLastUser();
+//    }
+}
+    function GetLastUser() {
+        var id = "49BAC005-7D5B-4231-8CEA-16939BEACD67";//GUID标识符
+        var usr = GetCookie(id);
+        if (usr != null) {
+            document.getElementById('name').value = usr;
+        }
+        else {
+            document.getElementById('name').value = "";
+        }
+        GetPwdAndChk();
+    }
+
+
+</script>
+
+</html>

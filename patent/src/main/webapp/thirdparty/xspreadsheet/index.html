@@ -1,0 +1,37 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+<title>原生js在线编辑excel表格代码 - 站长素材</title>
+
+<link href="xspreadsheet.css" rel="stylesheet">
+
+</head>
+<body onload="load()">
+<button id="aa"></button>
+  <div id="x-spreadsheet-demo"></div>
+  <script>
+    function load(){
+    var b= x.spreadsheet('#x-spreadsheet-demo')
+        .loadData(
+                {"name":"sheet1","freeze":"A1",
+                  "styles":[{"underline":true,"font":{"italic":true}, "border":{"top":["thin","#000"],"bottom":["thin","#000"],"left":["thin","#000"]}},
+                    {"font":{"bold":true},"border":{"top":["thin","#000"],"bottom":["thin","#000"],"right":["thin","#000"]}}],
+                  "merges":[],"rows":{"0":{"cells":{"0":{"text":"5","style":0},"1":{"text":"7","style":1}}},"len":100},"cols":{"len":26},"validations":[]}
+                ).change((cdata) => console.log(JSON.stringify(cdata)));
+
+    document.getElementById("aa").onclick=function () {
+      console.log(b.getData());
+      alert(12)
+      b.loadData({})
+    }
+
+    }
+
+  </script>
+<script type="text/javascript" src="xspreadsheet-use.js"></script>
+<div style="text-align:center;margin:50px 0; font:normal 14px/24px 'MicroSoft YaHei';">
+</div>
+</body>
+</html>

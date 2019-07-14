@@ -1,0 +1,265 @@
+/*! CSS Used from: https://g.alicdn.com/aliyun/console/1.4.92/styles/bootstrap/bootstrap.css */
+a{background:transparent;}
+a:focus{outline:thin dotted;}
+a:active,a:hover{outline:0;}
+@media print{
+    *{color:#000!important;text-shadow:none!important;background:transparent!important;box-shadow:none!important;}
+    a,a:visited{text-decoration:underline;}
+    a[href]:after{content:" (" attr(href) ")";}
+    p,h3{orphans:3;widows:3;}
+    h3{page-break-after:avoid;}
+}
+*,*:before,*:after{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;}
+a{color:#428bca;text-decoration:none;}
+a:hover,a:focus{color:#2a6496;text-decoration:underline;}
+a:focus{outline:thin dotted;outline:5px auto -webkit-focus-ring-color;outline-offset:-2px;}
+h3,h4{font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;font-weight:500;line-height:1.1;color:inherit;}
+h3{margin-top:20px;margin-bottom:10px;}
+h4{margin-top:10px;margin-bottom:10px;}
+h3{font-size:24px;}
+h4{font-size:18px;}
+p{margin:0 0 10px;}
+ul{margin-top:0;margin-bottom:10px;}
+.col-md-6,.col-md-12{position:relative;min-height:1px;padding-right:15px;padding-left:15px;}
+@media (min-width: 992px){
+    .col-md-6,.col-md-12{float:left;}
+    .col-md-12{width:100%;}
+    .col-md-6{width:50%;}
+}
+.btn{display:inline-block;padding:6px 12px;margin-bottom:0;font-size:14px;font-weight:normal;line-height:1.428571429;text-align:center;white-space:nowrap;vertical-align:middle;cursor:pointer;background-image:none;border:1px solid transparent;border-radius:4px;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;-o-user-select:none;user-select:none;}
+.btn:focus{outline:thin dotted;outline:5px auto -webkit-focus-ring-color;outline-offset:-2px;}
+.btn:hover,.btn:focus{color:#333333;text-decoration:none;}
+.btn:active{background-image:none;outline:0;-webkit-box-shadow:inset 0 3px 5px rgba(0, 0, 0, 0.125);box-shadow:inset 0 3px 5px rgba(0, 0, 0, 0.125);}
+.btn-primary{color:#ffffff;background-color:#428bca;border-color:#357ebd;}
+.btn-primary:hover,.btn-primary:focus,.btn-primary:active{color:#ffffff;background-color:#3276b1;border-color:#285e8e;}
+.btn-primary:active{background-image:none;}
+.clearfix:before,.clearfix:after{display:table;content:" ";}
+.clearfix:after{clear:both;}
+.pull-left{float:left!important;}
+/*! CSS Used from: https://g.alicdn.com/aliyun/console/1.5.17/styles/bootstrap/bootstrap.css */
+button{margin:0;font-family:inherit;font-size:100%;}
+button{line-height:normal;}
+button{text-transform:none;}
+button{cursor:pointer;-webkit-appearance:button;}
+button::-moz-focus-inner{padding:0;border:0;}
+@media print{
+    *{color:#000!important;text-shadow:none!important;background:transparent!important;box-shadow:none!important;}
+}
+*,*:before,*:after{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;}
+button{font-family:inherit;font-size:inherit;line-height:inherit;}
+.btn{display:inline-block;padding:6px 12px;margin-bottom:0;font-size:14px;font-weight:normal;line-height:1.428571429;text-align:center;white-space:nowrap;vertical-align:middle;cursor:pointer;background-image:none;border:1px solid transparent;border-radius:4px;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;-o-user-select:none;user-select:none;}
+.btn:focus{outline:thin dotted;outline:5px auto -webkit-focus-ring-color;outline-offset:-2px;}
+.btn:hover,.btn:focus{color:#333333;text-decoration:none;}
+.btn:active{background-image:none;outline:0;-webkit-box-shadow:inset 0 3px 5px rgba(0, 0, 0, 0.125);box-shadow:inset 0 3px 5px rgba(0, 0, 0, 0.125);}
+
+/*! CSS Used from: https://g.alicdn.com/aliyun/console/1.5.17/styles/console1412.css */
+.btn{font-size:12px;border-radius:0;padding:8px 16px;height:28px;line-height:10px;}
+.btn-primary{color:#fff;border:1px solid #09c;background-color:#09c;}
+.btn-primary:active{-webkit-box-shadow:inset 0 1px 2px rgba(0,0,0,0.125);box-shadow:inset 0 1px 2px rgba(0,0,0,0.125);}
+.btn-primary:focus{color:#fff;border:1px solid #09c;background-color:#09c;outline:none;}
+.btn-primary:hover{color:#fff;border:1px solid #28B5D6;background-color:#28B5D6;}
+.combobox-item {
+    height: 28px;
+    line-height: 24px;
+    border-bottom: dashed 1px #ddd;
+}
+.combo{
+    height: 28px;
+}
+.combo-arrow{
+    height: 28px;
+}
+.bdsug ul{
+    margin-top: 8px;
+}
+.serach{
+    float: right;
+    margin-top: 3px;
+}
+.gui-div{
+    width: 100%;
+    height:100%
+}
+.l-btn-text-height{
+    line-height: 12px!important;
+  }
+.product-nav-list{
+    width: 240px;
+    height: 100%;
+    position: absolute;
+    top: 118px;
+    border: 1px solid  #eaedf1;
+    background-color: white;
+}
+.btn-bottom-right{
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+}
+.btn-default{color:#333;border:1px solid #ddd;background-color:#F7F7F7;}
+.btn-default:active{-webkit-box-shadow:inset 0 1px 2px rgba(0,0,0,0.125);box-shadow:inset 0 1px 2px rgba(0,0,0,0.125);}
+.btn-default:focus{color:#333;border:1px solid #ddd;background-color:#F7F7F7;outline:none;}
+.btn-default:hover{color:#333;border:1px solid #ddd;background-color:#fff;}
+.nav-header-to{
+    display: block;
+    margin: 10px;
+    text-decoration: underline;
+    font-size: 12px;
+    color: #55a1e4;
+}
+.product-content-list{
+    margin-top: 20px;
+    overflow: auto;
+}
+.downcss{
+    position: relative;
+    top:10px;
+    cursor: pointer;
+}
+.print-style{
+   max-height: 100px;
+    width: 160px;
+    position: absolute;
+    top: 76px;
+    border: 1px solid #eaedf1;
+    background-color: white;
+    overflow: auto;
+}
+.print-style-li {
+    padding: 4px 10px;
+    border-bottom: 1px solid #eee;
+}
+.print-style-li:hover{
+    background: #F5F6FA;
+}
+
+.none{
+    display: none;
+}
+.table-margin{
+    margin: 10px 0;
+}
+.toolbar{
+    background-color: #3c8dbc;
+    color: white;
+    border-radius: 3px;
+    margin: 3px 1px;
+    padding: 0 8px;
+}
+.toolbar:hover{
+    background-color: #3c8dbc;
+    color:white;
+}
+.m-btn-downarrow{
+    background: url("../themes/default/images/arrow_down2.png");
+}
+.datagrid-cell{
+    font-size: 13px!important;
+}
+.datagrid-row-selected{
+    background: #8fbfdc!important;
+}
+/*
+.toolbar-print:hover{
+    background: url(../themes/default/images/menu_arrows.png) 0 center no-repeat;
+
+}*/
+.tabs li a.tabs-inner {
+ -webkit-border-radius: 2px 2px 0 0;
+ border-radius: 2px 2px 0 0;
+}
+.datagrid-toolbar {
+    padding: 3px 7px;
+}
+.textbox .textbox-text{
+    margin-top: -1px!important;
+}
+.search{
+    position: absolute;
+    right: 0;
+    width: 28px;
+    height: 30px;
+    margin-top: -15px;
+    padding: 6px 0;
+    cursor: pointer;
+}
+.auxiliary-icon{
+    width: 48px;
+    height: 32px;
+    margin-top: -2px;
+    line-height: 32px!important;
+    margin-left: -36px;
+    cursor: pointer;
+    position: absolute;
+}
+.arrowdown-css{
+    width:90px;position: absolute;z-index: 99;background-color: #3c8dbc;
+    padding:8px 10px;color: white;display: none;
+    cursor: pointer;
+}
+.arrowdown-span{
+    border-bottom: 1px solid;
+    display: block;padding: 2px;
+}
+.arrowdown-span :hover{
+    color: #cccccc;
+}
+/*全局css*/
+.gui-btn-danger{
+    color: white;
+    background-color: #f76821;
+    border: 0;
+}
+.gui-btn-danger:hover{
+    color: white;
+    background-color: #f76821;
+    border: 0;
+}
+.gui-btn-normal,.gui-btn-normal:hover{
+    border: 0;
+    color: white!important;
+    background-color: #009688!important;
+}
+.window .window-header .panel-title{
+    padding: 0 80px 0 20px;
+    height: 42px;
+    line-height: 42px;
+    border-bottom: 1px solid #eee;
+    font-size: 14px;
+    color: #333;
+    overflow: hidden;
+    background-color: #F8F8F8;
+    border-radius: 2px 2px 0 0;
+}
+.datagrid-header .datagrid-cell span {
+    font-weight: 600;
+}
+.messager-body{
+    padding: 30px;
+}
+.operate-btn{
+    height: 28px;
+    line-height: 28px;
+    font-size: 13px;
+}
+.panel-title,.panel-header{
+    height: 42px!important;
+}
+.tabs li{
+    margin: 1px 4px -1px 0;
+}
+.custom-check{
+    cursor: pointer;
+    background: url(../image/checkbox.png) -32px 0 no-repeat transparent;
+    vertical-align: middle; height: 16px; width: 16px; display: block;
+}
+.left{
+    float: left;
+}
+.search-right{
+    float: right;
+}
+/*
+#west .accordion-body {
+    min-height: 280px!important;
+}*/

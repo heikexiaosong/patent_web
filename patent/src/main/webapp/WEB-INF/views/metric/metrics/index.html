@@ -1,0 +1,58 @@
+<div id="metricMetrics" class="gui-div">
+	<table  class="toolbar-table" data-options="id: 'metricMetricsTable',herf:'kzzx/gridset/query'" >
+	</table>
+	
+	<!-- 表格工具栏开始 -->
+	<div id="metricMetricsTable-toolbar" class="gui-toolbar"
+	     data-options="grid:{
+	           type:'datagrid',
+	           id:'metricMetricsTable'
+	       }">
+	    <a class="toolbar-reload toolbar"  href="javascript:void(0)" style="display: none"></a>
+	    <!--<a class="toolbar-print toolbar"  href="javascript:void(0)"></a>
+	    <a class="toolbar-export toolbar"  href="javascript:void(0)"></a>-->
+	    <a class="toolbar-review toolbar" href="javascript:void(0)"></a>
+	    <a class="toolbar-add toolbar" href="javascript:void(0)"></a>
+	    <a class="toolbar-copy toolbar" href="javascript:void(0)"></a>
+	    <a class="toolbar-edit toolbar" href="javascript:void(0)"></a>
+	    <a class="toolbar-delete toolbar" href="javascript:void(0)"></a>
+	    <a type="submit" class="btn btn-primary serach toolbar-search"></a>
+	    <div class="bdsug" style="height: auto; display: none" >
+	        <form action="" class="query-criteria">
+	            <ul><li class="bdsug-store bdsug-overflow">
+	            </li></ul>
+	        </form>
+	    </div>
+	</div>
+</div>
+<!-- 表格工具栏结束 -->
+<script>
+    /*js初始化*/
+    $(function () {
+    	var $div=$('#metricMetrics');
+        var options={
+            url:'metric/metrics',
+            queryParams:{
+            },
+            columns:[[
+                {title: "指标", field: "metric", fieldType:"ftString", width: 200, hidden:false},
+                {title: "名称", field: "name", fieldType:"ftString", width: 200, hidden:false},
+                {title: "单位", field: "unit", fieldType:"ftString", width: 140, hidden:false},
+                {title: "所属采集区", field: "aeraid", fieldType:"ftString", width: 160, hidden:true},
+                {title: "所属采集区", field: "areaname", fieldType:"ftString", width: 160, hidden:false},
+                {title: "备注", field: "bz", fieldType:"ftString", width: 300, hidden:false},
+                {title: "维护人", field: "whr", fieldType:"ftString", width: 240, hidden:false},
+                {title: "维护时间", field: "whsj", fieldType:"ftDateTime", width: 180, hidden:false}
+            ]],
+            dialog:{
+                id:'metricMetricsEdit',
+                width: 800,
+                height: 406,
+                href:'metric/metrics/edit'
+            }
+        };
+        $div.Container(options); 
+    });
+
+
+</script>

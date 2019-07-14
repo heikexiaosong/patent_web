@@ -1,0 +1,57 @@
+<div id="trendQstitem" class="gui-div">
+	<table  class="toolbar-table" data-options="id: 'trendQstitemTable',herf:'kzzx/gridset/query'" >
+	</table>
+	
+	<!-- 表格工具栏开始 -->
+	<div id="trendQstitemTable-toolbar" class="gui-toolbar"
+	     data-options="grid:{
+	           type:'datagrid',
+	           id:'trendQstitemTable'
+	       }">
+	    <a class="toolbar-reload toolbar"  href="javascript:void(0)" style="display: none"></a>
+	    <a class="toolbar-print toolbar"  href="javascript:void(0)"></a>
+	    <a class="toolbar-export toolbar"  href="javascript:void(0)"></a>
+	    <a class="toolbar-review toolbar" href="javascript:void(0)"></a>
+	    <a class="toolbar-add toolbar" href="javascript:void(0)"></a>
+	    <a class="toolbar-copy toolbar" href="javascript:void(0)"></a>
+	    <a class="toolbar-edit toolbar" href="javascript:void(0)"></a>
+	    <a class="toolbar-delete toolbar" href="javascript:void(0)"></a>
+	    <a type="submit" class="btn btn-primary serach toolbar-search"></a>
+	    <div class="bdsug" style="height: auto; display: none" >
+	        <form action="" class="query-criteria">
+	            <ul><li class="bdsug-store bdsug-overflow">
+	            </li></ul>
+	        </form>
+	    </div>
+	</div>
+</div>
+<!-- 表格工具栏结束 -->
+<script>
+    /*js初始化*/
+    $(function () {
+    	var $div=$('#trendQstitem');
+        var options={
+            url:'trend/qstitem',
+            queryParams:{
+            },
+            columns:[[
+                {title: "趋势图ID", field: "mid", fieldType:"ftString", index: 0, width: 256, hidden:false},
+                {title: "序号", field: "xh", fieldType:"ftInteger", index: 1, width: 80, hidden:false},
+                {title: "指标", field: "metrics", fieldType:"ftString", index: 2, width: 400, hidden:false},
+                {title: "指标名称", field: "name", fieldType:"ftString", index: 3, width: 512, hidden:false},
+                {title: "指标数据单位", field: "unit", fieldType:"ftString", index: 4, width: 160, hidden:false},
+                {title: "类型", field: "type", fieldType:"ftString", index: 5, width: 64, hidden:false},
+                {title: "分组名称", field: "group", fieldType:"ftString", index: 6, width: 400, hidden:false},
+            ]],
+            dialog:{
+                id:'trendQstitemEdit',
+                width: 900,
+                height: 506,
+                href:'trend/qstitem/edit'
+            }
+        };
+        $div.Container(options); 
+    });
+
+
+</script>

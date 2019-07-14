@@ -1,0 +1,31 @@
+﻿<div id="printstyleContainer">
+
+    <div class="easyui-panel" style="padding:7px;">
+        <form class="search-form" method="post">
+            <table class="search-form">
+                <tr>
+                    <td>模 块: <input type="text" name="mkid" class="easyui-checkbox" /></td>
+                </tr>
+            </table>
+        </form>
+    </div>
+
+</div>
+
+<script>
+
+    var printstyleOptions = {
+        module: "common/printstyle",
+
+        onReady: function($container){
+            ComboboBox.init($container.find("input[name='mkid']"), {url: 'kzzx/yymk/query', valueFiled: 'mkid', textFiled: 'mkmc'});
+        }
+    };
+
+    var printstyleContainer = Utils.buildSingleTable("printstyleContainer", printstyleOptions);
+
+    $(function () {
+        printstyleContainer.singleTable("reload", {});
+    });
+</script>
+

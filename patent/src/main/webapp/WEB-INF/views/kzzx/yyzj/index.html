@@ -1,0 +1,95 @@
+﻿<div id="kzzxYyzj" class="gui-div">
+    <table class="toolbar-table" data-options="id: 'kzzxYyzjTable',herf:'kzzx/gridset/query'">
+    </table>
+    <div id="kzzxYyzjTable-toolbar" class="gui-toolbar" data-options="grid:{type:'datagrid',id:'kzzxYyzjTable'}">
+        <a class="toolbar-reload toolbar"  href="javascript:void(0)"></a>
+        <a class="toolbar-initialize toolbar" href="javascript:void(0)"></a>
+        <a class="toolbar-register toolbar" href="javascript:void(0)"></a>
+        <a class="toolbar-cancelRegister toolbar" href="javascript:void(0)"></a>
+    </div>
+</div>
+<script>
+    $(function () {
+        var $div=$('#kzzxYyzj');
+        var options={
+            url:'kzzx/yyzj',
+            columns:[[
+                {title: "组件编码",  index: 1, field: "zjid", width: 160,align:'center'},
+                {title: "组件名称", index: 2, field: "zjmc", width: 160,align:'center'},
+                {title: "助记码",  index: 3, field: "zjm", width: 160,align:'center'},
+                {title: "注册",  index: 4, field: "reg", width: 160,align:'center',formatter:function (value,row, index) {
+                        var map = {Y: '已注册', N: "未注册"};
+                        var text = map[value];
+                        return text || "未注册";
+                    }},
+                {title: "版本",  index: 5, field: "version", width: 160,align:'center'},
+                {title: "维护人编码",  index:6, field: "whrid", width: 160,align:'center',hidden:true},
+                {title: "维护人",  index: 7, field: "whr", width: 160,align:'center'},
+                {title: "维护时间",  index:8, field: "whsj", width: 160,align:'center',fieldType:'ftDateTime'},
+                {title: "创建人编码",  index: 9, field: "cjrid", width: 160,align:'center',hidden:true},
+                {title: "创建人",  index: 10, field: "cjr", width: 160,align:'center',hidden:true},
+                {title: "创建时间",  index: 11, field: "cjsj", width: 160,align:'center',hidden:true,fieldType:'ftDateTime'},
+                {title: "版本",  index: 12, field: "sysversion", width: 160,align:'center',hidden:true}
+            ]]
+        };
+        $div.Container(options);
+        $div.find('.toolbar-initialize').iMenubutton({
+            iconCls:'fa fa-pencil',
+            text:'提取组件信息',
+            onClick: initializeYyzj
+        });
+        $div.find('.toolbar-register').iMenubutton({
+            text:'注册',
+            onClick:registerYyzj
+        });
+        $div.find('.toolbar-cancelRegister').iMenubutton({
+            text:'取消注册',
+            onClick:cancelRegister
+        });
+        /*初始化*/
+        function  initializeYyzj() {
+            HTTP.post("frame/yyzj/install", {}, function (result) {
+                if (result["success"] == true) {
+                    $.messager.alert("提示信息", result["message"] || "提取组件信息成功");
+                    $div.find('.toolbar-table').iDatagrid('reload');
+                } else {
+                    $.messager.alert("提示信息", result["message"] || "提取组件信息失败");
+                }
+            });
+        }
+        /*注册*/
+        function registerYyzj() {
+            var selectedRow =  $div.find('.toolbar-table').iDatagrid('getSelected');
+            if (selectedRow == null) {
+                $.messager.alert("提示信息", "请先选择需要注册的组件.");
+                return;
+            }
+
+            HTTP.post("frame/yyzj/reg", {zjlist: [selectedRow]}, function (result) {
+                if (result["success"] == true) {
+                    $.messager.alert("提示信息", result["message"] || "组件注册成功");
+                    $div.find('.toolbar-table').iDatagrid('reload');
+                } else {
+                    $.messager.alert("提示信息", result["message"] || "组件注册失败");
+                }
+            });
+        }
+        /*取消注册*/
+        function cancelRegister() {
+            var selectedRow =  $div.find('.toolbar-table').iDatagrid('getSelected');
+            if (selectedRow == null) {
+                $.messager.alert("提示信息", "请先选择需要取消注册的组件.");
+                return;
+            }
+
+            HTTP.post("frame/yyzj/unreg", {zjlist: [selectedRow]}, function (result) {
+                if (result["success"] == true) {
+                    $.messager.alert("提示信息", result["message"] || "组件取消注册成功");
+                    $div.find('.toolbar-table').iDatagrid('reload');
+                } else {
+                    $.messager.alert("提示信息", result["message"] || "组件取消注册失败");
+                }
+            });
+        }
+    });
+</script>

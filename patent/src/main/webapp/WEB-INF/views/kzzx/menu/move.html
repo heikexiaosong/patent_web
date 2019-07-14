@@ -1,0 +1,46 @@
+<style>
+    #kzzxMenuMove .datagrid-btable td div{
+        text-align: left!important;
+    }
+    #kzzxMenuMove .datagrid-header-row{
+        display: none;
+    }
+</style>
+<table id="tree_menu"></table>
+<script>
+    $(function () {
+        var $div = $('#tree_menu');
+        var menus=[];
+        $div.iTreegrid({
+            url: '',
+            idField: 'mkid',
+            treeField: 'name',
+            /*     checkbox: true,*/
+            columns: [[
+                {title: 'ID', field: 'id', width: 80, align: 'center', hidden: true},
+                {field: 'name', title: '功能名称', width: 180, align: 'center'},
+                {field: 'mkid', title: '模块号', width: 180, align: 'center',hidden:true}
+            ]],
+
+            onClickRow: function (row) {
+                console.log(row)
+            }
+        });
+        var rows=$('#kzzxMenuTable').iTreegrid('getCheckedNodes');
+        HTTP.post('kzzx/menu/getFolderForMove ', {"menus":rows}, function (result) {
+            if (result['success'] && result['data']) {
+                if (result['data']['records'] && result['data']['records'].length > 0) {
+                    var rows = result['data']['records'];
+                    $.each(rows, function (i, item) {
+                        if (item['fmkid'] && item['fmkid'] > -1) {
+                            item["_parentId"] = item['fmkid']
+                        }
+                    });
+                    var data = {total: rows.length, "rows": rows};
+                    $div.iTreegrid('loadData', data);
+                }
+
+            }
+        });
+    });
+</script>

@@ -1,0 +1,231 @@
+<div id="timertaskTimer" class="gui-div">
+    <table class="toolbar-table" data-options="id: 'timertaskTimerTable',herf:'kzzx/gridset/query'">
+    </table>
+    <div id="timertaskTimerTable-toolbar" class="gui-toolbar" data-options="grid:{type:'datagrid',id:'timertaskTimerTable'}">
+        <a class="toolbar-reload toolbar"  href="javascript:void(0)" style="display: none"></a>
+        <a class="toolbar-print toolbar"  href="javascript:void(0)"></a>
+        <a class="toolbar-export toolbar"  href="javascript:void(0)"></a>
+        <a class="toolbar-review toolbar" href="javascript:void(0)"></a>
+        <a class="toolbar-add toolbar" href="javascript:void(0)"></a>
+        <a class="toolbar-copy toolbar" href="javascript:void(0)"></a>
+        <a class="toolbar-edit toolbar" href="javascript:void(0)"></a>
+        <a class="toolbar-delete toolbar" href="javascript:void(0)"></a>
+        <a class="toolbar-timertaskRun toolbar" href="javascript:void(0)"></a>
+        <a class="toolbar-timertaskStop toolbar" href="javascript:void(0)"></a>
+    </div>
+</div>
+<script>
+    $(function () {
+        var $div=$('#timertaskTimer');
+        var options={
+            url:'timer/timertask',
+            queryParams:{
+            },
+            columns:[[
+                {title: "id",  index: 1, field: "id", width: 160,hidden:true},
+                {title: "定时事务ID", index: 2, field: "timerid", width: 160,hidden:true},
+                {title: "序号",  index: 3, field: "xh", width: 60,hidden:true},
+                {title: "名称",  index: 4, field: "mc", width: 220},
+                {title: "描述",  index: 4, field: "desc", width: 300,},
+                {title:"状态",index:5,field:"status",width:100,formatter:function (value) {
+                        var map={1:"正在运行",0:"停止"};
+                        return map[value]||"";
+                    }},
+                {title:"执行方式",index:6,field:"jldw",width:200,hidden:true},
+                {title:"开始时间",index:7,field:"begintime",width:200,hidden:true},
+                {title:"上次执行时间",index:8,field:"pretime",width:200, formatter: function (value, row, index) {
+                        if (value == undefined || value == '') {
+                            return "";
+                        }
+                        var date = new Date(parseInt(value));
+                        if (isNaN(date)) {
+                            return ""
+                        }
+                        return date.Format("yyyy-MM-dd hh:mm:ss");
+                    }
+                },
+                {title:"下次执行时间",index:9,field:"nexttime",width:200, formatter: function (value, row, index) {
+                        if (value == undefined || value == '') {
+                            return "";
+                        }
+                        var date = new Date(parseInt(value));
+                        if (isNaN(date)) {
+                            return ""
+                        }
+                        return date.Format("yyyy-MM-dd hh:mm:ss");
+                    }
+                },
+                {title:"上次执行结果",index:10,field:"result",width:200},
+                {title: "停用状态", index: 11, field: "tybz", width: 60,align:'center'},
+                {title: "停用日期", index: 12, field: "tyrq", width: 160,align:'center',fieldType:'ftDateTime'},
+                {title: "备注", index: 13, field: "bz", width: 160},
+                {title: "维护人编码",  index: 14, field: "whrid", width: 160,hidden:true},
+                {title: "维护人",  index: 15, field: "whr", width: 160},
+                {title: "维护时间",  index: 16, field: "whsj", width: 1,fieldType:'ftDateTime'},
+                {title: "创建人编码",  index: 17, field: "cjrid", width: 160,hidden:true},
+                {title: "创建人",  index: 18, field: "cjr", width: 160,hidden:true},
+                {title: "创建时间",  index: 19, field: "cjsj", width: 1,hidden:true,fieldType:'ftDateTime'}
+            ]],
+            dialog:{
+                id:'timertaskTimerEdit',
+                width: 960,
+                height: 480,
+                href:'timer/timertask/edit',
+                addGroup:[
+                    {text:'保存',url:'timer/timertask/add',iconCls:'fa fa-plus',btnCls:'gui-btn-normal',handler:"parameterForm",
+                        callback:function(){
+                            var getData=DataBind.collectData($('#timertaskTimerEdit'));
+                            var master={};
+                            switch (getData['jldw']) {
+                                case "year":master=getTimerData('year_',getData); break;
+                                case "month":master=getTimerData('month_',getData); break;
+                                case "week":master=getTimerData('week_',getData); break;
+                                case "day":master=getTimerData('day_',getData); break;
+                                case "hour":master=getTimerData('hour_',getData); break;
+                                case "minute":master=getTimerData('minute_',getData);break;
+                                case "second":master=getTimerData('second_',getData);break;
+                                case "once":master['begintime']=getData['begintime_once'];break;
+                                default:master=getTimerData(getData)
+                            }
+                            master['begintime']=getData['begintime'];
+                            master['jldw']=getData['jldw'];
+                            master['timerid']=getData['timerid'];
+                            master['status']='1';
+
+                            return  {
+                                parmas:{master:master,details:[]}
+                            };
+                        }
+                        }],
+                copyGroup:
+                    {text:'保存',url:'timer/timertask/add',iconCls:'fa fa-plus',handler:"parameterForm",btnCls:'gui-btn-save',
+                        callback:function(){
+                            var getData=DataBind.collectData($('#timertaskTimerEdit'));
+                            var master={};
+
+                            switch (getData['jldw']) {
+                                case "year":master=getTimerData('year_',getData); break;
+                                case "month":master=getTimerData('month_',getData); break;
+                                case "week":master=getTimerData('week_',getData); break;
+                                case "day":master=getTimerData('day_',getData); break;
+                                case "hour":master=getTimerData('hour_',getData); break;
+                                case "minute":master=getTimerData('minute_',getData);break;
+                                case "second":master=getTimerData('second_',getData);break;
+                                case "once":master['begintime']=getData['begintime_once'];break;
+                                default:master=getTimerData(getData)
+                            }
+                            master['begintime']=getData['begintime'];
+                            master['jldw']=getData['jldw'];
+                            master['timerid']=getData['timerid'];
+                            master['status']='1';
+                            return  {
+                                parmas:{master:master,details:[]}
+                            };
+                        }
+                        },
+                editGroup:{text:'更新',url:'timer/timertask/update',iconCls:'fa fa-plus',btnCls:'gui-btn-normal',
+                    handler:"parameterForm",
+                    callback:function(){
+                        var getData=DataBind.collectData($('#timertaskTimerEdit'));
+                        var master={};
+
+                        switch (getData['jldw']) {
+                            case "year":master=getTimerData('year_',getData); break;
+                            case "month":master=getTimerData('month_',getData); break;
+                            case "week":master=getTimerData('week_',getData); break;
+                            case "day":master=getTimerData('day_',getData); break;
+                            case "hour":master=getTimerData('hour_',getData); break;
+                            case "minute":master=getTimerData('minute_',getData);break;
+                            case "second":master=getTimerData('second_',getData);break;
+                            case "once":master['begintime']=getData['begintime_once'];break;
+                            default:master=getTimerData(getData)
+                        }
+                        master['begintime']=getData['begintime'];
+                        master['jldw']=getData['jldw'];
+                        master['timerid']=getData['timerid'];
+                        master['begintime']=getData['begintime'];
+                        master=$.extend({},$('#timertaskTimerTable').datagrid('getSelected'),master);
+                        master['status']='1';
+                        return  {
+                            parmas:{master:master,details:[]}
+                        };
+                    }
+                }
+            }
+        };
+        $div.Container(options);
+        $div.find(".toolbar-timertaskRun").iMenubutton({
+            text:"启动",
+            iconCls:'fa fa-rocket',
+            onClick:function () {
+                var slectedRow=$div.find(".toolbar-table").datagrid("getSelected");
+                var index=$div.find(".toolbar-table").datagrid('getRowIndex',slectedRow);
+                if(!slectedRow){
+                    $.messager.alert("提示",'请选择一条事务进行操作');
+                    return false;
+                }
+
+                HTTP.post('timer/timertask/start',slectedRow,function (result) {
+                    if(result["success"]){
+                        HTTP.post("timer/timertask/query",{id:slectedRow['id']},function (res) {
+                            if(res["success"]&&res["data"]["records"]){
+                                $div.find(".toolbar-table").datagrid('updateRow',{
+                                    index:index,
+                                    row:res["data"]["records"][0]
+                                });
+                            }
+                        })
+                        $.messager.show({
+                            title: "温馨提示",
+                            msg: "操作成功"
+                        });
+                    }else{
+                        $.messager.alert("提示",result["message"]||"操作失败")
+                    }
+                })
+
+            }
+        });
+        $div.find(".toolbar-timertaskStop").iMenubutton({
+            text:"停止",
+            iconCls:'fa fa-stop',
+            onClick:function () {
+                var slectedRow=$div.find(".toolbar-table").datagrid("getSelected");
+                var index=$div.find(".toolbar-table").datagrid('getRowIndex',slectedRow);
+                if(!slectedRow){
+                    $.messager.alert("提示",'请选择一条事务进行操作');
+                    return false;
+                }
+                HTTP.post('timer/timertask/stop',slectedRow,function (result) {
+                    if(result["success"]){
+                    	debugger;
+                        HTTP.post("timer/timertask/query",{id:slectedRow['id']},function (res) {
+                            if(res["success"]&&res["data"]["records"]){
+                                $div.find(".toolbar-table").datagrid('updateRow',{
+                                    index:index,
+                                    row:res["data"]["records"][0]
+                                });
+                            }
+                        })
+                        $.messager.show({
+                            title: "温馨提示",
+                            msg: "操作成功"
+                        });
+
+                    }else{
+                        $.messager.alert("提示",result["message"]||"操作失败")
+                    }
+                })
+
+            }
+        });
+        function getTimerData(pre,json) {
+            return {
+                year:json[pre+'year']||0,month:json[pre+'month']||0,day:json[pre+'day']||0,hour:json[pre+'hour']||0,week:json[pre+'week']||0,minute:json[pre+'minute']||0,second:json[pre+'second']||0
+            }
+
+        }
+
+    });
+
+</script>

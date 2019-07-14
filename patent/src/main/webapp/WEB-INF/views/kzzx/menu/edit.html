@@ -1,0 +1,56 @@
+<div class="gui-fluid editTable menus-edit">
+    <input type="hidden"  name="flag">
+    <input type="hidden"  name="id" >
+
+    <div class="gui-row" style="width: 90%;display: inline-block">
+        <div class="gui-col-sm12">
+            <label class="gui-form-label" for="">功能名称：</label>
+            <div class="gui-input-block">
+                <input type="text" name="name" data-options="required:true" data-toggle="gui-textbox"  style="width: 100%">
+            </div>
+        </div>
+    </div>
+
+    <div class="gui-row" style="width: 90%;display: inline-block">
+        <div class="gui-col-sm12">
+            <label class="gui-form-label" for="">菜单位置：</label>
+            <div class="gui-input-block">
+                <input type="text" name="position" data-options="required:true" data-toggle="gui-textbox"  value="2001" >
+            </div>
+        </div>
+    </div>
+
+    <div class="gui-row" style="width: 90%;display: inline-block">
+        <div class="gui-col-sm12">
+            <label class="gui-form-label" for="">上级目录：</label>
+            <div class="gui-input-block">
+                <input type="text" name="fmkid" >
+            </div>
+        </div>
+    </div>
+    <!--    <div class="gui-row" style="width: 100%;">
+            <div class="gui-col-sm12">
+                <label class="gui-form-label" for="">上级目录：</label>
+                <div class="gui-input-block">
+                    <input type="text" name="fmkid"  data-options="required:true">
+                </div>
+            </div>
+        </div>-->
+    <!--<div class="gui-row" style="width: 100%;">-->
+    <!--<div class="gui-col-sm12">-->
+    <!--<label class="gui-form-label" for="">图标：</label>-->
+    <!--<div class="gui-input-block">-->
+    <!--<input type="text" name="icon" style="width: 98%" data-toggle="gui-filebox">-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--</div>-->
+
+</div>
+
+<script>
+    $(function () {
+        ComboboBox.init($('.menus-edit input[name="fmkid"]'), {url: 'kzzx/menu/folders', valueField: 'mkid', textField: 'name',width:'100%'});
+    })
+
+
+</script>

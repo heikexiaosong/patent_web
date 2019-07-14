@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title> 数据中心管理平台 </title>
+    <link rel="SHORTCUT ICON" href="css/images/shccig.png"/>
+    <link type="text/css" href="GUI/gui/css/gui.bootstarp.min.css" rel="stylesheet">
+    <link type="text/css" href="GUI/gui/themes/default/gui.purplelight.css" rel="stylesheet" id="dynamicTheme"/>
+    <link rel="stylesheet" type="text/css" href="GUI/static/plugins/layui/css/layui.css">
+    <link rel="stylesheet" type="text/css" href="GUI/static/public/css/font.css" />
+    <link rel="stylesheet" type="text/css" href="GUI/gui/css/style.css">
+    <link rel="stylesheet" type="text/css" href="GUI/gui/css/gui.index.css">
+    <link rel="stylesheet" type="text/css" href="GUI/gui/css/search.css">
+    <link rel="stylesheet" type="text/css" href="css/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="GUI/gui/css/animate.min.css">
+    <!-- FontAwesome字体图标 -->
+    <link type="text/css" href="GUI/static/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet"/>
+    <link type="text/css" href="css/home/home.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="GUI/static/plugins/doublebox-boostrap/css/doublebox.css" />
+    <link rel="stylesheet" type="text/css" href="GUI/static/plugins/doublebox-boostrap/css/doublebox-bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="GUI/static/plugins/doublebox-boostrap/css/bootstrap-glyphicons.css" />
+
+     <link rel="stylesheet" media="screen" href="thirdparty/handsontable/handsontable.full.css" />
+   <!-- <link rel="stylesheet" media="screen" href="thirdparty/htable/css/handsontable.full.css" />-->
+   <!-- <link rel="stylesheet" href="thirdparty/xspreadsheet/xspreadsheet.css">-->
+    <link rel="stylesheet" media="screen" href="img/iconfont/material-icons.css" />
+
+    <link rel="stylesheet" type="text/css" href="thirdparty/codebase/webix/webix.css?v=6.3.1" />
+    <link rel="stylesheet" type="text/css" href="css/sample.css?v=6.3.1" />
+</head>
+
+<body>
+<div data-toggle="gui-layout" data-options="id:'index_layout',fit:true" >
+    <div id="north" class="banner" data-options="region:'north',border:false,split:false" style="height: 50px; padding:0;margin:0; overflow: hidden;">
+        <table style="float:left;border-spacing:0;">
+            <tr><td  style="font-size: 24px;line-height: 42px;"><img src="css/images/shccig.png" alt="gw" style="width: 32px;height: 32px;margin-left: 8px">
+            <span class="header-txt" style="vertical-align: middle"></span>
+        </table>
+        <span style="float:right; padding-right: 10px; height: 50px; line-height: 50px;">
+            <a href="javascript:void(0)" id="mb3" class="gui-menubutton"
+               data-options="menu:'#mm3',iconCls:'fa fa-user',hasDownArrow:true" style="color:#fff;">用户</a>
+            <div id="mm3" style="width:74px;">
+                <div data-options="iconCls:'fa fa-img'" style="display: none" id="loginBgSetting" onclick="javascript:loginBgSetting(0)">登录页面背景</div>
+                <div data-options="iconCls:'fa fa-key'" onclick="javascript:modifyPwd(0)">修改密码</div>
+            </div>
+            <a href="javascript:void(0)" id="mb2" class="gui-menubutton"
+               data-options="menu:'#mm2',iconCls:'fa fa-tree',hasDownArrow:true" style="color:#fff;" onclick="javascript:void(0)">主题</a>|
+            <div id="mm2" style="width:180px;">
+                <div data-options="iconCls:'fa fa-tree purple'" onclick="changeTheme('purplelight')">默认主题</div>
+                <div data-options="iconCls:'fa fa-tree'" onclick="changeTheme('black')">黑色主题</div>
+                <div data-options="iconCls:'fa fa-tree'" onclick="changeTheme('blacklight')">黑色主题-亮</div>
+                <div data-options="iconCls:'fa fa-tree red'" onclick="changeTheme('red')">红色主题</div>
+                <div data-options="iconCls:'fa fa-tree red'" onclick="changeTheme('redlight')">红色主题-亮</div>
+                <div data-options="iconCls:'fa fa-tree green'" onclick="changeTheme('green')">绿色主题</div>
+                <div data-options="iconCls:'fa fa-tree green'" onclick="changeTheme('greenlight')">绿色主题-亮</div>
+                <div data-options="iconCls:'fa fa-tree purple'" onclick="changeTheme('purple')">紫色主题</div>
+                <div data-options="iconCls:'fa fa-tree purple'" onclick="changeTheme('purplelight')">紫色主题-亮</div>
+                <div data-options="iconCls:'fa fa-tree blue'" onclick="changeTheme('blue')">蓝色主题</div>
+                <div data-options="iconCls:'fa fa-tree blue'" onclick="changeTheme('bluelight')">蓝色主题-亮</div>
+                <div data-options="iconCls:'fa fa-tree orange'" onclick="changeTheme('yellow')">橙色主题</div>
+                <div data-options="iconCls:'fa fa-tree orange'" onclick="changeTheme('yellowlight')">橙色主题-亮</div>
+            </div>
+            <a href="javascript:void(0)" onclick="logout()" class="gui-menubutton"
+               data-options="iconCls:'fa fa-sign-out',hasDownArrow:false" style="color:#fff;">注销</a>
+        </span>
+        <div style="position: fixed;z-index: 1030!important;float:right;right: 20%;margin-top: 12px">
+            <div class="aliyun-common-search-container">
+                <input class="aliyun-common-search-input-elem" placeholder="搜索">
+                <div class="aliyun-common-search-close" style="display: none;"></div>
+                <div class="aliyun-common-search-icon" id="su"></div>
+                <div class="aliyun-common-search-outline"></div>
+                <div class="aliyun-common-search-dropdown">
+                    <ul class="dropdown-list" style="height:auto"></ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="west" data-options="region:'west',split:true,width:230,border:false,headerCls:'border_right',bodyCls:'border_right'",
+         title="" iconCls="fa fa-dashboard">
+        <div id="RightAccordion"  style="overflow-y: auto"></div>
+    </div>
+    <div id="center" data-options="region:'center',border:false,split:true" style="overflow:hidden;padding-top:6px;padding-right: 6px;padding-bottom:4px;background-color: #f3f3f3">
+        <div id="tabs" style="width:100%;height:100%"  >
+            <div title="系统首页" data-options="border:true" id="divA">
+
+
+            </div>
+        </div>
+    </div>
+    <!--<div data-options="region:'south',split:true" style="height:1px;"></div>-->
+    <!--<div data-options="region:'east',split:true" style="width:2px;"></div>-->
+<div id="themeStyle" data-options="iconCls:'fa fa-tree'" style="display:none;width:600px;height:340px">
+    <table style="width:100%; padding:20px; line-height:30px;text-align:center;">
+        <tr>
+            <td>
+                <div class="skin-common skin-black"></div>
+                <input type="radio" name="themes" value="black" class="guiTheme"/>
+            </td>
+            <td>
+                <div class="skin-common skin-red"></div>
+                <input type="radio" name="themes" value="red" class="guiTheme"/>
+            </td>
+            <td>
+                <div class="skin-common skin-green"></div>
+                <input type="radio" name="themes" value="green" class="guiTheme"/>
+            </td>
+            <td>
+                <div class="skin-common skin-purple"></div>
+                <input type="radio" name="themes" value="purple" class="guiTheme"/>
+            </td>
+            <td>
+                <div class="skin-common skin-blue"></div>
+                <input type="radio" name="themes" value="blue" class="guiTheme"/>
+            </td>
+            <td>
+                <div class="skin-common skin-yellow"></div>
+                <input type="radio" name="themes" value="yellow" class="guiTheme"/>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="skin-common skin-blacklight"></div>
+                <input type="radio" name="themes" value="blacklight" class="guiTheme"/>
+            </td>
+            <td>
+                <div class="skin-common skin-redlight"></div>
+                <input type="radio" name="themes" value="redlight" class="guiTheme"/>
+            </td>
+            <td>
+                <div class="skin-common skin-greenlight"></div>
+                <input type="radio" name="themes" value="greenlight" class="guiTheme"/>
+            </td>
+            <td>
+                <div class="skin-common skin-purplelight"></div>
+                <input type="radio" name="themes" value="purplelight" class="guiTheme"/>
+            </td>
+            <td>
+                <div class="skin-common skin-bluelight"></div>
+                <input type="radio" name="themes" value="bluelight" class="guiTheme"/>
+            </td>
+            <td>
+                <div class="skin-common skin-yellowlight"></div>
+                <input type="radio" name="themes" value="yellowlight" class="guiTheme"/>
+            </td>
+        </tr>
+    </table>
+    <table style="width: 100%; padding: 20px; line-height: 30px; text-align: center;">
+        <tr>
+            <td>
+                <input type="radio" name="menustyle" value="accordion" checked="checked"/>手风琴
+            <td>
+                <input type="radio" name="menustyle" value="tree"/>树形
+            </td>
+            <td>
+                <input type="checkbox" checked="checked" name="topmenu" value="topmenu"/>开启顶部菜单
+            </td>
+        </tr>
+    </table>
+</div>
+<form id="pwdDialog" class="hidden"
+      data-options="title: '修改密码',
+      iconCls:'fa fa-key',
+      width: 500,
+      height: 260">
+    <div class="gui-fluid editTable">
+        <div class="gui-row">
+            <div class="gui-col-sm12">
+                <label class="gui-form-label" for="">旧密码：</label>
+                <div class="gui-input-block">
+                    <input type="text" name="oldPassword" id="oldPassword" data-toggle="gui-passwordbox" data-options="required:true"  style="width: 100%">
+                </div>
+            </div>
+        </div>
+        <div class="gui-row">
+            <div class="gui-col-sm12">
+                <label class="gui-form-label">新密码：</label>
+                <div class="gui-input-block">
+                    <input type="text" name="newPassword" id="newPassword" data-toggle="gui-passwordbox" data-options="required:true" style="width: 100%">
+                </div>
+            </div>
+        </div>
+        <div class="gui-row">
+            <div class="gui-col-sm12">
+                <label class="gui-form-label">新密码确认：</label>
+                <div class="gui-input-block">
+                    <input type="text" name="newPasswordConfirm"  id="newPasswordConfirm"  data-toggle="gui-passwordbox" data-options="required:true" style="width: 100%;">
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+</div>
+</body>
+<!-- data-main attribute tells require.js to load scriinit.jsn.js after require.js loads. -->
+
+<script type="text/javascript" src="js/common/json2.js"></script>
+<script language="JavaScript" type="text/javascript" src="easyui/jquery.min.js" charset="utf-8"></script>
+<script language="JavaScript" type="text/javascript" src="easyui/jquery.easyui.min.js" charset="utf-8"></script>
+<script language="JavaScript" type="text/javascript" src="easyui/locale/easyui-lang-zh_CN.js"></script>
+<script language="JavaScript" type="text/javascript" src="easyui/extension/datagrid-cellediting.js"></script>
+
+<script language="JavaScript" type="text/javascript" src="js/common/common.js"></script>
+<script language="JavaScript" type="text/javascript" src="js/common/tools.js"></script>
+<script language="JavaScript" type="text/javascript" src="js/common/http.js"></script>
+<!--form表单数据-->
+<script language="JavaScript" type="text/javascript" src="js/common/databind.js"></script>
+<script language="JavaScript" type="text/javascript" src="js/common/formBuilder.js"></script>
+
+<script language="JavaScript" type="text/javascript" src="js/extension/detaildatagrid.js"></script>
+<script language="JavaScript" type="text/javascript" src="js/extension/dialog.js"></script>
+
+<script language="JavaScript" type="text/javascript" src="js/extension/auxinput.js"></script>
+<script language="JavaScript" type="text/javascript" src="js/extension/treeSearch.js"></script>
+
+<script language="JavaScript" type="text/javascript" src="js/common/form.js"></script>
+
+<!--<script language="JavaScript" type="text/javascript" src="js/common/masterslave.js"></script>-->
+<script language="JavaScript" type="text/javascript" src="js/common/table.js"></script>
+<script language="JavaScript" type="text/javascript" src="js/singletable.js"></script>
+
+<script language="JavaScript" type="text/javascript" src="js/common/ui-common.js"></script>
+<script language="JavaScript" type="text/javascript" src="js/workflow/workflow.js"></script>
+
+<script language="JavaScript" type="text/javascript" src="js/datatable/datatable.js"></script>
+
+<script language="JavaScript" type="text/javascript" src="thirdparty/wangEditor/wangEditor.js"></script>
+<script language="JavaScript" type="text/javascript" src="thirdparty/layer-v3.0.3/layer.js"></script>
+<script language="JavaScript" type="text/javascript" src="js/common/DateUtils.js"></script>
+<script language="JavaScript" type="text/javascript" src="js/select/dialog-select.js"></script>
+<script language="JavaScript" type="text/javascript" src="js/page/checkbox.js"></script>
+
+<script type="text/javascript" src="GUI/static/plugins/jquery/jquery.cookie.js"></script>
+<script type="text/javascript" src="GUI/gui/js/timer.js?v=1.0"></script>
+<!-- gui框架配置-->
+<script type="text/javascript" src="GUI/static/public/js/gui.config.js"></script>
+<!-- gui框架核心 -->
+<script type="text/javascript" src="GUI/gui/js/gui.js"></script>
+<script type="text/javascript" src="GUI/gui/js/moduleloader.js"></script>
+
+<!-- gui中文支持 -->
+<script type="text/javascript" src="GUI/gui/js/locale/gui.lang.zh_CN.js"></script>
+<!-- 首页js -->
+<script type="text/javascript" src="GUI/static/public/js/gui.index.js" charset="utf-8"></script>
+<script type="text/javascript" src="GUI/static/plugins/gui/gui.function.js"></script>
+<!-- layui框架js -->
+<script type="text/javascript" src="GUI/static/plugins/layui/layui.js" charset="utf-8"></script>
+<script type="text/javascript" src="GUI/static/plugins/ueditor/ueditor.config.js"></script>
+<!-- 编辑器源码文件 -->
+<script type="text/javascript" src="GUI/static/plugins/ueditor/ueditor.all.js"></script>
+<script type="text/javascript" src="GUI/gui/js/container.js"></script>
+<script type="text/javascript" src="GUI/gui/js/extension/datagrid-dnd.js"></script>
+<script type="text/javascript" src="GUI/gui/js/extension/treegrid-dnd.js"></script>
+<script type="text/javascript" src="GUI/gui/js/extension/gui-combobox.js"></script>
+<script type="text/javascript" src="GUI/gui/js/auxiliary.js"></script>
+
+<script language="JavaScript" type="text/javascript" src="js/extension/datagrid.js?v=1.0"></script>
+<!--数据表编辑-->
+<script language="JavaScript" type="text/javascript" src="easyui/extension/datagrid-cellediting.js"></script>
+<!--mock数据-->
+<script language="JavaScript" type="text/javascript" src="mock/mock.js"></script>
+
+<script language="JavaScript" type="text/javascript" src="js/fabric/fabric.js"></script>
+<!--<script language="JavaScript" type="text/javascript" src="js/bluebird.min.js"></script>-->
+<script type="text/javascript" src="GUI/static/plugins/doublebox-boostrap/js/doublebox-bootstrap.js"></script>
+
+<script language="JavaScript" type="text/javascript" src="thirdparty/htable/js/handsontable.full.js"></script>
+<script language="JavaScript" type="text/javascript" src="thirdparty/handsontable/languages/all.js"></script>
+
+<!--<script language="JavaScript" type="text/javascript" src="thirdparty/xspreadsheet/xspreadsheet-use.js"></script>-->
+
+
+
+<script language="JavaScript" type="text/javascript" src="thirdparty/codebase/webix/webix.js?v=6.3.1"></script>
+<script language="JavaScript" type="text/javascript" src="thirdparty/codebase/locales/locales.js?v=6.3.1"></script>
+
+<script language="JavaScript" type="text/javascript" src="js/react/react.development.js"></script>
+<script language="JavaScript" type="text/javascript" src="js/react/react-dom.development.js"></script>
+<script language="JavaScript" type="text/javascript" src="js/react/babel.min.js"></script>
+
+<script  src="js/common/functions.js"></script>
+<script  language="JavaScript" type="text/javascript" src="GUI/static/plugins/echarts/echarts.min.js"></script>
+
+
+
+<!-- my styles -->
+<!--<link rel="stylesheet" href="thirdparty/codebase/skins/berry_blues.css" title="berryblues" type="text/css" charset="utf-8">-->
+<!--<link rel="stylesheet" href="thirdparty/codebase/skins/cozy_evening.css" title="cozyevening" type="text/css" charset="utf-8">-->
+<link rel="stylesheet" href="thirdparty/codebase/templates.css" type="text/css" charset="utf-8">
+
+<!-- function for toggling themes -->
+<!--<script src="thirdparty/codebase/helpers/themes.js"></script>-->
+
+
+<script type="text/javascript" charset="utf-8">
+
+    var data = [
+        { id:1, country:'Germany', code: "德国", sales:357, visitors:83 },
+        { id:2, country:'United States', code: "美国", sales:9834, visitors:323 },
+        { id:3, country:'Brazil', code: "巴西", sales:8516, visitors:207 },
+        { id:4, country:'Canada', code: "加拿大", sales:9985, visitors:36 },
+        { id:5, country:'France', code: "法国", sales:644, visitors:67 },
+        { id:6, country:'Russia', code: "俄罗斯", sales:17100,visitors:144 },
+        { id:7, country:'China', code: "中国", sales:9597, visitors:137 },
+        { id:8, country:'Australia', code: "澳大利亚", sales:7692, visitors:24 },
+        { id:9, country:'Algeria', code: "阿尔及利亚", sales:2382, visitors:41 },
+        { id:10, country:'South Africa'	, code: "南非", sales:1220, visitors:56 }
+    ];
+
+    var grid = {
+        view:"dashboard",
+        id:"grid",
+        gridColumns:24, gridRows:5,
+        cells:[
+            {
+                view:"panel",
+                x:0, y:0, dx:17, dy:3,
+                resize:false, drag:false,
+                //header:"Countries",
+                body:{
+                    view:"geochart", data:webix.copy(data),
+                    chart:{
+                        colorAxis:{colors:["red","orange","gold","green","blue","indigo","purple"]}
+                    }
+                }
+            },
+            {
+                view:"panel",
+                x:0, y:3, dx:8, dy:2, resize:true,
+                body:{
+                    view:"chart",
+                    type:"pie",
+                    value:"#sales#",
+                    data:webix.copy(data),
+                    legend:{
+                        template:"#code#",
+                        align:"right",
+                        valign:"middle"
+                    },
+                    shadow:false
+                }
+            },
+            {
+                view:"panel",
+                x: 8, y:3, dx:9, dy:2, resize:true,
+                body:{
+                    view:"chart", type:"bar",
+                    data:webix.copy(data), value:"#visitors#",
+                    xAxis:{
+                        template:"#code#"
+                    },
+                    yAxis:{
+                        title:"People, mln",
+                        template:function(obj){
+                            return (obj%20?"":obj)
+                        }
+                    }
+                }
+            },
+            // {
+            //     view:"panel",
+            //     x:14, y:3, dx:3 , dy:2, resize:true,
+            //     body:{
+            //         view:"list", id:"list", template:"#country#",
+            //         data:webix.copy(data), scroll:"y", select:true,
+            //         ready:function(){
+            //             this.select(3);
+            //         }
+            //     }
+            // },
+            {
+                view:"panel",
+                x:17, y:0, dx:7, dy:5,
+                resize:false, drag:false,
+                body:{
+                    view:"datatable", id:"datatable", data:webix.copy(data), select:true,
+                    scroll:"y", columns:[
+                        {id:"id", width:40, header:"#"},
+                        {id:"code", width:60, header:"Code"},
+                        {id:"country", width:80, header:"Country"},
+                        {id:"sales", width:80, header:"Sales"},
+                        {id:"visitors", width:80, header:"Visitors"}
+                    ],
+                    ready: function(){
+                        this.select(3);
+                    }
+                }
+            }
+        ]
+    };
+
+
+    webix.ready(function(){
+        debugger;
+        webix.ui({
+            container:"divA",
+            view:"scrollview", body:grid
+        });
+
+        $$("grid").attachEvent("onBeforeDrag", function(context){
+            // returning false will block dragging for some panels
+            // context.source is the panel that is about to be dragged
+            return context.source.config.drag;
+        });
+
+        //setting the theme
+        //setTheme("berryblues");
+    });
+
+</script>
+
+<script>
+
+    if (!String.prototype.startsWith) {
+        String.prototype.startsWith = function (search, pos) {
+            return this.substr(!pos || pos < 0 ? 0 : +pos, search.length) === search
+        }
+    }
+
+    $(document).ready(function(){
+        if (myBrowser() == "I") {
+            if(confirm("经检测，该IE浏览器版本过低，不支持该系统(支持ie9及ie9+). 请点击'确认'按钮，将自动为您跳转ie9安装环境。"))
+            {location.href="https://www.microsoft.com/zh-cn/download/internet-explorer-9-details.aspx";}
+        }
+        $("#gotoHomeTab").on('click',function () {
+            $("#tabs").tabs("select", "首页");
+        });
+
+        $("#gotoHomeTab").on('click', function () {
+            $("#tabs").tabs("select", "首页");
+        });
+
+        $('#tabs').iTabs({
+            onSelect: function (title, index) {
+            },
+            onClose: function (title, index) {
+
+            }
+        });
+
+
+
+
+
+
+
+
+
+    });
+/*    window.onerror = function(){
+        return true;
+    }*/
+
+
+    var map = {
+        "101000000": "fa fa-cog",
+        "120000000": "fa fa-codepen",
+        "900000000": "fa fa-code",
+        "105000000": "fa fa-bookmark-o",
+        "109000000": "fa fa-bar-chart",
+        "999000000": "fa fa-bug",
+
+        "101000100": "fa fa-user-circle",
+        "101000200": "fa fa-",
+        "101000300": "fa fa-sitemap",
+        "101000400": "fa fa-sitemap",
+
+        "120100000": "fa fa-cube",  //数据字典
+        "120110000": "fa fa-product-hunt",  //项目管理: 120110000
+        "120120000": "fa fa-folder",  //功能管理: 120120000
+        "109050000": "fa fa-folder",  //自定义查询功能: 109050000
+        "830020000": "fa fa-folder",
+    };
+
+    $(function() {
+        /*导航栏*/
+        nav_bar();
+        var navbarQuerms=[];
+        $('#tabs').iTabs({
+            onSelect:function(title,index){
+                window.clearInterval(TimerCustom.getValue());
+                window.clearInterval(TimerCustom.getNum());
+                window.clearInterval(TimerCustom.getTrend());
+                var currentTab = $('#tabs').tabs('getSelected');
+                var isRresh=currentTab.data('panel').options.type;
+                if(isRresh){
+                    RefreshTab('tabs',currentTab);
+                }
+                layer.closeAll();
+            },
+            onClose:function (title,index) {
+                window.clearInterval(TimerCustom.getValue());
+                window.clearInterval(TimerCustom.getNum());
+                window.clearInterval(TimerCustom.getTrend());
+            },
+                fit: true,
+                tools: [{
+                    iconCls: 'fa fa-arrows-alt',
+                    handler: function () {
+                        openFullscreen(document.body);
+                        exitFullScreen();
+                    }
+                },{
+                    iconCls: 'fa fa-home',
+                    handler: function () {
+                        $('#tabs').iTabs('select', 0);
+                    }
+                }, {
+                    iconCls: 'fa fa-chevron-circle-left',
+                    handler: function () {
+                        var p = $("#index_layout").iLayout("panel", "west")[0].clientWidth;
+                        if (p > 0) {
+                            $('#index_layout').iLayout('collapse', 'west');
+                            //$(this).children('span').removeClass('fa-chevron-circle-left').addClass('fa-chevron-circle-right');
+                        } else {
+                            $('#index_layout').iLayout('expand', 'west');
+                            /*  $(this).children('span').removeClass('fa-chevron-circle-right').addClass('fa-chevron-circle-left');*/
+                        }
+
+                    }
+                }, {
+                    iconCls: 'fa fa-close',
+                    handler: function () {
+                        /* var index = $('#tabs').iTabs('getTabIndex', $('#tabs').iTabs('getSelected'));
+                         var tab = $('#tabs').iTabs('getTab', index);
+                         if (tab.iPanel('options').closable) {
+                             $('#tabs').iTabs('close', index);
+                         }*/
+                        var tablist=$('#tabs').iTabs('tabs');
+                        for(var i=tablist.length-1;i>0;i--){
+                            $('#tabs').iTabs('close',i);
+                        }
+                    }
+                }],
+                //监听右键事件，创建右键菜单
+                onContextMenu: function (e, title, index) {
+                    e.preventDefault();
+                    if (index >= 0) {
+                        $('#mm').iMenu('show', {
+                            left: e.pageX,
+                            top: e.pageY
+                        }).data("tabTitle", title);
+                    }
+                }
+            });
+
+
+
+
+
+        HTTP.post("frame/init", {}, function (result) {
+
+            if ( result.data.userid === 'SUPERUSER' ) {
+                $("#loginBgSetting").show();
+            } else {
+                $("#loginBgSetting").hide();
+            }
+
+            window.curUserId = result.data.userid;
+            window.curUserName = result.data.username;
+
+            $("#mb3").find(".l-btn-text").html(result.data.username);
+            $("#mb3").menubutton("options").text = result.data.username;
+            window.sessionStorage.setItem('userId',result.data.userid);
+            window.sessionStorage.setItem('userName',result.data.username);
+            window.sessionStorage.setItem('appName',result.data.appName);
+            window.sessionStorage.setItem('cookie',result.data.cookie);
+            $('title').text(result.data.appName||'格物软件');
+            $('.header-txt').text(result.data.appName||'格物软件');
+            var menus = result.data.menu||[];
+            if ( menus.length == 0 ){
+                return;
+            }
+            var treeData = [], hash = {} ,datas = [];
+            $.each(menus, function (i, record) {
+                if(record['flid']!='C'){
+                    navbarQuerms.push(record);
+                }
+                var data = {
+                    id: record["mkid"],
+                    text: record["mkmc"],
+                    pid: record["fmkid"],
+                    data: record,
+                    state: "open",
+                    url: record["url"],
+                    children: [],
+                    iconCls: map[record["mkid"]]
+                };
+                if ( data.url == ""  ){
+                    data["state"] = "closed";
+                }
+                datas.push(data);
+                hash[data["id"]] = data;
+            });
+            $.each(datas, function (i, data) {
+                var hashVP = hash[data["pid"]];
+                if (hashVP) {
+                    !hashVP["children"] && (hashVP["children"] = []);
+                    hashVP["children"].push(data);
+                } else {
+                    treeData.push(data);
+                }
+            });
+
+            var allPanel = $("#RightAccordion").iAccordion('panels');
+            var size = allPanel.length;
+            if (size > 0) {
+                for (i = 0; i < size; i++) {
+                    var index = $("#RightAccordion").iAccordion('getPanelIndex', allPanel[i]);
+                    $("#RightAccordion").iAccordion('remove', 0);
+                }
+            }
+            $.each(treeData, function (i, e) {// 循环创建手风琴的项
+                var pid = e.pid;
+                var isSelected = i == 0 ? true : false;
+                $('#RightAccordion').iAccordion('add', {
+                    fit:false,
+                    title: e.text,
+                    content: "<ul id='tree" + e.id + "' ></ul>",
+                    border: false,
+                    /*selected: isSelected,*/
+                    selected:false,
+                    iconCls: e.iconCls
+                });
+                $.parser.parse();
+
+                var childrens =  e.children || [];
+                $("#tree" + e.id).tree({
+                    data: childrens,
+                    lines: false,
+                    animate: true,
+                    onBeforeExpand: function (node, param) {
+                        $("#tree" + e.id).tree('options').url = node.url;
+                    },
+                    onClick: function (node) {
+                        if (node.url) {
+                            addTab('tabs', node.text, node.url,node);
+                        } else {
+                            if (node.state == "closed") {
+                                $("#tree" + e.id).tree('expand', node.target);
+                            } else if (node.state == 'open') {
+                                $("#tree" + e.id).tree('collapse', node.target);
+                            }
+                        }
+                    }
+                });
+            });
+        /*待我处理*/
+
+        HTTP.post("wf/common/get/mywfawt",{},function (result) {
+            if(result['success']){
+                if(result['data']['records']&&result['data']['records'].length>0){
+                    $.each(result['data']['records'],function (i,record) {
+                        var nodeName=record['nodeName'];
+                        var href=record["href"]||'';
+                        var title=record["title"]||'';
+                        var person=record["preUserName"]||'';
+                        var time='';
+                        if(record["actionTime"]){
+                            time=new Date(record["actionTime"]).Format('yyyy-MM-dd hh:mm:ss');
+                        }
+                        var news=title+'<span style="color: #00bbee">  '+nodeName+'</span>  '+person;
+                        var li=' <li class="ewb-ideas-item clearfix">' +
+                            '<a href="#">'+news+'</a><font color="red"></font>' +
+                            ' <span class="ewb-date">'+time+'</span>' +
+                            ' </li>';
+                        $('#unsolved_work').find('.ewb-ideas-items').append(li);
+                    })
+                }
+                $('#unsolved_work').find('.ewb-add').text(result['data'].total);
+            }
+        });
+        /*我的事务*/
+        HTTP.post("wf/common/get/mywork",{},function (result) {
+            if(result['success']){
+                if(result['data']['records']&&result['data']['records'].length>0){
+                    $.each(result['data']['records'],function (i,record) {
+                        var nodeName=record['nodeName'];
+                        var href=record["href"]||'';
+                        var title=record["title"]||'';
+                        var person=record["preUserName"]||'';
+                        var time='';
+                        if(record["actionTime"]){
+                            time=new Date(record["actionTime"]).Format('yyyy-MM-dd hh:mm:ss');
+                        }
+                        var news=title+'<span style="color: #00bbee">  '+nodeName+'</span>  '+person;
+                        var li=' <li class="ewb-ideas-item clearfix">' +
+                            '<a href="#" target="_blank">'+news+'</a><font color="red"></font>' +
+                            ' <span class="ewb-date">'+time+'</span>' +
+                            ' </li>';
+                        $('#solved_work').find('.ewb-ideas-items').append(li);
+                    })
+                }
+                $('#solved_work').find('.ewb-add').text(result['data'].total);
+            }
+        });
+        var lis=$('.item_container').find('li a');
+        for(var i=0;i<lis.length;i++){
+            lis[i].onmouseover=function(){
+                tips.innerHTML=this.innerText;
+                tips.style.display="block";
+                tips.style.left=$(this).offset().left+"px";
+                tips.style.top=$(this).offset().top-this.offsetHeight-60+"px";
+            }
+            lis[i].onmouseout=function(){
+                tips.style.display="none";
+            }
+        }
+    });
+
+        $('.aliyun-common-search-input-elem').unbind().bind('keyup',function (event) {
+            var searchText=$(this).val();
+            $('.aliyun-common-search-dropdown').addClass('open');
+            $('.dropdown-list').html('');
+            $('dropdown-list').css('z-index','999999');
+            $.each(navbarQuerms,function (i,title) {
+                if(searchText == "" || title['mkmc'].indexOf(searchText) != -1){
+                    var li=$('<li><a>'+title['mkmc']+'</a></li>');
+                    $(li).data('data',title);
+                    $('.dropdown-list').append(li);
+                }
+            });
+            event.stopPropagation();
+            $('.dropdown-list').find('a').each(function (e) {
+                $(this).click(function (e) {
+                    event.stopPropagation();
+                    var node=$(this).closest('li').data('data');
+                    var text=$(this).text();
+                    $('.aliyun-common-search-input-elem').val(text);
+                    addTab('tabs', node.mkmc, node.url,node);
+                    $('.aliyun-common-search-dropdown').removeClass('open');
+                })
+            })
+        });
+        $(".aliyun-common-search-container").on("focus", "input", function(){
+            $('.aliyun-common-search-dropdown').addClass('open');
+            $('.aliyun-common-search-input-elem').keyup();
+        }).on("blur","input",function(){
+           /* $('.aliyun-common-search-dropdown').removeClass('open');*/
+        });
+        $('#su').unbind().bind('click',function () {
+            $('.aliyun-common-search-input-elem').keyup();
+        });
+        $(document).click(function(){
+            $('.aliyun-common-search-dropdown').removeClass('open');
+        });
+        $(".aliyun-common-search-container").click(function(event){
+            event.stopPropagation();
+        });
+
+    });
+
+    function addTab(tabsId, title, url,data) {
+        var $tabs = $('#' + tabsId);
+        if(url){
+          if(url.substr(0,1)=="/"){
+              url=url.substr(1,url.length-1)
+          }
+        }
+        if($tabs.iTabs('exists', title)) {
+            $tabs.iTabs('select', title);
+        }else{
+            $tabs.iTabs('add', {
+                title: title,
+                data:data,
+                href: url,
+                closable: true,
+            })
+        }
+
+    }
+    //刷新当前标签Tabs
+    function RefreshTab(tabsId,currentTab) {
+        var $tabs = $('#' + tabsId);
+        var url = $(currentTab.panel('options')).attr('href');
+        $tabs.tabs('update', {
+            tab: currentTab,
+            options: {
+                href: url
+            }
+        });
+        currentTab.panel('refresh');
+    }
+    function myBrowser(){
+        var userAgent = navigator.userAgent;
+        var isOpera = userAgent.indexOf("Opera") > -1;
+        var isIE = userAgent.indexOf("compatible") > -1 && userAgent.indexOf("MSIE") > -1 && !isOpera;
+        var isFF = userAgent.indexOf("Firefox") > -1;
+        var isSafari = userAgent.indexOf("Safari") > -1;
+        if (userAgent.indexOf("Chrome") > -1){return "Chrome";}
+        if (isIE) {
+            var IE5 = IE55 = IE6 = IE7 = IE8 = false;
+            var reIE = new RegExp("MSIE (\\d+\\.\\d+);");
+            reIE.test(userAgent);
+            var fIEVersion = parseFloat(RegExp["$1"]);
+            IE55 = fIEVersion == 5.5;
+            IE6 = fIEVersion == 6.0;
+            IE7 = fIEVersion == 7.0;
+            IE8 = fIEVersion == 8.0;
+            if (IE55) {return "I";}
+            if (IE6) {return "I";}
+            if (IE7) {return "I";}
+            if (IE8) {return "I";}
+        }
+    }
+    function nav_bar() {
+        $('.nav-tabs').find('li').each(function () {
+            $(this).click(function () {
+                var index=$(this).index();
+                $('.nav-tabs').find('li').removeClass('active');
+                $(this).addClass('active');
+                $('.home-section-consume').css('display','none');
+                $('.home-section-consume').eq(index).css('display','block');
+            })
+        })
+    }
+</script>
+
+
+
+
+</html>

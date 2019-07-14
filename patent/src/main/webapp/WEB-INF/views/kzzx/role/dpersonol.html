@@ -1,0 +1,32 @@
+<div class="gui-fluid editTable" style="margin: 20px auto 20px">
+    <input type="hidden"  name="id">
+    <div id="deleteRoleTree"></div>
+
+</div>
+<script>
+    $(function(){
+        var roleid=$("#kzzxRoleTable").iDatagrid("getSelected")['roleid'];
+        HTTP.post("kzzx/userroles/query/user", {roleid: roleid}, function (result) {
+            if (result["success"] == true) {
+                var reords = result.data.records;
+                var data = [];
+                $.each(reords, function (i, record) {
+                    var node = {
+                        id: record["userid"],
+                        text: record["username"]
+                    };
+                    if (record["associate"] && record["associate"] == 'Y') {
+                        node["checked"] = true;
+                    }
+                    data.push(node);
+                });
+
+                $('#deleteRoleTree').tree({
+                    data: data,
+                    checkbox: true
+                });
+            }})
+    })
+
+
+</script>

@@ -1,0 +1,260 @@
+<div class="gui-fluid editTable">
+    <input type="hidden"  name="flag">
+    <input type="hidden"  name="id" >
+	<div class="gui-row" style="width: 33%; display: inline-block">
+        <div class="gui-col-sm12">
+            <label class="gui-form-label" for="">编码：</label>
+            <div class="gui-input-block">
+                <input type="text" name="ztid" data-toggle="gui-textbox" data-options="" style="width: 100%">
+            </div>
+        </div>
+    </div>
+	<div class="gui-row" style="width: 33%; display: inline-block">
+        <div class="gui-col-sm12">
+            <label class="gui-form-label" for="">名称：</label>
+            <div class="gui-input-block">
+                <input type="text" name="ztmc" data-toggle="gui-textbox" data-options="required:true" style="width: 100%">
+            </div>
+        </div>
+    </div>
+	<div class="gui-row" style="width: 33%; display: inline-block">
+        <div class="gui-col-sm12">
+            <label class="gui-form-label" for="">图表类型：</label>
+            <div class="gui-input-block">
+                <input type="text" name="charttype" data-toggle="gui-textbox" data-options="required:true" style="width: 100%">
+            </div>
+        </div>
+    </div>
+	<div class="gui-row" style="width: 33%; display: inline-block">
+        <div class="gui-col-sm12">
+            <label class="gui-form-label" for="">时间范围：</label>
+            <div class="gui-input-block">
+                <input type="text" name="timespan" data-toggle="gui-textbox" data-options="required:true" style="width: 100%">
+            </div>
+        </div>
+    </div>
+	<div class="gui-row" style="width: 33%; display: inline-block">
+        <div class="gui-col-sm12">
+            <label class="gui-form-label" for="">采样间隔：</label>
+            <div class="gui-input-block">
+                <input type="text" name="interval" data-toggle="gui-textbox" data-options="required:true" style="width: 100%">
+            </div>
+        </div>
+    </div>
+    <table id="trendQstRealTimetable" data-options="dgid:'QSZTMX'"></table>
+</div>
+<script>
+    $(function () {
+            var $dialog=$('#trendQstEdit');
+
+            var $fieldView=$('#trendQstEdit').find('#trendQstRealTimetable');
+            
+            //图表类型初始化
+            $('#trendQstEdit').find('input[name="charttype"]').iCombobox({
+                    valueField: 'value', textField: 'text',
+                    data:[
+                        {value:"line", text:"折线图"},
+                        {value:"bar", text:"柱状图"}
+                    ]});
+           	//采样频率
+            $('#trendQstEdit').find('input[name="interval"]').iCombobox({valueField: 'value', textField: 'text',
+				data:[{value:"5", text:"5秒"}, 
+					  {value:"10", text:"10秒"},
+					  {value:"30", text:"30秒"},
+					  {value:"60", text:"1分钟"},
+					  {value:"300", text:"5分钟"},
+					  {value:"900", text:"15分钟"},
+					  {value:"1800", text:"30分钟"},
+					  {value:"3600", text:"1小时"},
+					  {value:"7200", text:"2小时"}
+				     ]
+            });
+           	
+            $('#trendQstEdit').find('input[name="timespan"]').iCombobox({valueField: 'value', textField: 'text',
+				data:[{value:"1", text:"1天"}, 
+					  {value:"2", text:"2天"},
+					  {value:"7", text:"7天"},
+					  {value:"30", text:"30天"},
+					  {value:"60", text:"60天"}
+				     ]
+            });
+               
+            var columns=[
+              /*  {title: "序号", field: "xh", fieldType:"ftInteger", index: 1, width: 60, hidden:false},*/
+                {title: "指标", field: "metric", fieldType:"ftString", index: 2, width: 360, hidden:false,editor:{type:"textbox"}},
+                {title: "指标名称", field: "name", fieldType:"ftString", index: 3, width: 240, hidden:false,editor:{type:"textbox"}},
+                {title: "分组名称", field: "group", fieldType:"ftString", index: 6, width: 140, hidden:false,editor:{type:"textbox"}},
+                {title: "标签", field: "tag", fieldType:"ftString", index: 6, width: 200, hidden:false,editor:{type:"textbox"}},
+                {title: "指标数据单位", field: "unit", fieldType:"ftString", index: 4, width: 100, hidden:false},
+                {title: "颜色", field: "color", fieldType:"ftString", index: 5, width: 64, hidden:false}
+            ];
+            $fieldView.edatagrid(
+                {
+                pagination: false,
+                columns: [columns],
+                height: 360,
+                rownumbers: true,
+                autoSave: true,
+                toolbar: [{
+                    iconCls: 'fa fa-plus',
+                    text: '添加',
+                    handler: function () {
+                        var row = $fieldView.edatagrid('getRows');
+                        var xh = 1;
+                        if (row.length) xh = row.length + 1;
+                        $fieldView.edatagrid('insertRow', {
+                            row: {xh: xh, flag: 'I'}
+                        });
+                        $fieldView.edatagrid("selectRow", row.length - 1);
+                        $fieldView.edatagrid("editRow", row.length - 1)
+                    }
+                },{
+                    iconCls: 'fa fa-plus',
+                    text: '选择指标',
+                    handler: function () {
+                        gjDialogQst('xjzb',{callback:function (row) {
+                            $.each(row,function (i,r) {
+                                r["flag"] = "I";
+                                r["id"] = "";
+
+                                var xh = 1;
+                                var row = $fieldView.edatagrid('getRows');
+                                if ( !!row && row.length) xh = row.length + 1;
+                                r["xh"] = xh;
+
+                                $fieldView.edatagrid("appendRow",r);
+                            })
+                            }})
+                    }
+                },{
+                    iconCls: 'fa fa-trash',
+                    text: '删除',
+                    handler: function () {
+                        var cols = $fieldView.edatagrid('getRows');
+                        var aa = [];
+                        var selectrow = $fieldView.edatagrid('getSelected');
+                        if (selectrow == null) {
+                            return false;
+                        }
+                        var delIndex = $fieldView.edatagrid('getRowIndex', selectrow);
+                        $.each(cols, function (i, col) {
+                            if (i == delIndex) {
+                                if (cols[i]["flag"] != null && cols[i]["flag"] == 'I') {
+                                } else {
+                                    cols[i]['flag'] = 'D';
+                                    aa.push(col);
+                                }
+                            }
+                        });
+                        $fieldView.datagrid('deleteRow', delIndex);
+                        if ($fieldView.data("mxData")) {
+                            var bb = $fieldView.data("mxData");
+                            $.each(aa, function (i, item) {
+                                bb.push(item);
+                            });
+                            $fieldView.data("mxData", bb);
+                        } else {
+                            $fieldView.data("mxData", aa);
+                        }
+
+                        $.each(cols, function (index, col) {
+                            $fieldView.datagrid('updateRow', {
+                                index: index,
+                                row: {
+                                    xh: index + 1
+                                }
+                            });
+                        })
+                    }
+                }]
+            });
+           if($dialog.attr("tag")!="add"){
+        	   HTTP.post("trend/qsztmx/query",{mid:$('#trendQst').find('.toolbar-table').datagrid("getSelected")["id"]},function (result) {
+                   if(result["success"]){
+                       $fieldView.edatagrid("loadData",result["data"]["records"]);
+                   }
+               });
+           }
+         
+        function gjDialogQst(ele,options) {
+            var content_html =
+                '<div style="overflow: hidden;position: relative">' +
+                '<div class="" style="width: 100%;margin: 10px">' +
+                '<label style="display: inline-block;margin-right: 6px" >搜索条件</label><input type="text" class="keyword" data-toggle="gui-textbox" placeholder="" style="height: 30px;line-height: 30px;margin-left: 10px;padding-left: 10px">' +
+                '<span class="auxiliary-icon fa fa-search"></span></div>' +
+                '</div>'+
+                '<div style="width:100%;overflow: auto"><table class="dat_table" style="height:398px"></table></div>';
+            $('<div id="'+ele+'" style="position:relative">').iDialog({
+                width:800,
+                height:600,
+                title:"选择指标",
+                buttons: [
+                    {text: '确定', iconCls: 'fa fa-save', btnCls: 'gui-btn',
+                        handler: function () {
+                            var selectedRow = $("#"+ele).find(".dat_table").datagrid("getSelections");
+                            options.callback(selectedRow);
+                            $("#"+ele).form("clear");
+                            $("#"+ele).iDialog("destroy");
+                        }
+                    }],
+                onOpen: function () {
+                    var layero=$("#"+ele).append(content_html);
+                    layero.find('.keyword').iTextbox({
+                        width:'90%',
+                        inputEvents: $.extend({}, $.fn.textbox.defaults.inputEvents, {
+                            keyup: function (event) {
+                                event.stopPropagation();
+                                if (event.keyCode === 13) {
+                                    var keyword=layero.find('.keyword').iTextbox('getValue');
+                                    HTTP.post("kzzx/ele/select",{id:result["data"]["id"],condition:keyword},function (result) {
+                                        if(result['success']){
+                                            layero.find('.dat_table').datagrid('loadData',result['data']['records']);
+                                        }
+                                    })
+                                }}})
+                    });
+
+                    layero.find(".dat_table").datagrid({
+                        singleSelect:false,
+                         columns:[[
+                        {title: "指标", field: "metric", fieldType:"ftString", width: 200, hidden:false},
+                        {title: "名称", field: "name", fieldType:"ftString", width: 200, hidden:false},
+                        {title: "单位", field: "unit", fieldType:"ftString", width: 140, hidden:false},
+                        {title: "所属采集区", field: "aeraid", fieldType:"ftString", width: 160, hidden:true},
+                        {title: "所属采集区", field: "areaname", fieldType:"ftString", width: 160, hidden:false},
+                        {title: "备注", field: "bz", fieldType:"ftString", width: 300, hidden:false},
+                        {title: "维护人", field: "whr", fieldType:"ftString", width: 240, hidden:true},
+                        {title: "维护时间", field: "whsj", fieldType:"ftDateTime", width: 180, hidden:true}
+                    ]],
+                        rownumbers:true,
+                        height:459,
+                        columnFormatter: xFormatter,
+                    });
+                    var keyword=layero.find('.keyword').iTextbox('getValue');
+                    HTTP.post("metric/metrics/query",{condition:keyword},function (result) {
+                        if(result['success']){
+                            layero.find('.dat_table').datagrid('loadData',result['data']['records']);
+                        }
+                    });
+                    layero.find('.auxiliary-icon').unbind().bind('click',function() {
+                        var keyword=layero.find('.keyword').iTextbox('getValue');
+                        HTTP.post("metric/metrics/query",{condition:keyword},function (result) {
+                            if(result['success']){
+                                layero.find('.dat_table').datagrid('loadData',result['data']['records']);
+                            }
+                        })
+
+                    });
+
+
+                },
+                onClose: function () {
+                    $(this).form("clear");
+                    $(this).iDialog('destroy');
+                }
+            });
+            $("#"+ele).iDialog("open");
+        }
+    })
+
+</script>

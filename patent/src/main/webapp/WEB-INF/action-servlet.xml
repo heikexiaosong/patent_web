@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:beans="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:task="http://www.springframework.org/schema/task"
+       xsi:schemaLocation="
+            http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+            http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+            http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd">
+
+    <import resource="applicationContext-aop.xml" />
+
+    <!-- 启用SpringMVC的注解功能,它会自动注册HandlerMapping、HandlerAdapter、ExceptionResolver的相关实例 -->
+    <mvc:annotation-driven />
+
+    <task:annotation-driven/>
+
+    <!-- 由于web.xml中设置是：由SpringMVC拦截所有请求,于是在读取静态资源文件的时候就会受到影响(说白了就是读不到) -->
+    <!-- 经过下面的配置，该标签的作用就是：所有页面中引用"/js/**"的资源，都会从"/resources/js/"里面进行查找 -->
+    <!-- 我们可以访问http://IP:8080/xxx/js/my.css和http://IP:8080/xxx/resources/js/my.css对比出来 -->
+    <!-- <mvc:resources mapping="/js/**" location="/js/"/>
+    <mvc:resources mapping="/css/**" location="/css/"/> -->
+    <mvc:resources mapping="/easyui/**" location="/easyui/"/>
+    <mvc:resources mapping="/kindeditor/**" location="/kindeditor/"/>
+    <mvc:resources mapping="/thirdparty/**" location="/thirdparty/"/>
+    <mvc:resources mapping="/css/**" location="/css/"/>
+    <mvc:resources mapping="/js/**" location="/js/"/>
+    <mvc:resources mapping="/WEB-INF/**" location="/WEB-INF/"/>
+    <mvc:resources mapping="/goolflow/**" location="/goolflow/"/>
+    <mvc:resources mapping="/layui/**" location="/layui/"/>
+    <mvc:resources mapping="/GUI/**" location="/GUI/"/>
+    <mvc:resources mapping="/mock/**" location="/mock/"/>
+    <mvc:resources mapping="/img/**" location="/img/"/>
+
+    <!-- 注解扫描 @Service -->
+    <context:component-scan base-package="com.gavel.*" />
+
+
+    <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+        <property name="messageConverters">
+            <list>
+                <bean class="com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter4" />
+            </list>
+        </property>
+    </bean>
+
+    <mvc:annotation-driven>
+        <mvc:message-converters>
+            <ref bean="fastJsonHttpMessageConverter" />
+        </mvc:message-converters>
+    </mvc:annotation-driven>
+
+    <bean id="fastJsonHttpMessageConverter" class="com.gavel.common.converter.json.Fastjson2HttpMessageConverter">
+        <property name="supportedMediaTypes">
+            <list>
+                <value>application/json;charset=UTF-8</value>
+                <value>text/html;charset=UTF-8</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
+    <!--  视图解析器 -->
+    <beans:bean class="com.gavel.framework.resolver.GavelViewResolver">
+        <beans:property name="prefix" value="/WEB-INF/views/" />
+        <beans:property name="suffix" value=".html" />
+        <beans:property name="order" value="1" />
+    </beans:bean>
+
+    <beans:bean class="com.gavel.framework.resolver.view.GavelView" >
+        <beans:property name="url" value="" />
+        <beans:property name="template" value="/WEB-INF/views/template.html" />
+    </beans:bean>
+
+
+    <!-- FreeMarker环境配置 -->
+    <beans:bean id="freemarkerConfig" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
+        <!-- freemarker模板位置 -->
+        <beans:property name="templateLoaderPath" value="/WEB-INF/freemarker/"/>
+
+        <beans:property name="freemarkerSettings">
+            <beans:props>
+                <beans:prop key="defaultEncoding">UTF-8</beans:prop>
+            </beans:props>
+        </beans:property>
+    </beans:bean>
+
+    <!-- FreeMarker视图解析 -->
+    <beans:bean id="freeMarkerViewResolver" class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
+        <beans:property name="cache" value="true"/>
+        <beans:property name="suffix" value=".ftl"/>
+        <beans:property name="order" value="0" />
+        <beans:property name="contentType" value="text/html;charset=UTF-8" />
+    </beans:bean>
+
+    <!-- 支持上传文件 -->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"/>
+
+    <!-- 初始化job -->
+    <bean id="timerJobInit" class="com.gavel.timer.scheduler.TimerJobInit"  init-method="init"  lazy-init="false" />
+
+    <bean id="timerJobFactory" class="com.gavel.timer.scheduler.TimerJobFactory"/>
+
+    <!-- 关闭服务器的时候，等待quartz结束所有工作 -->
+    <bean id="schedulerFactoryBean" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name = "jobFactory" ref="timerJobFactory"/>
+        <property name="waitForJobsToCompleteOnShutdown" value="true"/>
+    </bean>
+
+</beans>

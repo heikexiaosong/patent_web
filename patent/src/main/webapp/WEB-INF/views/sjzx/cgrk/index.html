@@ -1,0 +1,60 @@
+<div id="nyglCgrk" class="gui-div">
+	<table  class="toolbar-table" data-options="id: 'nyglCgrkTable',herf:'kzzx/gridset/query'" >
+	</table>
+	
+	<!-- 表格工具栏开始 -->
+	<div id="nyglCgrkTable-toolbar" class="gui-toolbar"
+	     data-options="grid:{
+	           type:'datagrid',
+	           id:'nyglCgrkTable'
+	       }">
+	    <a class="toolbar-reload toolbar"  href="javascript:void(0)" style="display: none"></a>
+	    <a class="toolbar-print toolbar"  href="javascript:void(0)"></a>
+	    <a class="toolbar-export toolbar"  href="javascript:void(0)"></a>
+	    <a class="toolbar-review toolbar" href="javascript:void(0)"></a>
+	    <a class="toolbar-add toolbar" href="javascript:void(0)"></a>
+	    <a class="toolbar-copy toolbar" href="javascript:void(0)"></a>
+	    <a class="toolbar-edit toolbar" href="javascript:void(0)"></a>
+	    <a class="toolbar-delete toolbar" href="javascript:void(0)"></a>
+	    <a type="submit" class="btn btn-primary serach toolbar-search"></a>
+	    <div class="bdsug" style="height: auto; display: none" >
+	        <form action="" class="query-criteria">
+	            <ul><li class="bdsug-store bdsug-overflow">
+	            </li></ul>
+	        </form>
+	    </div>
+	</div>
+</div>
+<!-- 表格工具栏结束 -->
+<script>
+    /*js初始化*/
+    $(function () {
+    	var $div=$('#nyglCgrk');
+        var options={
+            url:'nygl/cgrk',
+            queryParams:{
+            },
+            columns:[[
+                {title: "ID", field: "id", fieldType:"ftString", index: 0, width: 256, hidden:false},
+                {title: "日期", field: "date", fieldType:"ftDateTime", index: 1, width: 80, hidden:false},
+                {title: "物料编码", field: "flid", fieldType:"ftString", index: 2, width: 320, hidden:false},
+                {title: "数量", field: "sl", fieldType:"ftFloat", index: 3, width: 80, hidden:false},
+                {title: "价格", field: "jg", fieldType:"ftFloat", index: 4, width: 80, hidden:false},
+                {title: "金额", field: "je", fieldType:"ftFloat", index: 5, width: 80, hidden:false},
+                {title: "创建人", field: "cjr", fieldType:"ftString", index: 6, width: 240, hidden:false},
+                {title: "创建时间", field: "cjsj", fieldType:"ftDateTime", index: 7, width: 80, hidden:false},
+                {title: "维护人", field: "whr", fieldType:"ftString", index: 8, width: 240, hidden:false},
+                {title: "维护时间", field: "whsj", fieldType:"ftDateTime", index: 9, width: 80, hidden:false},
+            ]],
+            dialog:{
+                id:'nyglCgrkEdit',
+                width: 900,
+                height: 506,
+                href:'nygl/cgrk/edit'
+            }
+        };
+        $div.Container(options); 
+    });
+
+
+</script>

@@ -1,0 +1,75 @@
+<div class="gui-fluid editTable">
+    <input type="hidden"  name="flag">
+    <input type="hidden"  name="id" >
+    <div class="gui-row">
+        <div class="gui-col-sm12">
+            <label class="gui-form-label" for="">工厂：</label>
+            <div class="gui-input-block">
+                <input type="text" name="gcid" data-toggle="gui-combobox"" data-options="required:true" style="width: 100%">
+            </div>
+        </div>
+    </div>
+	<div class="gui-row" >
+        <div class="gui-col-sm12">
+            <label class="gui-form-label" for="">产品结构号：</label>
+            <div class="gui-input-block">
+                <input type="text" name="bomid" data-toggle="gui-textbox" data-options="required:true" style="width: 100%">
+            </div>
+        </div>
+    </div>
+	<div class="gui-row">
+        <div class="gui-col-sm12">
+            <label class="gui-form-label" for="">物料：</label>
+            <div class="gui-input-block">
+                <input type="text" name="wlid" data-toggle="gui-textbox" data-options="required:true" style="width: 100%">
+            </div>
+        </div>
+    </div>
+	<div class="gui-row">
+        <div class="gui-col-sm12">
+            <label class="gui-form-label" for="">备注：</label>
+            <div class="gui-input-block">
+                <input type="text" name="bz" data-toggle="gui-textbox" data-options="" style="width: 100%">
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        var $dialog=$('#sjzxBomEdit');
+        //初始化物料
+        Auxiliary.box($dialog.find('input[name="wlid"]'),{
+            code:'WLID',
+            callback:function (row,field) {
+                var value = row[field];
+                var text = "";
+                if(row) $dialog.find('input[textboxname="wlid"]').iTextbox("setValue",value);
+                HTTP.post("sjcj/wlxx/query",{wlid:value},function (result) {
+                    if(result["success"]){
+                        text=result["data"]["records"][0]["wlmc"];
+                        $dialog.find('input[textboxname="wlid"]').iTextbox("setText",text);
+                    }
+                });
+            }
+        });
+        
+      //初始化产品结构号
+        Auxiliary.box($dialog.find('input[name="bomid"]'),{
+            code:'WLID',
+            callback:function (row,field) {
+                var value = row[field];
+                var text = "";
+                if(row) $dialog.find('input[textboxname="bomid"]').iTextbox("setValue",value);
+                HTTP.post("sjcj/wlxx/query",{wlid:value},function (result) {
+                    if(result["success"]){
+                        text=result["data"]["records"][0]["wlmc"];
+                        $dialog.find('input[textboxname="bomid"]').iTextbox("setText",text);
+                    }
+                });
+            }
+        });
+      
+        ComboboBox.init($dialog.find('input[name="gcid"]'), {url: 'sjzx/gc/query', valueField: 'gcid', textField: 'gcmc', allowNull: false});
+    })
+
+</script>

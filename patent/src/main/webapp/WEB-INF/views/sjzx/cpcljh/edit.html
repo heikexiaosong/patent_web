@@ -1,0 +1,62 @@
+<div class="gui-fluid editTable">
+    <input type="hidden"  name="flag">
+    <input type="hidden"  name="id" >
+    <div class="gui-row" style="width: 100%; display: inline-block">
+        <div class="gui-col-sm12">
+            <label class="gui-form-label" for="">年度：</label>
+            <div class="gui-input-block">
+                <input type="text" name="year"  style="width: 100%">
+            </div>
+        </div>
+    </div>
+    <div class="gui-row" style="width: 100%; display: inline-block">
+        <div class="gui-col-sm12">
+            <label class="gui-form-label" for="">月度：</label>
+            <div class="gui-input-block">
+                <input type="text" name="month" style="width: 100%">
+            </div>
+        </div>
+    </div>
+    <div class="gui-row" style="width: 100%; display: inline-block">
+        <div class="gui-col-sm12">
+            <label class="gui-form-label" for="">物料编码：</label>
+            <div class="gui-input-block">
+                <input type="text" name="wlid" data-toggle="gui-textbox" data-title="wlmc" data-options="required:true" style="width: 100%">
+                <input type="hidden" name="wlmc">
+            </div>
+        </div>
+    </div>
+    <div class="gui-row" style="width: 100%; display: inline-block">
+        <div class="gui-col-sm12">
+            <label class="gui-form-label" for="">计划数量：</label>
+            <div class="gui-input-block">
+                <input type="text" name="jhsl" data-options="min:0,precision:3" data-toggle="gui-numberbox" style="width: 100%">
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        var $dialog=$('#sjcjCpcljhEdit');
+        var selectRow=$('#sjcjCpcljh').find('.toolbar-table').datagrid("getSelected");
+        var year=createYear("2018","2100");
+        var mouth=createYear("1","12");
+        $dialog.find("input[name=year]").iCombobox({valueField:'value',textField:'text',data:year,panelHeight:224});
+        $dialog.find("input[name=month]").iCombobox({valueField:'value',textField:'text',data:mouth});
+        Auxiliary.box($dialog.find('input[name="wlid"]'),{
+            code:'WLID',
+            callback:function (row,field) {
+                var value = row[field];
+                var text = "";
+                if(row) $dialog.find('input[textboxname="wlid"]').iTextbox("setValue",value);
+                HTTP.post("sjcj/wlxx/query",{wlid:value},function (result) {
+                    if(result["success"]){
+                        text=result["data"]["records"][0]["wlmc"];
+                        $dialog.find('input[textboxname="wlid"]').iTextbox("setText",text);
+                    }
+                });
+            }
+        });
+    })
+
+</script>

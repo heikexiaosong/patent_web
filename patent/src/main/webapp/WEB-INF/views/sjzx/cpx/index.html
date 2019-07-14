@@ -1,0 +1,55 @@
+<div id="nyglCpx" class="gui-div">
+	<table  class="toolbar-table" data-options="id: 'nyglCpxTable',herf:'kzzx/gridset/query'" >
+	</table>
+	
+	<!-- 表格工具栏开始 -->
+	<div id="nyglCpxTable-toolbar" class="gui-toolbar"
+	     data-options="grid:{
+	           type:'datagrid',
+	           id:'nyglCpxTable'
+	       }">
+	    <a class="toolbar-reload toolbar"  href="javascript:void(0)" style="display: none"></a>
+	    <a class="toolbar-review toolbar" href="javascript:void(0)"></a>
+	    <a class="toolbar-add toolbar" href="javascript:void(0)"></a>
+	    <a class="toolbar-copy toolbar" href="javascript:void(0)"></a>
+	    <a class="toolbar-edit toolbar" href="javascript:void(0)"></a>
+	    <a class="toolbar-delete toolbar" href="javascript:void(0)"></a>
+	  <!--  <a type="submit" class="btn btn-primary serach toolbar-search"></a>
+	    <div class="bdsug" style="height: auto; display: none" >
+	        <form action="" class="query-criteria">
+	            <ul><li class="bdsug-store bdsug-overflow">
+	            </li></ul>
+	        </form>
+	    </div>-->
+	</div>
+</div>
+<!-- 表格工具栏结束 -->
+<script>
+    /*js初始化*/
+    $(function () {
+    	var $div=$('#nyglCpx');
+        var options={
+            url:'sjzx/cpx',
+            queryParams:{
+            },
+            columns:[[
+                {title: "工厂", field: "gcid", fieldType:"ftString", index: 0, width: 140, hidden:true},
+                {title: "工厂", field: "gcmc", fieldType:"ftString", index: 2, width: 140, hidden:false},
+                {title: "产品线编码", field: "cpxid", fieldType:"ftString", index: 4, width: 140, hidden:false},
+                {title: "产品线名称", field: "cpxmc", fieldType:"ftString", index: 6, width: 140, hidden:false},
+                {title: "备注", field: "bz", fieldType:"ftString", index: 8, width: 240, hidden:false},
+                {title: "维护人", field: "whr", fieldType:"ftString", index: 10, width: 240, hidden:false},
+                {title: "维护时间", field: "whsj", fieldType:"ftDateTime", index: 12, width: 140, hidden:false}
+            ]],
+            dialog:{
+                id:'nyglCpxEdit',
+                width: 600,
+                height:360,
+                href:'sjzx/cpx/edit'
+            }
+        };
+        $div.Container(options); 
+    });
+
+
+</script>

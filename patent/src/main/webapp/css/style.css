@@ -1,0 +1,127 @@
+.navbar_header{
+    position: absolute;
+    top: 25px;
+    right: 270px;
+    white-space: nowrap;
+    color: #00bbee;
+    font-family: "微软雅黑","Tahoma","Verdna";
+    font-size: 14px;
+}
+.navbar_header span{
+    position: relative;
+    top: -10px;
+}
+.navbar_header_lis{
+    position: absolute;
+    right: 40px;
+    bottom: 13px;
+
+}
+.navbar_header_lis li{
+    list-style: none;
+    display: inline-block;
+    padding: 0 8px;
+    border-left: 1px solid #1b597e;
+}
+.navbar_header_lis li:nth-child(1){
+    border-left: 0px solid #b3dfda;
+}
+.navbar_header_lis li a{
+    text-decoration: none;
+    color:#87bd3e;
+    font-size: 12px;
+    font-weight: bold;
+}
+.navbar_header_lis li a:hover{
+    text-decoration: underline;
+    color: white;
+}
+
+.west_title{
+    position: absolute;
+    left:20px;
+    top: 50%;
+    margin-top: -10px;
+    font-size: 18px;
+    color:white;
+}
+
+#accordion-menu .panel-title {
+    font-size: 14px;
+}
+
+#west_navbar ul li{
+    vertical-align: middle;
+    padding-top: 7px;
+}
+#west_navbar .tree-title{
+    font-family: "微软雅黑", "Tahoma", "Verdana";
+    font-size: 14px;
+    /*padding: 4px 2px;*/
+}
+#west_navbar .tree-file{
+    background:url("../img/file(1).png") center no-repeat;
+
+}
+#west_navbar .west_content li{
+    padding: 2px;
+}
+#west_navbar .tree-folder-open{
+    background: url("../img/jia2.png") no-repeat;
+    background-size: 14px 14px;
+}
+ .tree-folder{
+    background: url("../img/jia1.png") no-repeat;
+    background-size: 14px 14px;
+}
+#west_navbar .tree-title{
+   height: 100%;
+}
+#_easyui_tree_1:hover{
+    background: white;
+}
+#_easyui_tree_9:hover{
+    background: white;
+}
+
+.l-btn-plain:hover {
+    border-radius: 0;
+}
+.singleTableForm{
+    /*margin-top: 16px;*/
+    /*padding-bottom: 32px;*/
+    /*border-bottom: 1px solid lightgrey;*/
+}
+
+
+.l-btn {
+    border-radius: 3px;
+}
+
+.l-btn-text {
+    line-height: 30px;
+}
+
+.dialog-button {
+    text-align: center;
+}
+
+.dialog-button .l-btn {
+    width: 70px;
+}
+
+.datagrid-header-row {
+     /*background: url("../css/icons/setting.png") no-repeat center center;*/
+}
+.show-btn-icon{
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    line-height: 16px;
+    /* position: absolute; */
+    /* top: 50%; */
+    /* margin-top: -8px; */
+    float: right;
+    font-size: 1px;
+}
+

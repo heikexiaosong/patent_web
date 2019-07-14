@@ -1,0 +1,154 @@
+<div data-toggle="gui-layout" data-options="fit:true" id="userMangement">
+    <div data-options="region:'west',title:'',split:true,border:false,iconCls:'fa fa-sitemap',
+    headerCls:'border_right',bodyCls:'border_right'" style="width: 60%;height: 500px">
+        <table id="ttRole" data-options="url:''">
+            <thead><tr><th data-options="field:'text',title:'权限菜单',width:100"></th></tr></thead>
+        </table>
+    </div>
+    <div data-options="region:'center',iconCls:'icon-reload',title:'',split:true,border:false,bodyCls:'border_left'">
+        <table id="roleDg"></table>
+    </div>
+</div>
+<!-- 表格工具栏开始 -->
+<div id="roleDg-toolbar" class="gui-toolbar"
+     data-options="grid:{
+           type:'datagrid',
+           id:'roleDg'
+       }">
+ <!--   <a href="javascript:void(0)"
+       data-toggle="gui-menubutton" onclick="Empowerment(this)"
+       data-options="event:'custom',btnCls: 'gui-btn',
+       iconCls:'fa fa-plus'">赋予授权</a>
+    <a href="javascript:void(0)"
+       data-toggle="gui-menubutton" onclick="CancelEmpowerment(this)"
+       data-options="event:'custom', btnCls:'gui-btn-danger',
+       iconCls:'fa fa-trash'">取消授权</a>-->
+</div>
+<!-- 表格工具栏结束 -->
+<script>
+$(function () {
+/*调用初始化*/
+    $(this).trigger(gui.eventType.initUI.base);
+    $(this).trigger(gui.eventType.initUI.base2);
+   $(this).trigger(gui.eventType.initUI.form);
+    $(this).trigger(gui.eventType.initUI.echarts);
+/*左侧treedatagrid*/
+    HTTP.post("kzzx/role/yhqx/operate", {roleid:$("#kzzxRoleTable").datagrid("getSelected")['roleid']}, function (result) {
+        if (result["success"] == true) {
+            var reords = result.data.records;
+            $.each(reords, function (i, record) {
+                record['id'] = record['mkid'];
+                record['text'] = record['mkmc'];
+                if (record["roleRight"] && record["roleRight"] == 'Y') {
+                    record["checked"] = true;
+                }
+                if (record["roleRight"] && record["roleRight"] == 'Y') {
+                    record["text"] = "<span>" + record["mkmc"] + "</span>";
+                    record["checked"] = true;
+                }
+            });
+
+
+            var rootNodes = transData(reords,'id','fmkid','children','roleRight');
+            $('#ttRole').iTreegrid({
+                checkbox:true,
+                data: rootNodes,
+                onClickRow: function (node) {
+                    $('#roleDg').iDatagrid("loadData", { total: 0, rows: [] });
+                    if(node['mkqxList']&&node['mkqxList'].length>0){
+                        $('#roleDg').iDatagrid({
+                            data:node['mkqxList'],
+                            rownumbers:false,
+                            pagination:false,
+                        })
+                    }
+
+                }
+
+            });
+//                $('#ttRole').iTreegrid('collapseAll');
+        }
+    });
+/*右侧treedatagrid*/
+$('#roleDg').iDatagrid({
+    id: 'roleDg',
+    rownumbers:false,
+    pagination:false,
+    columns:[[
+        {field:'czid',title:'编号',width:60,align:'center'},
+        {field:'czmc',title:'授权功能',width:100,align:'center'},
+        {field:'value',title:'授权状态',width:100,align:'center', formatter:function(value,row,index){
+            var map = {'Y': '已授权', 'N': "未授权"};
+            var text = map[value];
+            if (value == 'Y') {
+                return "<span style='color: green'>" + text + "</span>"
+            } else if (value == 'N') {
+                return "<span style='color: red'>" + text + "</span>";
+            } else {
+                return value;
+            }
+        }},
+        {field:'operate',title:'操作',width:200,align:'center', formatter:function(value,row,index){
+                return '<button class="layui-btn layui-btn-xs operate-btn" onclick="EmpowermentRole(this)">赋权</button>' +
+                    '<button class="layui-btn layui-btn-danger operate-btn" onclick="CancelEmpowermentRole(this)">取消</button>';
+            }}
+    ]]
+
+});
+/*构造children*/
+    function transData(a, idStr, pidStr, chindrenStr,role){
+        var r = [], hash = {}, id = idStr, pid = pidStr, children = chindrenStr, i = 0, j = 0, len = a.length;
+        for(; i < len; i++){
+            hash[a[i][id]] = a[i];
+        }
+        for(; j < len; j++){
+            var aVal = a[j], hashVP = hash[aVal[pid]];
+            if(hashVP){
+                if(hashVP[role]&&aVal[role]&&aVal[role]=='N'){
+                    hashVP[role] = 'N';
+                    hashVP["checked"] = false;
+                }
+                !hashVP[children] && (hashVP[children] = []);
+                hashVP[children].push(aVal);
+            }else{
+                r.push(aVal);
+            }
+        }
+        return r;
+    }
+})
+/*赋予授权*/
+    function EmpowermentRole(event) {
+       var selectedRow=$('#roleDg').iDatagrid('getSelected');
+        if (selectedRow==null ){
+            $.iMessager.alert('操作提示','请选择授权功能！','messager-warning');
+            return ;
+        }
+            var index= $('#roleDg').iDatagrid('getRowIndex', $('#roleDg').datagrid('getSelected'));
+            $('#roleDg').iDatagrid('updateRow',{
+                index: index,
+                row: {
+                 value:'Y'
+                }
+            });
+
+
+    }
+/*取消授权*/
+    function CancelEmpowermentRole(event) {
+    var selectedRow=$('#roleDg').iDatagrid('getSelected');
+    if (selectedRow==null ){
+        $.iMessager.alert('操作提示','请选择要取消授权功能！','messager-warning');
+        return ;
+    }
+    var index= $('#roleDg').iDatagrid('getRowIndex', $('#roleDg').datagrid('getSelected'));
+    $('#roleDg').iDatagrid('updateRow',{
+        index: index,
+        row: {
+            value:'N'
+        }
+    });
+
+
+}
+</script>

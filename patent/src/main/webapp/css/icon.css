@@ -1,0 +1,18 @@
+.icon-flag {
+    background:url('icons/flag.png') no-repeat center center;
+}
+.icon-preview {
+    background:url('icons/preview.png') no-repeat center center;
+}
+.icon-copy {
+    background:url('icons/copy.png') no-repeat center center;
+}
+.icon-submit {
+    background:url('icons/submit.png') no-repeat center center;
+}
+
+.icon-column-setting {
+    background: url('icons/flag.png') no-repeat center center;
+}
+
+a:focus {  outline:none;   -moz-outline:none;}

@@ -1,0 +1,75 @@
+<div class="gui-fluid editTable">
+    <input type="hidden"  name="flag">
+    <input type="hidden"  name="id" >
+	<div class="gui-row">
+        <div class="gui-col-sm12">
+            <label class="gui-form-label" for="">所属趋势主题：</label>
+            <div class="gui-input-block">
+                <input type="text" name="mid" data-toggle="gui-textbox" data-options="required:true" style="width: 100%">
+            </div>
+        </div>
+    </div>
+	<div class="gui-row">
+		<div class="gui-col-sm12">
+            <label class="gui-form-label" for="">指标：</label>
+            <div class="gui-input-block">
+                <input type="text" name="metric" data-toggle="gui-textbox" data-options="required:true" style="width: 100%">
+            </div>
+        </div>
+        <!-- <div class="gui-col-sm6">
+            <label class="gui-form-label" for="">序号：</label>
+            <div class="gui-input-block">
+                <input type="text" name="xh" data-toggle="gui-textbox" data-options="" style="width: 100%">
+            </div>
+        </div> -->
+    </div>
+    <div class="gui-row">
+   	    <div class="gui-col-sm12">
+            <label class="gui-form-label" for="">指标显示名称：</label>
+            <div class="gui-input-block">
+                <input type="text" name="name" data-toggle="gui-textbox" data-options="required:true" style="width: 100%">
+            </div>
+        </div>
+    </div>
+	<div class="gui-row">
+
+        <div class="gui-col-sm6">
+            <label class="gui-form-label" for="">颜色：</label>
+            <div class="gui-input-block">
+                <input type="text" name="color"  id="text-field" class="demo1 textbox" style="height: 30px;line-height: 30px;width: 100%" value="">
+            </div>
+        </div>
+    </div>
+
+</div>
+<script src="thirdparty/jQuery-minicolors/jquery.minicolors.js"></script>
+<link rel="stylesheet" href="thirdparty/jQuery-minicolors/jquery.minicolors.css"/>
+<script>
+    $(function () {
+        var $dialog=$('#trendQsztmxEdit');
+          ComboboBox.init($dialog.find('input[name="mid"]'), {url: 'trend/qszt/query', valueField: 'id', textField: 'ztmc', allowNull: true});
+          ComboboBox.init($dialog.find('input[name="metric"]'), {url: 'metric/metrics/query', valueField: 'metric', textField: 'name', allowNull: true});
+        var selectedRow=$('#trendQsztmx').find(".toolbar-table").datagrid("getSelected");
+        if($dialog.attr("tag")!="add"&&selectedRow){
+            $dialog.find("input[name='color']").val(selectedRow["color"]);
+        }
+        $(".demo1").minicolors({
+            control: $(this).attr('data-control') || 'hue',
+            defaultValue: $(this).attr('data-defaultValue') || '',
+            inline: $(this).attr('data-inline') === 'true',
+            letterCase: $(this).attr('data-letterCase') || 'lowercase',
+            opacity: $(this).attr('data-opacity'),
+            position: $(this).attr('data-position') || 'bottom left',
+            change: function(hex, opacity) {
+                var log;
+                try {
+                    log = hex ? hex : 'transparent';
+                    if( opacity ) log += ', ' + opacity;
+                    console.log(log);
+                } catch(e) {}
+            },
+            theme: 'default'
+        });
+    })
+
+</script>

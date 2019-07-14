@@ -1,0 +1,93 @@
+﻿<div id="kzzxOrg" class="gui-div">
+    <table class="toolbar-table" data-options="id: 'kzzxOrgTable',herf:'kzzx/gridset/query'"></table>
+    <div id="kzzxOrgTable-toolbar" class="gui-toolbar" data-options="grid:{type:'treegrid',id:'kzzxOrgTable',childId:'bmid',parentId:'shbmid',module:'kzzx/org/query'}">
+        <a class="toolbar-reload-org toolbar"  href="javascript:void(0)"></a>
+        <a class="toolbar-print toolbar"  href="javascript:void(0)"></a>
+        <a class="toolbar-export toolbar"  href="javascript:void(0)"></a>
+        <a class="toolbar-review toolbar" href="javascript:void(0)"></a>
+        <a class="toolbar-add toolbar" href="javascript:void(0)"></a>
+        <a class="toolbar-copy toolbar" href="javascript:void(0)"></a>
+        <a class="toolbar-edit toolbar" href="javascript:void(0)"></a>
+        <a class="toolbar-delete toolbar" href="javascript:void(0)"></a>
+        <a class="toolbar-run toolbar" href="javascript:void(0)"></a>
+    </div>
+</div>
+<script>
+    $(function () {
+        var $div=$('#kzzxOrg');
+        HTTP.post("kzzx/org/query", {}, function (result) {
+            if (result["success"] == true) {
+                var reords = result.data.records;
+                var rootNodes = transData(reords,'bmid','shbmid','children');
+                var options={
+                    url:'kzzx/org',
+                    treeOption:{
+                        data: rootNodes,
+                        idField:'bmid',
+                        treeField:'bmid',
+                        columns:[[
+                        	{title: "部门编码",  index: 2, field: "bmid", width: 100},
+                            {title: "部门名称",  index: 1, field: "bmmc", width: 80},
+                            {title: "上级部门", index: 3, field: "shbm", width: 40,hidden:true},
+                            {title: "上级部门",  index: 5, field: "shbmid", width: 160,hidden:true},
+                            {title: "负责人",  index: 4, field: "username", width: 40,},
+                            {title: "状态",  index:9, field: "tybz", width: 20},
+                            {title: "停用日期", index: 10, field: "tyrq", width:40,fieldType:'ftDate'},
+                            {title: "备注", index: 11, field: "bz", width: 100,},
+                            {title: "超级用户", index: 12, field: "superuser", width: 80,hidden:true},
+                            {title: "维护人编码",  index: 13, field: "whrid", width: 80,hidden:true},
+                            {title: "维护人",  index: 14, field: "whr", width: 40,},
+                            {title: "维护时间",  index: 15, field: "whsj", width: 60,fieldType:'ftDateTime'},
+                            {title: "创建人编码",  index: 16, field: "cjrid", width: 80,hidden:true},
+                            {title: "创建人",  index: 17, field: "cjr", width: 80,hidden:true},
+                            {title: "创建时间",  index: 18, field: "cjsj", width: 80,hidden:true,fieldType:'ftDateTime'}
+                        ]],
+                        rownumbers:true
+                    },
+                    dialog:{
+                        id:'kzzxOrgEdit',
+                        width: 1120,
+                        height: 630,
+                        href:'kzzx/org/edit'
+                    }
+                };
+                $div.Container(options);
+            }
+        });
+        $div.find('.toolbar-reload-org').iMenubutton({
+            text:'刷新',
+            iconCls:'fa fa-refresh',
+            onClick:menuReresh
+        })
+        function menuReresh() {
+            HTTP.post('kzzx/org/query',{},function (result){
+                if(result['success']&&result['data']){
+                    if(result['data']['records']&&result['data']['records'].length>0){
+                        var reords = result.data.records;
+                        var rows = transData(reords,'bmid','shbmid','children');
+                        var data = {total:rows.length,"rows": rows};
+                        $div.find('.toolbar-table').iTreegrid('loadData', data);
+                    }
+                }
+            });
+        }
+        function transData(a, idStr, pidStr, chindrenStr){
+            var r = [], hash = {}, id = idStr, pid = pidStr, children = chindrenStr, i = 0, j = 0, len = a.length;
+            for(; i < len; i++){
+                hash[a[i][id]] = a[i];
+            }
+            for(; j < len; j++){
+                var aVal = a[j], hashVP = hash[aVal[pid]];
+                if(hashVP){
+                    !hashVP[children] && (hashVP[children] = []);
+                    hashVP[children].push(aVal);
+                }else{
+                    r.push(aVal);
+                }
+            }
+            return r;
+        }
+
+    });
+
+</script>

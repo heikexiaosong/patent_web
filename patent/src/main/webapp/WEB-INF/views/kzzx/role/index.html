@@ -1,0 +1,234 @@
+﻿<div id="kzzxRole" class="gui-div">
+    <table class="toolbar-table" data-options="id: 'kzzxRoleTable',herf:'kzzx/gridset/query'"></table>
+    <div id="kzzxRoleTable-toolbar" class="gui-toolbar" data-options="grid:{type:'datagrid',id:'kzzxRoleTable'}">
+        <a class="toolbar-reload toolbar"  href="javascript:void(0)" style="display: none"></a>
+        <a class="toolbar-print toolbar"  href="javascript:void(0)"></a>
+        <a class="toolbar-export toolbar"  href="javascript:void(0)"></a>
+        <a class="toolbar-review toolbar" href="javascript:void(0)"></a>
+        <a class="toolbar-add toolbar" href="javascript:void(0)"></a>
+        <a class="toolbar-copy toolbar" href="javascript:void(0)"></a>
+        <a class="toolbar-edit toolbar" href="javascript:void(0)"></a>
+        <a class="toolbar-delete toolbar" href="javascript:void(0)"></a>
+        <a class="toolbar-run toolbar" href="javascript:void(0)"></a>
+        <a class="toolbar-filter toolbar" href="javascript:void(0)" style="display: none"></a>
+        <a class="toolbar-copyFilter toolbar" href="javascript:void(0)" style="display:none;" ></a>
+        <a class="toolbar-reviewFilter toolbar" href="javascript:void(0)"  style="display: none"></a>
+        <div style="position: relative;display: inline-block">
+            <a href="javascript:void(0)" class="toolbar toolbar-more toolbar-qx">权限</a>
+            <div  class="arrowdown-css exportSubMenu">
+                <span class="l-btn-left l-btn-icon-left arrowdown-span exportSubMenu1" ><span class="l-btn-text">分配</span><span class="l-btn-icon fa fa-eercast">&nbsp;</span></span>
+                <span class="l-btn-left l-btn-icon-left arrowdown-span exportSubMenu2"><span class="l-btn-text">复制</span><span class="l-btn-icon fa fa-copy">&nbsp;</span></span>
+                <span class="l-btn-left l-btn-icon-left exportSubMenu3"  style="display: block"  ><span class="l-btn-text">查看</span><span class="l-btn-icon fa fa-eye">&nbsp;</span></span>
+            </div>
+        </div>
+        <a class="toolbar-rolePersonel toolbar" href="javascript:void(0)"></a>
+        <a type="submit" class="btn btn-primary serach toolbar-search"></a>
+        <div class="bdsug" style="height: auto; display: none" >
+            <form action="" class="query-criteria">
+                <ul><li class="bdsug-store bdsug-overflow">
+                    <span style="margin: 10px">
+                        <label >角色编码：</label><input type="text" name="roleid" data-toggle="gui-textbox">
+                    </span>
+                    <span style="margin: 10px">
+                         <label >角色名称：</label><input type="text" name="rolename" >
+                    </span>
+                </li></ul>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        var $div=$('#kzzxRole');
+        ComboboBox.init( $div.find('input[name="rolename"]'), {url: 'kzzx/role/query', valueField: 'roleid', textField: 'rolename', allowNull: true});
+        var options={
+            url:'kzzx/role',
+            queryParams:{
+                roleid: $div.find('form input[name="roleid"]').val(),
+                rolename: $div.find('form input[name="rolename"]').val()
+            },
+            columns:[[
+       /*         {title: "id", index: 0, field: "id", width: 160,hidden:true},*/
+                {title: "角色编码",  index: 1, field: "roleid", width: 160,},
+                {title: "角色名称", index: 2, field: "rolename", width: 160,},
+                {title: "类型",  index: 3, field: "type", width: 160},
+                {title: "状态",  index: 4, field: "tybz", width: 1},
+                {title: "停用日期", index: 5, field: "tyrq", width: 160,fieldType:'ftDate'},
+                {title: "备注", index: 6, field: "bz", width: 160,},
+                {title: "超级用户", index: 7, field: "superuser", width: 160,hidden:true},
+                {title: "维护人编码",  index: 8, field: "whrid", width: 160,hidden:true},
+                {title: "维护人",  index: 9, field: "whr", width: 160},
+                {title: "维护时间",  index: 10, field: "whsj", width: 160,fieldType:'ftDateTime'},
+                {title: "创建人编码",  index: 16, field: "cjrid", width: 160,hidden:true},
+                {title: "创建人",  index: 17, field: "cjr", width: 160,hidden:true},
+                {title: "创建时间",  index: 18, field: "cjsj", width: 160,hidden:true},
+            /*    {title: "版本",  index: 19, field: "sysversion", width: 160,hidden:true}*/
+            ]],
+            dialog:{
+                id:'kzzxRoleEdit',
+                width: 840,
+                height: 320,
+                href:'kzzx/role/edit'
+            }
+        };
+        $div.Container(options);
+
+        $div.find('.exportSubMenu1').click(function () {
+            $div.find(".toolbar-filter").click();
+        });
+        $div.find('.exportSubMenu2').click(function () {
+            $div.find(".toolbar-copyFilter").click();
+        });
+        $div.find('.exportSubMenu3').click(function () {
+            $div.find(".toolbar-reviewFilter").click();
+        });
+        $div.find(".toolbar-qx").iMenubutton({
+            hasDownArrow:true,
+            iconCls:'fa fa-list',
+            onClick:function () {
+                $div.find(".toolbar-filter").click();
+            }
+        });
+        $div.find(".toolbar-qx .m-btn-downarrow").click(function (evetn) {
+            evetn.stopPropagation();
+            if( $div.find('.exportSubMenu').css('display')=='block'){
+                $div.find('.exportSubMenu').css('display','none');
+            }else{
+                $div.find('.exportSubMenu').css('display','block');
+            }
+        });
+        $div.find('.toolbar-filter').iMenubutton({
+            event: 'openDialog',
+            text:'权限分配',
+            iconCls: 'fa fa-eercast',
+            dialog:{
+                id:'rolepermissionDialog',
+                width: 1120,
+                height: 630,
+                title:'权限分配',
+                href: 'kzzx/role/permission',
+                url:true,
+                grid: {
+                    type:'datagrid',
+                    id:'kzzxRoleTable',
+                },
+                buttonsGroup:[
+                    {text:'保存',url:'kzzx/role/yhqx/save',iconCls:'fa fa-plus',btnCls:'gui-btn-normal',handler:"parameterForm",
+                        callback:function(){
+                            var nodes = $('#ttRole').iTreegrid("getCheckedAndIndeter");
+                            if ( nodes!=null ){
+                                var yhqx = [];
+                                $.each(nodes, function (i, node) {
+                                    if( node !=null ){
+                                        yhqx.push(node);
+                                    }
+                                });
+                            }
+                            var obj={
+                                parmas:{modules:yhqx, roleid:$("#kzzxRoleTable").datagrid("getSelected")['roleid']}
+                            };
+                            return  obj;
+                        }}]
+            }});
+        /*复制权限*/
+        $div.find(".toolbar-copyFilter").iMenubutton({
+            iconCls: 'fa fa-eercast',
+            btnCls:'gui-btn-warm',
+            text:'复制权限',
+            onClick:copyQxRole
+        });
+        /*查看权限*/
+        $div.find(".toolbar-reviewFilter").iMenubutton({
+            event: 'openDialog',
+            text:'查看权限',
+            iconCls: 'fa fa-eercast',
+            btnCls:'gui-btn-warm',
+            dialog:{
+                id:'userpermiss',
+                width: 1120,
+                height: 630,
+                tag:'view',
+                title:'查看',
+                href: 'kzzx/role/permission',
+                url:true,
+                grid: {
+                    type:'datagrid',
+                    id:'kzzxRoleTable'
+                },
+                buttonsGroup:[
+                ]
+            }});
+        function copyQxRole() {
+            var selectered=$('#kzzxRole').find('.toolbar-table').datagrid('getSelected');
+            if(selectered==null){
+                $.messager.alert('请选择角色进行权限复制功能');
+                return false
+            }
+            var columns=[
+                {title: "角色编码",  index: 1, field: "roleid", width: 160,},
+                {title: "角色名称", index: 2, field: "rolename", width: 160},
+                {title: "所属组织",  index: 5, field: "bmid",width:200 },
+                {title: "备注", index: 11, field: "bz" ,width:320}
+            ];
+            Appent.choose('选择用户',columns,'kzzx/role/copy/yhqx/query',{sourceroleid:$('#kzzxRole').find('.toolbar-table').datagrid('getSelected')['roleid']},function (row) {
+                layer.confirm('确定后，该用户该覆盖已选择角色的权限',{
+                    btn: ['确定','取消']
+                }, function(){
+                    HTTP.post('kzzx/role/yhqx/copy',{
+                        sourceroleid:row['roleid'],
+                        targetroleid:$('#kzzxRoleTable').iDatagrid('getSelected')['roleid']
+                    },function (result) {
+                        if(result['success']){
+                            layer.alert('更新成功');
+                            $div.find(".toolbar-reload").click();
+                            layer.closeAll();
+                        }else{
+                            layer.alert(result['message']);
+                        }
+                    })
+
+                }, function(){
+
+                });
+
+            })
+        }
+        $div.find(".toolbar-rolePersonel").iMenubutton({
+            iconCls: 'fa fa-eercast',
+            btnCls:'gui-btn-warm',
+            text:'角色人员',
+            event: 'openDialog',
+            dialog:{
+                id:'rolepermissionDialog',
+                width: 1120,
+                height: 720,
+                url:true,
+                title:'角色人员',
+                href: 'kzzx/role/personol',
+                buttonsGroup:[
+                    {text:'保存',url:'kzzx/userroles/add',iconCls:'fa fa-plus',btnCls:'gui-btn-normal',handler:"parameterForm",
+                        callback:function(){
+                            var userRoles = [];
+                            var roleid=$("#kzzxRoleTable").datagrid("getSelected")['roleid'];
+                            if($('#rolepermissionDialog').find('input[name="fileIds"]').length>0){
+                                $('#rolepermissionDialog').find('input[name="fileIds"]').each(function () {
+                                    var userRole = {userid: $(this).val(), roleid: roleid};
+                                    userRoles.push(userRole);
+                                })
+                            }
+                            var obj={
+                                parmas:{userlist: userRoles, roleid: roleid}
+                            };
+                            return  obj;
+                        }}]
+            }
+
+        });
+
+    });
+
+
+
+
+
+</script>

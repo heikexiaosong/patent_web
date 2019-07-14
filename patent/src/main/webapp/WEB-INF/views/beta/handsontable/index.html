@@ -1,0 +1,122 @@
+﻿
+<a href="#" type="button" class="render-button">生成报表</a>
+<div  id="handsontable" style="height: 300px"></div>
+<script>
+  $(function () {
+      var data = [
+          ["1", "F2", "Tesla", "Toyota", "Honda"],
+          ["2017", 1, 2, 3, 4],
+          ["2018",5, 6, 7, 18],
+          ["2019", 4, null, null, 13]
+      ];
+      var container = document.getElementById('handsontable');
+      var hot = new Handsontable(container, {
+          data: data,
+          rowHeaders: true,
+          colHeaders: true,
+          filters: true,
+          dropdownMenu: true,
+          language:'zh-CN',
+          // as a boolean
+          contextMenu: true,
+          mergeCells: [    {row: 3, col: 2, rowspan: 1, colspan: 2},],
+      });
+      hot.render();
+
+         setHotAttr(hot,hot.getRowHeader(),hot.getColHeader());
+    $('.render-button').unbind('click').bind('click',function () {
+        var table=hot;
+        $(container).nextAll().remove();
+        $(container).after('<div id="tag" style="height: 300px"></div>');
+
+        var json=loadData(sumbitData(table));
+        console.log(sumbitData(table));
+        console.log(json);
+        var hot2=new Handsontable( document.getElementById('tag'), {
+            data: json.data,
+            rowHeaders: true,
+            colHeaders: true,
+            filters: true,
+            dropdownMenu: true,
+            language:'zh-CN',
+            // as a boolean
+            contextMenu: true,
+            mergeCells: json.mergeCells
+        }).render();
+
+    });
+//自定义cell attribute
+      function setHotAttr(hotObj,rowHeader,colHeader){// 给handsongtable绑定行列属性
+          var count_col = Number(hotObj.countCols());//获取列数
+          var count_row = Number(hotObj.countRows());//获取行数
+          for (var i=0;i<count_row;i++){
+              for (var j=0;j<count_col;j++){
+                  hotObj.setCellMeta(i,j,'rowId',rowHeader[i]);
+                  hotObj.setCellMeta(i,j,'colId',colHeader[j]);
+                  hotObj.setCellMeta(i,j,'name',colHeader[j]+rowHeader[i]);
+//            console.log(hotObj.getCellMeta(i,j)['rowId']);
+//            console.log(hotObj.getCellMeta(i,j)['colId']);
+              }
+          }
+      }
+//提交data
+      function sumbitData(table) {
+          var config ={
+              rowNum:table.getRowHeader().length, colNum:table.getColHeader().length,
+              rowHeader:table.getRowHeader(),colHeader:table.getColHeader()
+          };
+          var cells=[],mergeCells=[],jsonData=[];
+          for(var i=0;i<config.rowNum;i++){
+              for(var j=0;j<config.colNum;j++){
+                  var cellPro=table.getCellMeta(i,j);
+                  var cellTarget=$(table.getCell(i,j));
+                  cells.push({
+                      row:cellPro.row,
+                      col:cellPro.col,
+                      prop:cellPro
+                  });
+                  jsonData.push({
+                      name:cellPro.name,
+                      value:cellTarget.text(),
+                      /*    row:cellPro.row,
+                          col:cellPro.col,*/
+                      coordinate:''+cellPro.row+cellPro.col
+                  });
+                  if(cellPro.spanned&&cellTarget.attr('colspan')){
+                      mergeCells.push({
+                          row:cellPro.row,
+                          col:cellPro.col,
+                          rowspan: parseInt(cellTarget.attr('rowspan')),
+                          colspan: parseInt(cellTarget.attr('colspan'))
+                      })
+                  }
+              }
+          }
+          return {
+              cells:cells,
+              rowHeader:table.getRowHeader(),
+              colHeader:table.getColHeader(),
+              data:table.getData(),
+              mergeCells:mergeCells,
+              jsonData:jsonData
+          };
+      }
+//解析返回的data
+      function loadData(json) {
+          var jsonData=json.jsonData;
+          var newData=[];var mapObject={};
+          $.each(jsonData,function (n,data) {
+              mapObject[data.coordinate]=data.value;
+          });
+          $.each(json.rowHeader,function (i,row) {
+              var aa=[];
+              $.each(json.colHeader,function (j,col) {
+                  aa.push(mapObject[''+i+j]);
+              });
+              newData.push(aa);
+          });
+          json.data=newData;
+          return json
+      }
+  });
+</script>

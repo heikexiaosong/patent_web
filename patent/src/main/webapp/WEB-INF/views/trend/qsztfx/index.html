@@ -1,0 +1,188 @@
+<div class="trend-chart" id="trend_chart" style="width: 100%;">
+		<div class="" style="margin: 20px">
+			<label class="gui-form-label">主题：</label>
+			<div class="">
+				<input type="text" name="id" style="width:400px"/>
+				<span style="margin-left: 20px">
+				<label >时间范围：从</label>
+				<input type="text" name="startTime" style="width:200px"/>
+				</span>
+				<span>
+						<label class="">到</label>
+				<input type="text" name="endTime" style="width:200px"/>
+				</span>
+				<a class="qxfz-search toolbar l-btn l-btn-small l-btn-plain" href="javascript:void(0)"  style="height: 34px;">
+					<span class="l-btn-left l-btn-icon-left" style="margin-top: 5px;">
+						<span class="l-btn-text">查询</span><span class="l-btn-icon fa fa-search">&nbsp;</span></span></a>
+			</div>
+
+		</div>
+		<div id="trend_chart_table">
+
+		</div>
+</div>
+<script src="GUI/static/plugins/echarts/theme/macarons.js"></script>
+<script>
+
+	$(function () {
+		var box=$('#trend_chart');
+		$('#trend_chart_table').height($(document).height()-200);
+		box.find('input[name="id"]').iCombobox({valueField:"id",textField:"ztmc",editable:true});
+		HTTP.post("trend/qszt/query",{},function (result) {
+			if(result["success"]&&result["data"])
+			box.find('input[textboxname="id"]').combobox("loadData",result["data"]["records"]);
+			if(result["data"]["records"][0]) box.find('input[textboxname="id"]').combobox("setValue",result["data"]["records"][0]["id"])
+		});
+		var date=new Date();
+		HTTP.post('common/datetime',{},function (result) {
+			if(result['success']&&result['data']['data']){
+				date=result["data"]["data"];
+				box.find('input[name="startTime"]').datetimebox({value:new Date(date-12*60*60*1000).Format("yyyy-MM-dd hh:mm:ss")});
+				box.find('input[name="endTime"]').datetimebox({value:new Date(date).Format("yyyy-MM-dd hh:mm:ss")});
+			}
+		});
+
+
+		var chart = echarts.init($('#trend_chart_table')[0], 'macarons');
+		var option = {
+			tooltip : {
+				trigger: 'axis',
+				formatter: function (params) {
+					var text='';
+					if(params){
+						var date = new Date(params[0]["value"][0]).Format("hh:mm yyyy-MM");
+						text+=date;
+						$.each(params,function (i,item) {
+							text+= '<div>'+item.seriesName +' : ' + item.value[1]+'</div>';
+						})
+					}
+				return 	text;
+				},
+			},
+			xAxis : [
+				{
+					type : 'time',
+					splitNumber:8,
+					splitLine:false,
+				}
+			],
+			yAxis : [
+				{
+					type : 'value'
+				}
+			],
+			series : []
+		};
+		chart.setOption(option);
+
+		box.find('.qxfz-search').unbind().bind("click",function () {
+			timeRer(chart,"trend/qsztfx/query",{
+				id:box.find('input[name="id"]').val(),
+				startTime:new Date(box.find('input[name="startTime"]').val()).getTime(),
+				endTime:new Date(box.find('input[name=endTime]').val()).getTime()
+			});
+		});
+		function refreshData(chart,url,params){
+			if(!chart){
+				return;
+			}
+			chart.showLoading({
+				text: '数据正在努力加载...',
+				textStyle: { fontSize : 30 , color: '#444' },
+				effectOption: {backgroundColor: 'rgba(0, 0, 0, 0)'}
+			});
+			HTTP.post(url,params,function (result) {
+				chart.hideLoading();
+				if(result['success']){
+					var records=result['data']['trenddata'];
+					var datas=records['datas'];var items=records['items'];
+					var legend=[];
+					var createList=[];
+					$.each(items,function (i,item) {
+						legend.push(item.name);
+						createList.push({name:item.name,type:'line',data:datas[item.id], itemStyle: {
+								normal: {
+									color: item.color,
+									lineStyle: {
+										color: item.color
+									}
+								}
+							}})
+					});
+					var option = chart.getOption();
+
+					option.legend={
+							orient:"vertical",
+							x:"right",
+							show:true,
+							data:legend
+					};
+					var x=records['xaxis'];
+					$.each(x,function (i,s) {
+						x[i]=new Date(Number(s)*1000).Format("hh:mm:ss")
+
+					});
+					option.xAxis[0].data=x;
+					option.series =createList;
+					chart.setOption(option);
+				}else{
+					$.messager.alert("提示",result["message"]||"返回数据错误")
+				}
+				},null,true);
+
+
+		}
+
+		function timeRer(chart,url,params){
+			if(!chart){
+				return;
+			}
+			chart.showLoading({
+				text: '数据正在努力加载...',
+				textStyle: { fontSize : 30 , color: '#444' },
+				effectOption: {backgroundColor: 'rgba(0, 0, 0, 0)'}
+			});
+			HTTP.post(url,params,function (result) {
+				chart.hideLoading();
+				if(result['success']){
+					var records=result['data']['trenddata'];
+					var datas=records['datas'];
+					var legend=[];
+					var option = chart.getOption();var series=[];
+					$.each(datas,function (n,dat) {
+						var res=[];
+						$.each(dat,function (i,r) {
+							res.push({value:[new Date(Number(records["xaxis"][i])),r]})
+						});
+						legend.push(n);
+						series.push({
+							data:res,type:"line",name:n, /*itemStyle:{
+								normal : {
+									lineStyle:{
+										color:'#00FF00'
+									},
+									color:'#00FF00',
+								}
+							},*/
+						});
+					});
+					option.legend={
+						orient:"vertical",
+						x:"right",
+						show:true,
+						data:legend
+					};
+					option.series =series;
+					chart.setOption(option);
+				}else{
+					$.messager.alert("提示",result["message"]||"返回数据错误")
+				}
+			},null,true);
+		}
+
+	})
+</script>
+
+
+
+

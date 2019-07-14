@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<function-configuration>
+	<!-- 系统函数默认配置 -->
+	<bean class="org.wltea.expression.function.SystemFunctions">
+		<function name="CONTAINS" method="contains">
+			<parameter-type>java.lang.String</parameter-type>
+			<parameter-type>java.lang.String</parameter-type>
+		</function>
+		<function name="STARTSWITH" method="startsWith">
+			<parameter-type>java.lang.String</parameter-type>
+			<parameter-type>java.lang.String</parameter-type>
+		</function>
+		<function name="ENDSWITH" method="endsWith">
+			<parameter-type>java.lang.String</parameter-type>
+			<parameter-type>java.lang.String</parameter-type>
+		</function>
+		<function name="CALCDATE" method="calcDate">
+			<parameter-type>java.util.Date</parameter-type>
+			<parameter-type>int</parameter-type>
+			<parameter-type>int</parameter-type>
+			<parameter-type>int</parameter-type>
+			<parameter-type>int</parameter-type>
+			<parameter-type>int</parameter-type>
+			<parameter-type>int</parameter-type>
+		</function>
+		<function name="SYSDATE" method="sysDate" />
+		<function name="DAYEQUALS" method="dayEquals">
+			<parameter-type>java.util.Date</parameter-type>
+			<parameter-type>java.util.Date</parameter-type>
+		</function>
+		<function name="DATEFORMAT" method="dateFormat">
+			<parameter-type>java.util.Date</parameter-type>
+			<parameter-type>java.lang.String</parameter-type>
+		</function>
+		<function name="YEAR" method="yearOfDate">
+			<parameter-type>java.util.Date</parameter-type>
+		</function>
+		<function name="MONTH" method="monthOfDate">
+			<parameter-type>java.util.Date</parameter-type>
+		</function>
+		<function name="DAY" method="dayOfDate">
+			<parameter-type>java.util.Date</parameter-type>
+		</function>
+		<!-- 此配置支持老版本，新版本放弃 DAYOFDATE 使用 day 替换 -->
+		<function name="DAYOFDATE" method="dayOfDate">
+			<parameter-type>java.util.Date</parameter-type>
+		</function>
+		<function name="DATE" method="date">
+			<parameter-type>int</parameter-type>
+			<parameter-type>int</parameter-type>
+			<parameter-type>int</parameter-type>
+		</function>
+		<function name="TIME" method="time">
+			<parameter-type>java.util.Date</parameter-type>
+			<parameter-type>int</parameter-type>
+			<parameter-type>int</parameter-type>
+			<parameter-type>int</parameter-type>
+		</function>
+		<function name="DATETIME" method="datetime">
+			<parameter-type>int</parameter-type>
+			<parameter-type>int</parameter-type>
+			<parameter-type>int</parameter-type>
+			<parameter-type>int</parameter-type>
+			<parameter-type>int</parameter-type>
+			<parameter-type>int</parameter-type>
+		</function>
+		<function name="ABS" method="abs">
+			<parameter-type>java.lang.Object</parameter-type>
+		</function>
+		<function name="INT" method="parseInt">
+			<parameter-type>java.lang.Object</parameter-type>
+		</function>
+		<function name="STR" method="parseString">
+			<parameter-type>java.lang.Object</parameter-type>
+		</function>
+		<function name="LASTDAY" method="endDayOfMonth">
+			<parameter-type>java.util.Date</parameter-type>
+		</function>
+		<function name="IIF" method="iif">
+			<parameter-type>boolean</parameter-type>
+			<parameter-type>java.lang.Object</parameter-type>
+			<parameter-type>java.lang.Object</parameter-type>
+		</function>
+	</bean>
+	
+	<!-- 用户函数配置  请在这里定制您自己的函数	-->
+	<bean class="com.gavel.expression.function.GavelFunc">
+		<function name="userDefine" method="userDefine">
+			<parameter-type>java.lang.String</parameter-type>
+			<parameter-type>java.lang.Object</parameter-type>
+			<parameter-type>java.util.Map</parameter-type>
+		</function>
+		<function name="userVariable" method="userVariable">
+			<parameter-type>java.lang.String</parameter-type>
+			<parameter-type>java.util.Map</parameter-type>
+			<parameter-type>java.util.Map</parameter-type>
+		</function>
+		<function name="add" method="add">
+			<parameter-type>long</parameter-type>
+			<parameter-type>long</parameter-type>
+		</function>
+		<function name="平均" method="avg">
+			<parameter-type>java.util.List</parameter-type>
+		</function>
+		<function name="合计" method="sum">
+			<parameter-type>java.util.List</parameter-type>
+		</function>
+		<function name="avg" method="avg">
+			<parameter-type>java.util.List</parameter-type>
+		</function>
+		<function name="sum" method="sum">
+			<parameter-type>java.util.List</parameter-type>
+		</function>
+		<function name="count" method="count">
+			<parameter-type>java.util.List</parameter-type>
+		</function>
+	</bean>
+	
+</function-configuration>

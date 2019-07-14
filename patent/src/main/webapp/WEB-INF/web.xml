@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
+                             http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" >
+
+
+
+<display-name>Unified Web</display-name>
+
+    <!-- Web容器加载顺序ServletContext- -context-param- -listener- -filter- -servlet -->
+
+    <!-- 指定Spring的配置文件 -->
+    <!-- 否则Spring会默认从WEB-INF下寻找配置文件,contextConfigLocation属性是Spring内部固定的 -->
+    <!-- 通过ContextLoaderListener的父类ContextLoader的第120行发现CONFIG_LOCATION_PARAM固定为contextConfigLocation -->
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>/WEB-INF/applicationContext*.xml</param-value>
+    </context-param>
+
+    <!-- Tomcat部署war时产生内存泄漏处理-->
+    <listener>
+        <listener-class>se.jiderhamn.classloader.leak.prevention.ClassLoaderLeakPreventorListener</listener-class>
+    </listener>
+
+
+    <!-- 防止发生java.beans.Introspector内存泄露,应将它配置在ContextLoaderListener的前面 -->
+    <!-- 详细描述见http://blog.csdn.net/jadyer/article/details/11991457 -->
+    <listener>
+        <listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>
+    </listener>
+
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+
+
+    <!-- 解决乱码问题 -->
+    <!-- forceEncoding默认为false,此时效果可大致理解为request.setCharacterEncoding("UTF-8") -->
+    <!-- forceEncoding=true后,可大致理解为request.setCharacterEncoding("UTF-8")和response.setCharacterEncoding("UTF-8") -->
+    <filter>
+        <filter-name>SpringEncodingFilter</filter-name>
+        <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+        <async-supported>true</async-supported>
+        <init-param>
+            <param-name>encoding</param-name>
+            <param-value>UTF-8</param-value>
+        </init-param>
+        <init-param>
+            <param-name>forceEncoding</param-name>
+            <param-value>true</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>SpringEncodingFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <!-- 用户登录认证 过滤器 -->
+    <filter>
+        <filter-name>authenticationFilter</filter-name>
+        <filter-class>com.gavel.framework.filter.AuthenticationFilter</filter-class>
+        <async-supported>true</async-supported>
+        <init-param>
+            <param-name>prefix</param-name>
+            <param-value>/dist,/easyui,/css,/js,/img,/kindeditor,/thirdparty,/gooflow,/layui,/GUI,/mock</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>authenticationFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <!-- 功能授权 过滤器 -->
+    <filter>
+        <filter-name>authorizationFilter</filter-name>
+        <filter-class>com.gavel.framework.filter.AuthorizationFilter</filter-class>
+        <async-supported>true</async-supported>
+    </filter>
+    <filter-mapping>
+        <filter-name>authorizationFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <filter>
+        <filter-name>requestWrapperFilter</filter-name>
+        <filter-class>com.gavel.framework.filter.RequestWrapperFilter</filter-class>
+        <async-supported>true</async-supported>
+    </filter>
+    <filter-mapping>
+        <filter-name>requestWrapperFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <filter>
+        <filter-name>threadContextFilter</filter-name>
+        <filter-class>com.gavel.framework.filter.ThreadContextFilter</filter-class>
+        <async-supported>true</async-supported>
+    </filter>
+    <filter-mapping>
+        <filter-name>threadContextFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+
+    <!--<filter>-->
+        <!--<filter-name>dataSourceChooseFilter</filter-name>-->
+        <!--<filter-class>com.gavel.framework.filter.DataSourceChooseFilter</filter-class>-->
+    <!--</filter>-->
+    <!--<filter-mapping>-->
+        <!--<filter-name>dataSourceChooseFilter</filter-name>-->
+        <!--<url-pattern>/*</url-pattern>-->
+    <!--</filter-mapping>-->
+
+    <servlet>
+        <servlet-name>DruidStatView</servlet-name>
+        <servlet-class>com.alibaba.druid.support.http.StatViewServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DruidStatView</servlet-name>
+        <url-pattern>/druid/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>action</servlet-name>
+        <servlet-class>com.gavel.kzzx.servlet.handler.GavelDispatcherServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>action</servlet-name>
+        <url-pattern>/</url-pattern>
+    </servlet-mapping>
+
+    <welcome-file-list>
+        <welcome-file>/index</welcome-file>
+    </welcome-file-list>
+
+    <error-page>
+        <error-code>404</error-code>
+        <location>/WEB-INF/common/pageException.jsp</location>
+    </error-page>
+
+    <error-page>
+        <error-code>500</error-code>
+        <location>/WEB-INF/common/pageException.jsp</location>
+    </error-page>
+
+</web-app>

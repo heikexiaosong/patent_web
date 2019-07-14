@@ -1,0 +1,47 @@
+<div id="kzzxSjzd" class="gui-div">
+    <table class="toolbar-table" data-options="id:'kzzxSjzdTable',herf:'kzzx/gridset/query'">
+    </table>
+    <div id="kzzxSjzdTable-toolbar" class="gui-toolbar" data-options="grid:{type:'datagrid',id:'kzzxSjzdTable'}">
+        <a class="toolbar-reload toolbar"  href="javascript:void(0)" style="display: none"></a>
+        <a class="toolbar-print toolbar"  href="javascript:void(0)"></a>
+        <a class="toolbar-export toolbar"  href="javascript:void(0)"></a>
+        <a class="toolbar-review toolbar" href="javascript:void(0)"></a>
+        <a class="toolbar-add toolbar" href="javascript:void(0)"></a>
+        <a class="toolbar-copy toolbar" href="javascript:void(0)"></a>
+        <a class="toolbar-edit toolbar" href="javascript:void(0)"></a>
+        <a class="toolbar-delete toolbar" href="javascript:void(0)"></a>
+    </div>
+</div>
+<script>
+    $(function () {
+        var $div=$('#kzzxSjzd');
+        var options={
+            url:'kzzx/sjzd',
+            queryParams:{
+
+            },
+            columns:[[
+                {title: "编码", index: 1, field: 'bm', width: 120,hidden:true},
+                {title: "名称",  index: 2, field: "name", width: 160},
+                {title: "数据项", index: 3, field: "sjzdid", width: 160,hidden:true},
+                {title: "数据项",  index: 4, field: "sjzdxname", width: 160},
+                {title: "助记码",  index: 5, field: "zjm", width: 160},
+                {title: "状态",  index: 6, field: "tybz", width: 160},
+                {title: "停用日期",  index:7, field: "tyrq",fieldType:'ftDate',width:1},
+                {title: "备注",  index: 8, field: "bz", width: 200},
+                {title: "维护人编码",  index: 9, field: "whrid", width: 160,hidden:true},
+                {title: "维护人",  index: 10, field: "whr", width: 160},
+                {title: "维护时间",  index: 11, field: "whsj", fieldType:'ftDateTime',width:1}
+            ]],
+            dialog:{
+                id:'kzzxSjzdEdit',
+                width: 840,
+                height: 320,
+                href:'kzzx/sjzd/edit'
+            }
+        };
+        $div.Container(options);
+
+    });
+
+</script>

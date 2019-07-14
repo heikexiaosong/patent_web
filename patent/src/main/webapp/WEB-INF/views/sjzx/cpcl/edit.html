@@ -1,0 +1,322 @@
+<div class="gui-fluid editTable" style="overflow: hidden;height: 20%">
+    <input type="hidden"  name="flag">
+    <input type="hidden"  name="id" >
+    <div class="gui-row">
+        <div class="gui-col-sm4">
+            <label class="gui-form-label" for="">工厂：</label>
+            <div class="gui-input-block">
+                <input type="text" name="gcid" data-toggle="gui-textbox" data-options="" style="width: 100%">
+            </div>
+        </div>
+        <div class="gui-col-sm4">
+            <label class="gui-form-label" for="">产品线：</label>
+            <div class="gui-input-block">
+                <input type="text" name="cpx" data-toggle="gui-textbox"   data-options="" style="width: 100%">
+            </div>
+        </div>
+        <div class="gui-col-sm4">
+            <label class="gui-form-label" for="">日期：</label>
+            <div class="gui-input-block">
+                <input type="text" name="date" data-toggle="gui-datebox" data-options="" style="width: 100%">
+            </div>
+        </div>
+    </div>
+<div class="gui-row">
+        <div class="gui-col-sm4">
+            <label class="gui-form-label" for="">物料：</label>
+            <div class="gui-input-block">
+                <input type="text" name="wlid" data-toggle="gui-textbox" data-title="wlmc" data-options="required:true" style="width: 100%">
+                <input type="hidden" name="wlmc">
+            </div>
+        </div>
+    <div class="gui-col-sm4">
+        <label class="gui-form-label" for="">产量：</label>
+        <div class="gui-input-block">
+            <input type="text" name="sl" value="0" data-options="min:0,precision:3" data-toggle="gui-numberbox" style="width: 100%">
+        </div>
+    </div>
+
+</div>
+    <div class="gui-row">
+        <div class="gui-col-sm4" style="">
+           <div class="" style="margin-left: 20px">
+               <a   href="#" class="l-btn gui-btn-continue l-btn-small cpcl-list" style="position: static; display: inline-block; left: auto; height: 34px; background:#1ca1c !important;">
+                <span class="l-btn-left" style="margin-top: 5px;">
+            <span class="l-btn-text" style="padding:0 4px">根据产品生成物料表</span>
+        </span></a>
+           </div>
+
+        </div>
+    </div>
+</div>
+
+
+<table class="mx" style="width: 100%;height:72%" data-options="dgid:'CPCLXH'"></table>
+<script>
+    $(function () {
+        var $dialog=$('#sjcjCpclEdit');
+        $dialog.find('input[name="gcid"]').iCombobox({
+            valueField: 'gcid', textField: 'gcmc', allowNull:true,editable:true,onSelect:function (value) {
+                $dialog.trigger("type.changed",value);
+            }
+        });
+        HTTP.post("sjzx/gc/query",{},function (result) {
+            if(result["success"]){
+                $dialog.find('input[textboxname="gcid"]').combobox("loadData",result["data"]["records"])
+            }
+        });
+        $dialog.find('input[name="cpx"]').iCombobox({valueField: 'cpxid', textField: 'cpxmc',editable:true, allowNull:true});
+        HTTP.post("sjzx/cpx/query",{},function (result) {
+            if(result["success"]){
+                $dialog.find('input[textboxname="cpx"]').combobox("loadData",result["data"]["records"]);
+            }
+
+        })
+        $dialog.on("type.changed",function (event,data) {
+            HTTP.post("sjzx/cpx/query",{gcid:data.gcid},function (result) {
+                if(result["success"]){
+                    $dialog.find('input[textboxname="cpx"]').combobox("loadData",result["data"]["records"]);
+                }
+
+            })
+
+        })
+
+        var date=new Date();
+        date.setDate(date.getDate()-1);
+        HTTP.post('common/datetime',{},function (result) {
+        	if(result['success']&&result['data']['data']){
+        		date = new Date(result['data']['data']);
+        		date.setDate(date.getDate()-1); 
+        	}
+        	$dialog.find('input[name="date"]').iDatebox({value:date.Format("yyyy-MM-dd")});
+        });
+        var columns=[[
+            {title: "物料编码", field: "wlid", index: 0, width: 160,halign:"center", hidden:false},
+            {title: "物料名称", field: "wlmc", fieldType:"ftString", index: 2, width: 160, hidden:false,halign:"center"},
+            {title: "数量", field: "sl",editor:{type:"numberbox",options:{
+                precision:3
+            }}, index: 2, width: 160, hidden:false,halign:"center",formatter:function (value) {
+                if(value){
+                    var text =parseFloat(value).toFixed(3);
+                    return text;
+                }else{
+                    return 0;
+                }
+
+            }}
+        ]];
+
+        $dialog.find('.mx').edatagrid({
+            rownumbers:true,
+            columns:columns,
+            toolbar:[
+                {iconCls: 'fa fa-plus',
+                    text: '选择物料',
+                    handler: function () {
+                        $('<div id="selectWl" style="position:relative;width: 100%"/>').iDialog({
+                            title:'选择物料',
+                            width:960,
+                            height:540,
+                            buttons: [{
+                                text: '确认',
+                                iconCls: 'fa fa-save',
+                                btnCls: 'gui-btn-save',
+                                handler: function () {
+                                    var selections=$('#selectWl').find('.dat_table').datagrid("getChecked");
+                                    var pre= $dialog.find('.mx').edatagrid('getData')["rows"];
+                                    var s=[];
+                                    $.each(pre,function (i,row) {
+                                        s.push(row["wlid"]);
+
+                                    });
+                                    $.each(selections,function (i,row) {
+                                        if(s.indexOf(row["wlid"])<=-1){
+                                            $dialog.find('.mx').datagrid("appendRow",{
+                                                wlid:row["wlid"],
+                                                wlmc:row["wlmc"],
+                                                sl:0,
+                                                flag:'I'
+                                            })
+                                        }
+
+                                    });
+
+                                    $('#selectWl').iDialog('destroy');
+                                }
+                            },{
+                                text:'取消',
+                                iconCls: "fa fa-close",
+                                btnCls: "gui-btn-danger",
+                                handler:function () {
+                                    $('#selectWl').iDialog('destroy');
+                                }
+                            }],
+                            onOpen:function ($container) {
+                                var layero=$("#selectWl");
+                                layero.find('.keyword').iTextbox({
+                                    width:'90%',
+                                    inputEvents: $.extend({}, $.fn.textbox.defaults.inputEvents, {
+                                        keyup: function (event) {
+                                            event.stopPropagation();
+                                            if (event.keyCode === 13) {
+                                                var keyword=layero.find('.keyword').iTextbox('getValue');
+                                                HTTP.post("sjcj/wlxx/query",{condition:keyword},function (result) {
+                                                    if(result['success']){
+                                                        layero.find('.dat_table').datagrid('clientPaging',{data:[]});
+                                                        layero.find('.dat_table').datagrid('clientPaging',{data:result['data']['records']||[]});
+                                                    }
+                                                })
+                                            }}})
+                                });
+                                var columns=[
+                                    {field:'',checkbox:true},
+                                    {title: "物料编码", field: "wlid", fieldType:"ftString", index: 0, width: 160,halign:"center", hidden:false},
+                                    {title: "物料名称", field: "wlmc", fieldType:"ftString", index: 2, width: 160, hidden:false,halign:"center",},
+                                    {title: "物料分类", field: "flid", fieldType:"ftString", index: 4, width: 160, hidden:true,halign:"center"},
+                                    {title: "物料分类", field: "flmc", fieldType:"ftString", index: 5, width: 160, hidden:false,halign:"center"},
+                                    {title: "备注", field: "bz", fieldType:"ftString", index: 6, width: 160, hidden:false,halign:"center"},
+                                    {title: "创建人", field: "cjr", fieldType:"ftString", index: 8, width: 160, hidden:false,halign:"center"},
+                                    {title: "创建时间", field: "cjsj", fieldType:"ftDateTime", index: 10, width: 200, hidden:false,halign:"center",formatter:function (value) {
+                                            if ( value==undefined || value =='' ){
+                                                return "";
+                                            }
+                                            var date = new Date(parseInt(value));
+                                            if ( isNaN(date) ){
+                                                return ""
+                                            }
+                                            return date.Format("yyyy-MM-dd");
+                                        }},
+                                    {title: "维护人", field: "whr", fieldType:"ftString", index: 12, width: 160, hidden:false,halign:"center"},
+                                    {title: "维护时间", field: "whsj", fieldType:"ftDateTime", index: 14, width: 200, hidden:false,halign:"center",formatter:function (value) {
+                                            if ( value==undefined || value =='' ){
+                                                return "";
+                                            }
+                                            var date = new Date(parseInt(value));
+                                            if ( isNaN(date) ){
+                                                return ""
+                                            }
+                                            return date.Format("yyyy-MM-dd");
+                                        }}
+                                ];
+                                layero.find('.dat_table').edatagrid(
+                                    { idField:"wlid",
+                                        pagination:true,
+                                        rownumbers:true,
+                                        singleSelect:false,
+                                        columns:[columns],
+                                        autoSave:true
+                                    });
+                                var keyword=layero.find('.keyword').iTextbox('getValue');
+                                HTTP.post("sjcj/wlxx/query",{condition:keyword},function (result) {
+                                    if(result['success']){
+                                        layero.find('.dat_table').datagrid('clientPaging',{data:result['data']['records']||[]});
+                                    }
+                                });
+                                layero.find('.auxiliary-icon').unbind().bind('click',function() {
+                                    var keyword=layero.find('.keyword').iTextbox('getValue');
+                                    HTTP.post("sjcj/wlxx/query",{condition:keyword},function (result) {
+                                        if(result['success']){
+                                            layero.find('.dat_table').datagrid('clientPaging',{data:[]});
+                                            layero.find('.dat_table').datagrid('clientPaging',{data:result['data']['records']||[]});
+                                        }
+                                    })
+
+                                });
+                            },
+                            onClose: function () {
+                                $(this).form("clear");
+                                $(this).iDialog('destroy');
+                            }
+
+                        });
+                        var content_html =
+                            '<div style="overflow: hidden;position: relative;height: 10%">' +
+                            '<div class="" style="width: 100%;margin: 10px">' +
+                            '<label style="display: inline-block;margin-right: 6px" >搜索条件</label><input type="text" class="keyword" data-toggle="gui-textbox" placeholder="" style="height: 30px;line-height: 30px;margin-left: 10px;padding-left: 10px">' +
+                            '<span class="auxiliary-icon fa fa-search"></span></div>' +
+                            '</div>'+
+                            '<div style="width:100%;overflow: hidden;height: 90%"><table class="dat_table" style="height: 100%;width: 100%"></table></div>';
+                        $('#selectWl').html('').append(content_html);
+                        $('#selectWl').iDialog('open');
+
+                    }
+                },
+                {
+                    iconCls: 'fa fa-trash',
+                    text: '删除',
+                    handler: function () {
+                        var $fieldView=$dialog.find('.mx');
+                        var cols = $fieldView.edatagrid('getRows');
+                        var aa = [];
+                        var selectrow = $fieldView.edatagrid('getSelected');
+                        if (selectrow == null) {
+                            return false;
+                        }
+                        var delIndex = $fieldView.edatagrid('getRowIndex', selectrow);
+                        $.each(cols, function (i, col) {
+                            if (i == delIndex) {
+                                if (cols[i]["flag"] != null && cols[i]["flag"] == 'I') {
+                                } else {
+                                    cols[i]['flag'] = 'D';
+                                    aa.push(col);
+                                }
+                            }
+                        });
+                        $fieldView.datagrid('deleteRow', delIndex);
+                        if ($fieldView.data("mxData")) {
+                            var bb = $fieldView.data("mxData");
+                            $.each(aa, function (i, item) {
+                                bb.push(item);
+                            });
+                            $fieldView.data("mxData", bb);
+                        } else {
+                            $fieldView.data("mxData", aa);
+                        }
+
+                    }
+                }]
+        });
+        $dialog.find('.cpcl-list').off().on("click",function (event) {
+            HTTP.post('sjzx/cpcl/queryWlid',{wlid: $dialog.find('.editTable input[name="wlid"]').val()},function (result) {
+                if(result["success"]){
+                    var rows=result["data"]["records"]||[];
+                    $.each(rows,function (i,row) {
+                        row.flag="I";
+                        delete row.id;
+                        $dialog.find('.mx').datagrid("appendRow",row);
+                    });
+
+
+                }else{
+
+                }
+            })
+            
+        });
+        Auxiliary.box($dialog.find('input[name="wlid"]'),{
+            code:'WLID',
+            callback:function (row,field) {
+                var value = row[field];
+                var text = "";
+                if(row) $dialog.find('input[textboxname="wlid"]').iTextbox("setValue",value);
+                HTTP.post("sjcj/wlxx/query",{wlid:value},function (result) {
+                    if(result["success"]){
+                        text=result["data"]["records"][0]["wlmc"];
+                        $dialog.find('input[textboxname="wlid"]').iTextbox("setText",text);
+                    }
+                });
+            }
+        });
+        if($dialog.attr("tag")!="add"){
+            var selectdRow=$('#sjcjCpcl').find('.toolbar-table').datagrid('getSelected');
+            HTTP.post("sjzx/cpclxh/query",{mid:selectdRow["id"]},function (result) {
+                    if(result["success"]){
+                        $dialog.find('.mx').edatagrid("loadData",result["data"]["records"]||[]);
+                    }
+            })
+        }
+
+    })
+
+</script>

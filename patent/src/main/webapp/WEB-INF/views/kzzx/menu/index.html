@@ -1,0 +1,273 @@
+<style>
+    #kzzxMenu .datagrid-btable td div{
+        text-align: left!important;
+    }
+</style>
+<div id="kzzxMenu" class="gui-div">
+    <table class="toolbar-table" data-options="id: 'kzzxMenuTable'"></table>
+    <div id="kzzxMenuTable-toolbar" class="gui-toolbar" data-options="grid:{type:'treegrid',id:'kzzxMenuTable'}">
+        <a class="toolbar-reload toolbar"  href="javascript:void(0)"></a>
+        <a class="toolbar-add toolbar" href="javascript:void(0)"></a>
+        <a class="toolbar-edit toolbar" href="javascript:void(0)"></a>
+        <a class="toolbar-move toolbar" href="javascript:void(0)"></a>
+        <a class="toolbar-up toolbar" href="javascript:void(0)"></a>
+        <a class="toolbar-down toolbar" href="javascript:void(0)"></a>
+        <a class="toolbar-default toolbar" href="javascript:void(0)"></a>
+    </div>
+</div>
+<script>
+    $(function () {
+        var $div=$('#kzzxMenu');
+        $div.find('.toolbar-table').iTreegrid({
+            url:'',
+            idField:'mkid',
+            treeField:'name',
+            checkbox:true,
+            cascadeCheck:false,
+            /*     singleSelect:false,*/
+            columns:[[
+                {title:'ID',field:'id',width:80,align:'center',hidden:true},
+                {field:'name',title:'功能名称',width:180,align:'center'},
+                {field:'mkid',title:'模块号',width:180,align:'center',formatter:function (value,index,row) {
+                        if(value=='0'){
+                            return '';
+                        }else{
+                            return value
+                        }
+                    }},
+                /* {field:'fmkid',title:'父模块号',width:80,align:'center'},*/
+                {field:'type',title:'类型',width:80,align:'center',hidden:true},
+                {field:'position',title:'菜单位置',width:80,align:'center'},
+                /* {field:'envitype',title:'CS运行环境',width:80,align:'center'},*/
+                {field:'icon',title:'图标',width:80,align:'center'},
+                {title: "维护人编码",  index: 8, field: "whrid", width: 160,align:'center',hidden:true},
+                {title: "维护人",  index: 9, field: "whr", width: 80,align:'center'},
+                {title: "维护时间",  index: 10, field: "whsj", width: 160,align:'center',formatter:function (value,row,index) {
+                        if ( value==undefined || value =='' ){
+                            return "";
+                        }
+                        var date = new Date(parseInt(value));
+                        if ( isNaN(date) ){
+                            return ""
+                        }
+                        return date.Format("yyyy-MM-dd hh:mm:ss");
+                    }},
+                {title: "创建人编码",  index: 16, field: "cjrid", width: 160,align:'center',hidden:true},
+                {title: "创建人",  index: 17, field: "cjr", width: 80,align:'center',hidden:true},
+                {title: "创建时间",  index: 18, field: "cjsj", width: 160,align:'center',hidden:true,formatter:function (value,row,index) {
+                        if ( value==undefined || value =='' ){
+                            return "";
+                        }
+                        var date = new Date(parseInt(value));
+                        if ( isNaN(date) ){
+                            return ""
+                        }
+                        return date.Format("yyyy-MM-dd hh:mm:ss");
+                    }},
+                {title: "版本",  index: 19, field: "sysversion", width: 160,align:'center',hidden:true}
+            ]],
+        });
+        HTTP.post('kzzx/menu/query',{},function (result){
+            if(result['success']&&result['data']){
+                if(result['data']['records']&&result['data']['records'].length>0){
+                    var rows= result['data']['records'];
+                    $.each(rows,function (i,item) {
+                        if(item['fmkid']&&item['fmkid']>-1) {
+                            item["_parentId"]=item['fmkid']
+                        }
+                    });
+                    var data = {total:rows.length,"rows": rows};
+                    $div.find('.toolbar-table').iTreegrid('loadData', data);
+                }
+
+            }
+        });
+        $div.find('.toolbar-reload').iMenubutton({
+                text:'刷新',
+                iconCls:'fa fa-refresh',
+                onClick:menuReresh
+            }
+
+        );
+        $div.find('.toolbar-add').iMenubutton({
+            event:'openDialog',
+            iconCls: 'fa fa-plus',
+            text:'添加目录',
+            dialog:{
+                title:'新增',
+                id:'kzzxMenuAdd',
+                width:640,
+                height: 280,
+                href:'kzzx/menu/edit',
+                tag:'add',
+                buttonsGroup:[
+                    {text:'保存',url:'kzzx/menu/add',iconCls:'fa fa-save',btnCls:'gui-btn-save',handler:function () {
+            var row=DataBind.collectData('kzzxMenuAdd');
+            HTTP.post('kzzx/menu/add',{master:row},function (result) {
+                if(result['success']){
+                    $.messager.alert('提示','新增目录成功');
+                    $('#kzzxMenuAdd').window('close');
+                    menuReresh();
+                }else{
+                    $.messager.alert('提示',result['message']||'新增目录失败');
+                }
+            })
+            }}
+                ]
+            }
+        });
+        $div.find('.toolbar-edit').iMenubutton({
+            iconCls: 'fa fa-pencil',
+            text:'编辑菜单',
+            event:'openDialog',
+            dialog:{
+                title:'编辑',
+                id:'kzzxMenuEdit',
+                width:800,
+                height: 480,
+                href:'kzzx/menu/edit',
+                tag:'edit',
+                url:true,
+                buttonsGroup:[
+                    {text:'保存',url:'kzzx/menu/update',iconCls:'fa fa-save',btnCls:'gui-btn-save',handler:function () {
+                        var row=DataBind.collectData('kzzxMenuEdit');
+                        HTTP.post('kzzx/menu/update',{master:row},function (result) {
+                            if(result['success']){
+                                $.messager.alert('提示','编辑菜单成功');
+                                $('#kzzxMenuEdit').window('close');
+                                menuReresh();
+                            }else{
+                                $.messager.alert('提示',result['message']||'编辑菜单失败');
+                            }
+                        })
+                        }}
+                ]
+            }
+
+        });
+        $div.find('.toolbar-move').iMenubutton({
+            event:'openDialog',
+            iconCls: 'fa fa-rocket',
+            text:'移动菜单',
+            dialog:{
+                title:'选择菜单保存路径',
+                id:'kzzxMenuMove',
+                width:480,
+                height: 540,
+                href:'kzzx/menu/move',
+                buttonsGroup:[
+                    {text:'保存',url:'kzzx/menu/move ',iconCls:'fa fa-save',btnCls:'gui-btn-save',handler:"parameterForm",
+                        callback:function(){
+                            var master={},_details=[];
+                            master['fmkid']={};
+                            if($('#tree_menu').iTreegrid('getSelected')){
+                                master['fmkid']=$('#tree_menu').iTreegrid('getSelected')['mkid'];
+                            }
+                            master['menus']=[];
+                            var rows=$('#kzzxMenuTable').iTreegrid('getCheckedNodes');
+                            $.each(rows,function (i,row) {
+                                master['menus'].push({
+                                    "id":row['id'],
+                                    "mkid":row['mkid'],
+                                    "fmkid":row['fmkid'],
+                                })
+                            })
+                            var obj={
+                                parmas:master
+                            };
+                            return  obj;
+                        }}
+                ]
+            }
+        });
+        $div.find('.toolbar-default').iMenubutton({
+            iconCls: 'fa  fa-linode',
+            text:'恢复默认',
+            onClick:defaultRestore
+        });
+        $div.find('.toolbar-up').iMenubutton({
+            iconCls: 'fa  fa-long-arrow-up',
+            text:'上移菜单',
+            onClick: menuUp
+        });
+        $div.find('.toolbar-down').iMenubutton({
+            iconCls: 'fa   fa-long-arrow-down',
+            text:'下移菜单',
+            onClick: menuDown
+        });
+        function defaultRestore() {
+            HTTP.post('kzzx/menu/default',{},function (result){
+                if(result['success']){
+                    $.messager.alert('提示','恢复默认成功');
+                    menuReresh();
+
+                }else{
+                    $.messager.alert('提示','恢复默认失败');
+                }
+            });
+        }
+        function menuReresh() {
+            HTTP.post('kzzx/menu/query',{},function (result){
+                if(result['success']&&result['data']){
+                    if(result['data']['records']&&result['data']['records'].length>0){
+                        var rows= result['data']['records'];
+                        $.each(rows,function (i,item) {
+                            if(item['fmkid']&&item['fmkid']>-1) {
+                                item["_parentId"]=item['fmkid']
+                            }
+                        });
+                        var data = {total:rows.length,"rows": rows};
+                        $div.find('.toolbar-table').iTreegrid('loadData', data);
+                    }
+
+                }
+            });
+        }
+        function menuUp() {
+            var n =  $div.find('.toolbar-table').treegrid("getSelected");if(n==null){alert("无法移动！");return;};
+            if(!$div.find('.toolbar-table').prev()){
+                return false
+            }
+            var s= $div.find('.toolbar-table').prev().find('.datagrid-btable:eq(0) tr:eq(0)').attr('id'),
+                id=s.substring(0,s.length - 1);
+            var selectRow = $('#'+id+n.mkid);
+            var pre = selectRow.prevAll('tr.datagrid-row');
+            if(typeof(pre.attr("node-id"))=="undefined" || pre.attr("node-id").indexOf("L")==0) {
+                alert("无法移动！");
+            }else{
+                HTTP.post('kzzx/menu/move/up',{id:n.id},function (result) {
+                    if(result){
+                        var preId = pre.attr("node-id");
+                        var n2 = $div.find('.toolbar-table').treegrid("pop",n.mkid);
+                        $div.find('.toolbar-table').treegrid("insert",{before:preId,data:n2});
+                        $div.find('.toolbar-table').treegrid("select",n.mkid);
+                    }
+                })
+            }
+
+        }
+        function menuDown() {
+            var n =  $div.find('.toolbar-table').treegrid("getSelected");if(n==null){alert("无法移动！");return;};
+            if(!$div.find('.toolbar-table').prev()){
+                return false
+            }
+            var s= $div.find('.toolbar-table').prev().find('.datagrid-btable:eq(0) tr:eq(0)').attr('id'),
+                id=s.substring(0,s.length - 1);
+            var selectRow = $('#'+id+n.mkid);
+            var pre = selectRow.nextAll('tr.datagrid-row');
+            if(typeof(pre.attr("node-id"))=="undefined" || pre.attr("node-id").indexOf("L")==0) {
+                alert("无法移动！");
+            }else{
+            HTTP.post('kzzx/menu/move/down',{id:n.id},function (result) {
+                var nextId = pre.attr("node-id");
+                var n2 = $div.find('.toolbar-table').treegrid("pop",nextId);
+                $div.find('.toolbar-table').treegrid("insert",{before:n.mkid,data:n2})
+            })
+            }
+
+
+        }
+    });
+
+</script>
+

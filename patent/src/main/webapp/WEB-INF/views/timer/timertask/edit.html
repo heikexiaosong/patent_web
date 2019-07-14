@@ -1,0 +1,353 @@
+<style>
+    #timertaskTimerEdit header{
+        margin: 20px 0 10px 10px;
+        color: #666666;
+    }
+
+    #timertaskTimerEdit .label-radio{
+        padding:5px 30px 5px 0;width:68px;
+    }
+    #timertaskTimerEdit .label-radioo{
+        padding:5px 30px 5px 0;width:50px;
+    }
+    #timertaskTimerEdit .template input{
+        text-align: center
+    }
+</style>
+<div class="gui-fluid">
+    <header>1.选择任务</header>
+    <div class="gui-row" style="margin-left: -100px">
+        <div class="gui-input-block">
+            <input type="text" name="timerid" data-toggle="gui-textbox" data-title="mc" data-options="required:true" style="width: 96%"/>
+            <input type="hidden" name="mc" />
+        </div>
+    </div>
+    <header>2.希望该任务何时开始？</header>
+    <div class="gui-row">
+        <div class="gui-col-sm12">
+            <div>
+                <div data-toggle="gui-radio" style="margin-left: 20px">
+                    <a href="javascript:void(0)" style="display: inline-block" class="radio-gruop">
+                        <input type="radio" name="jldw" value="year"  checked/>
+                        <label class="gui-form-label label-radio">年(Y)</label>
+                    </a>
+                    <a href="javascript:void(0)" style="display: inline-block" class="radio-gruop">
+                        <input type="radio" name="jldw" value="month"/>
+                        <label class="gui-form-label label-radio">月(M)</label >
+                    </a>
+                    <a href="javascript:void(0)" style="display: inline-block" class="radio-gruop">
+                        <input type="radio" name="jldw" value="week"/>
+                        <label class="gui-form-label label-radio">周(W)</label>
+
+                    </a>
+                    <a href="javascript:void(0)" style="display: inline-block" class="radio-gruop">
+                        <input type="radio" name="jldw" value="day"/>
+                        <label class="gui-form-label label-radio">天(D)</label>
+
+                    </a>
+                    <a href="javascript:void(0)" style="display: inline-block" class="radio-gruop">
+                        <input type="radio" name="jldw" value="hour" />
+                        <label class="gui-form-label label-radio">时(H)</label>
+
+                    </a>
+                    <a href="javascript:void(0)" style="display: inline-block" class="radio-gruop">
+                        <input type="radio" name="jldw" value="minute"/>
+                        <label class="gui-form-label label-radio">分(N)</label>
+
+                    </a>
+                    <a href="javascript:void(0)" style="display: inline-block" class="radio-gruop">
+                        <input type="radio" name="jldw" value="second"/>
+                        <label class="gui-form-label label-radio">秒(S)</label>
+                    </a>
+                    <a href="javascript:void(0)" style="display: inline-block" class="radio-gruop">
+                        <input type="radio" name="jldw" value="once"/>
+                        <label class="gui-form-label label-radio" style="width: 88px">一次(O)</label>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <div class="gui-row timer-content" style="margin-left: -40px;margin-top: 20px">
+        <div class="gui-col-sm12">
+            <label class="gui-form-label" for="">开始：</label>
+            <div class="gui-input-block">
+                <input type="text" name="begintime" data-options="" data-toggle="gui-datetimebox"  style="width: 90%">
+            </div>
+        </div>
+    </div>
+    <article style="margin-left: -40px;margin-top: 30px;" class="timer-content">
+        <label class="gui-form-label" for="">周期：</label>
+        <div class="gui-row timer-year" style="margin-left: -90px;display: inline-block">
+            <div class="gui-col-sm12">
+                <label class="gui-form-label" for="">每</label>
+                <div class="template-content">
+                    <!--每年-->
+                    <div class="gui-input-block template-year template">
+                        <input type="number" name="year_year" data-options="min:1" data-toggle="gui-numberbox"  style="width: 60px" value="1">
+                        <label >年</label>
+                        <input type="text" name="year_month" data-options="" style="width: 80px">
+                        <label >月</label>
+                        <input type="text" name="year_day" data-options=""  style="width: 80px">
+                        <label>日</label>
+                        <input type="number" name="year_hour" data-options="min:0, max:23" data-toggle="gui-numberbox"  style="width: 60px">
+                        <label>时</label>
+                        <input type="number" name="year_minute" data-options="min:0, max:59" data-toggle="gui-numberbox"  style="width: 60px">
+                        <label>分</label>
+                        <input type="number" name="year_second" data-options="min:0, max:59" data-toggle="gui-numberbox"  style="width: 60px">
+                        <label>秒</label>
+                        <label>执行一次</label>
+                    </div>
+                    <!--每月-->
+                    <div class="gui-input-block template-month template none">
+                        <input type="number" name="month_month" data-options="min:1" data-toggle="gui-numberbox"  style="width: 60px">
+                        <label >月</label>
+                        <input type="text" name="month_day" data-options=""  style="width: 80px">
+                        <label>日</label>
+                        <input type="number" name="month_hour" data-options="min:0, max:23" data-toggle="gui-numberbox"  style="width: 60px">
+                        <label>时</label>
+                        <input type="number" name="month_minute" data-options="min:0, max:59" data-toggle="gui-numberbox"  style="width: 60px">
+                        <label>分</label>
+                        <input type="number" name="month_second" data-options="min:0, max:59" data-toggle="gui-numberbox"  style="width: 60px">
+                        <label>秒</label>
+                        <label>执行一次</label>
+                    </div>
+                    <!--每周-->
+                    <div class="gui-input-block template-week template none">
+                        <input type="number" name="week_week" data-options="" data-toggle="gui-numberbox"  style="width: 60px">
+                        <label >周</label>
+                        <label>周</label>
+                        <input type="text" name="week_day" data-options=""  style="width: 80px">
+                        <input type="number" name="week_hour" data-options="min:0, max:23" data-toggle="gui-numberbox"  style="width: 60px">
+                        <label>时</label>
+                        <input type="number" name="week_minute" data-options="min:0, max:59" data-toggle="gui-numberbox"  style="width: 60px">
+                        <label>分</label>
+                        <input type="number" name="week_second" data-options="min:0, max:59" data-toggle="gui-numberbox"  style="width: 60px">
+                        <label>秒</label>
+                        <label>执行一次</label>
+                    </div>
+                    <!--每日-->
+                    <div class="gui-input-block template-day template none">
+                        <input type="number" name="day_day" data-options="" data-toggle="gui-numberbox"  style="width: 60px">
+                        <label>日</label>
+                        <input type="number" name="day_hour" data-options="min:0, max:23" data-toggle="gui-numberbox"  style="width: 60px">
+                        <label>时</label>
+                        <input type="number" name="day_minute" data-options="min:0, max:59" data-toggle="gui-numberbox"  style="width: 60px">
+                        <label>分</label>
+                        <input type="number" name="day_second" data-options="min:0, max:59" data-toggle="gui-numberbox"  style="width: 60px">
+                        <label>秒</label>
+                        <label>执行一次</label>
+                    </div>
+                    <!--每时-->
+                    <div class="gui-input-block template-hour template none">
+                        <input type="number" name="hour_hour" data-options="min:0" data-toggle="gui-numberbox"  style="width: 60px">
+                        <label>时</label>
+                        <label>执行一次</label>
+                    </div>
+                    <!--每分-->
+                    <div class="gui-input-block template-minute template none">
+                        <input type="number" name="minute_minute" data-options="min:0" data-toggle="gui-numberbox"  style="width: 60px"/>
+                        <label>分</label>
+                        <label>执行一次</label>
+                    </div>
+                    <!--每秒-->
+                    <div class="gui-input-block template-second template none">
+                        <input type="number" name="second_second" data-options="min:0" data-toggle="gui-numberbox"  style="width: 60px"/>
+                        <label>秒</label>
+                        <label>执行一次</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </article>
+    <div class="gui-row none timer-once" style="margin-left: -40px" >
+        <div class="gui-col-sm12">
+            <label class="gui-form-label" for="">执行时间：</label>
+            <div class="gui-input-block">
+                <input type="text" name="begintime_once" data-toggle="gui-datetimebox"  style="width: 600px">
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        var dig=$('#timertaskTimerEdit');
+        var selectedRow=$('#timertaskTimerTable').datagrid('getSelected');
+        var icon=$('<span class="l-btn-icon fa fa-search search" style="position: relative;margin-left: -32px"></span>');
+        dig.find('input[name="timerid"]').parent().append(icon);
+        ComboboBox.init(dig.find('input[name="year_month"]'),{textField: "text", valueField: "value",height:32,data:[
+                {text: "一", value: "1",selected:1}, {text: "二", value: "2"},  {text: "三", value: "3"}, {text:"四",value:"4"}, {text: "五", value: "5"},{text:"六",value:"6"},
+                {text: "七", value: "7"}, {text: "八", value: "8"},  {text: "九", value: "9"}, {text:"十",value:"10"}, {text: "十一", value: "11"},{text:"十二",value:"12"}
+            ]});
+        var monthOption=createData(32);monthOption.push({value:'32',text:'月末'});
+        ComboboBox.init(dig.find('input[name="year_day"]'),{textField: "text", valueField: "value",height:32,
+            data: monthOption
+        });
+        dig.find('.search').unbind().bind('click',function () {
+            var columns=[
+                {title: "id",  index: 1, field: "id", width: 160,hidden:true},
+                {title: "名称", index: 2, field: "mc", width: 80},
+                {title: "描述",  index: 3, field: "ms", width: 200},
+                {title: "类型",  index: 4, field: "type", width: 160,hidden:true},
+                {title: "URL",  index:5, field: "url", width: 160,hidden:true},
+                {title: "参数", index: 6, field: "data", width: 160,hidden:true},
+                {title:"调用方法",index:7,field:"method",width:200,hidden:true},
+                {title: "停用状态", index: 7, field: "tybz", width: 60,align:'center'},
+                {title: "停用日期", index: 8, field: "tyrq", width: 160,align:'center',fieldType:'ftDateTime'}];
+            var config={
+                title:'已定义任务',columns:columns,url: "timer/timer/query",parmas:{}
+            };
+            Appent.choose(config, function (row) {
+                if(row){
+                    dig.find('input[textboxname="timerid"]').textbox('setValue',row['id']);
+                    dig.find('input[textboxname="timerid"]').textbox('setText',row['mc']);
+                }
+            });
+        });
+        dig.on('click','.label-radio,.RadioA',function () {
+            var that=this;
+           var value=$(this).next('input').val();
+           if($(this)[0].tagName==='LABEL'){
+               value=$(this).parent().find('.RadioA').next('input').val();
+               that=$(this).parent().find('.RadioA');
+           }
+            dig.find('.timer-once').css('display','none');
+            dig.find('.timer-content').css('display','block');
+           switch (value) {
+               case "year":CreatYearElement($(that)); break;
+               case "month":CreatMonthElement($(that)); break;
+               case "week":CreatWeekElement($(that)); break;
+               case "day":CreatDayElement($(that)); break;
+               case "hour":CreatHourElement($(that)); break;
+               case "minute":CreatMinElement($(that));break;
+               case "second":CreatSecElement($(that));break;
+               case "once":CreatOncElement($(that));break;
+               default:CreatYearElement($(that))
+           }
+        });
+
+/*编辑界面*/
+        var tag=dig.attr('tag');
+        if((tag==="edit"||tag==="copy"||tag==='review')&&selectedRow){
+            var value=selectedRow["jldw"];
+            dig.find('input[name="begintime_once"]').val(selectedRow['begintime']);
+            dig.find('input[name="jldw"]').attr('checked',false);
+            dig.find('[value="'+value+'"]').prop('checked',true);
+            dig.find('[value="'+value+'"]').attr('checked',true);
+            dig.find('.template').css('display','none');
+            dig.find('.template-'+value).css('display','block');
+            switch (value) {
+                case "year": assignmentYearValue(value,selectedRow); break;
+                case "month": assignmentMonthValue(value,selectedRow); break;
+                case "week": assignmentWeekValue(value,selectedRow); break;
+                case "day":assignmentDayValue(value,selectedRow); break;
+                case "hour":assignmentHourValue(value,selectedRow);break;
+                case "minute":assignmentMinuteValue(value,selectedRow);break;
+                case "second":assignmentSecondValue(value,selectedRow);break;
+                case "once": assignmentOnceValue(value,selectedRow);break;
+            }
+        }
+/*编辑-assign*/
+        function assignmentYearValue(vakle,s) {
+            dig.find('input[name='+vakle+'_year]').val(s['year']);
+            assignmentMonthValue(vakle,s);
+        }
+        function assignmentMonthValue(vakle,s) {
+            dig.find('input[name='+vakle+'_month]').val(s['month']);
+            dig.find('input[name='+vakle+'_day]').val(s['day']);
+            assignmentHourValue(vakle,s);
+        }
+        function  assignmentWeekValue(vakle,s) {
+            dig.find('input[name='+vakle+'_week]').val(s['week']);
+            dig.find('input[comboname="week_day"]').combobox('setValue',s['day']);
+            assignmentHourValue(vakle,s);
+        }
+        function assignmentDayValue(vakle,s) {
+            dig.find('input[name='+vakle+'_day]').val(s['day']);
+            assignmentHourValue(vakle,s);
+        }
+        function assignmentHourValue(vakle,s) {
+            dig.find('input[name='+vakle+'_hour]').val(s['hour']);
+            assignmentMinuteValue(vakle,s);
+        }
+        function assignmentMinuteValue(vakle,s) {
+            dig.find('input[name='+vakle+'_minute]').val(s['minute']);
+            assignmentSecondValue(vakle,s);
+        }
+        function assignmentSecondValue(vakle,s) {
+            dig.find('input[name='+vakle+'_second]').val(s['second']);
+        }
+        function assignmentOnceValue(vakle,s) {
+            dig.find('.timer-content').css('display','none');
+            dig.find('.timer-once').css('display','block');
+        }
+
+/*choose 计量单位*/
+        function CreatYearElement(ele) {
+            dig.find('input[name="jldw"]').attr('checked',false);ele.next('input').attr('checked',true);
+            dig.find('.template').css('display','none');
+            dig.find('.template-year').css('display','block');
+
+        }
+        function CreatMonthElement(ele) {
+            dig.find('input[name="jldw"]').attr('checked',false);ele.next('input').attr('checked',true);
+            dig.find('.template').css('display','none');
+            dig.find('.template-month').css('display','block');
+            var monthOption=createData(32);monthOption.push({value:'last',text:'月末'});
+            ComboboBox.init(dig.find('input[name="month_day"]'),{textField: "text", valueField: "value",height:32,
+                data: monthOption
+            });
+
+        }
+        function CreatWeekElement(ele) {
+            dig.find('input[name="jldw"]').attr('checked',false);ele.next('input').attr('checked',true);
+            dig.find('.template').css('display','none');
+            dig.find('.template-week').css('display','block');
+            ComboboBox.init(dig.find('input[name="week_day"]'),{textField: "text", valueField: "value",
+                data: [{text: "日", value: "7", selected: !0}, {text: "一", value: "1"}, {text: "二", value: "2"},
+                       {text: "三", value: "3"},{text:"四",value:"4"}, {text: "五", value: "5"},{text:"六",value:"6"}],height:32
+            });
+        }
+        function CreatDayElement(ele) {
+            dig.find('input[name="jldw"]').attr('checked',false);ele.next('input').attr('checked',true);
+            dig.find('.template').css('display','none');
+            dig.find('.template-day').css('display','block');
+        }
+        function CreatHourElement(ele) {
+            dig.find('input[name="jldw"]').attr('checked',false);ele.next('input').attr('checked',true);
+            dig.find('.template').css('display','none');
+            dig.find('.template-hour').css('display','block');
+        }
+        function CreatMinElement(ele) {
+            dig.find('input[name="jldw"]').attr('checked',false);
+            ele.next('input').attr('checked',true);
+            dig.find('.template').css('display','none');
+            dig.find('.template-minute').css('display','block');
+        }
+        function CreatSecElement(ele) {
+            dig.find('input[name="jldw"]').attr('checked',false);ele.next('input').attr('checked',true);
+            dig.find('.template').css('display','none');
+            dig.find('.template-second').css('display','block');
+        }
+        function CreatOncElement(ele) {
+            dig.find('input[name="jldw"]').attr('checked',false);ele.next('input').attr('checked',true);
+            dig.find('.timer-content').css('display','none');
+            dig.find('.timer-once').css('display','block');
+        }
+        /*循环计数*/
+        function createData(num) {
+            var arry=[];
+            for(var i=1;i<num;i++){
+                if(i==1){arry.push({
+                    value:i+'',text:i+'',selected:1
+                })}else{
+                    arry.push({
+                        value:i+'',text:i+''
+                    })
+                }
+            }
+            return arry;
+        }
+    })
+
+</script>

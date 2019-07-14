@@ -1,0 +1,64 @@
+﻿<div id="kzzxYymk" class="gui-div">
+    <table class="toolbar-table" data-options="id: 'kzzxYymkTable',herf:'kzzx/gridset/query'">
+    </table>
+    <div id="kzzxYymkTable-toolbar" class="gui-toolbar" data-options="grid:{type:'datagrid',id:'kzzxYymkTable'}">
+        <a class="toolbar-reload toolbar"  href="javascript:void(0)"></a>
+    </div>
+</div>
+<script>
+    $(function () {
+        var $div=$('#kzzxYymk');
+        var options={
+            url:'kzzx/yymk',
+            columns:[[
+                {title: "模块号",  index: 1, field: "mkid", width: 160,align:'center'},
+                {title: "组件编码", index: 2, field: "zjid", width: 160,align:'center'},
+                {title: "父模块号",  index: 3, field: "fmkid", width: 160,align:'center'},
+                {title: "模块名称",  index: 4, field: "mkmc", width: 160,align:'center'},
+                {title: "模块分类",  index: 5, field: "flid", width: 160,align:'center'},
+                {title: "页面类型",  index: 6, field: "page", width: 160,align:'center'},
+                {title: "助记码",  index: 7, field: "zjm", width: 160,align:'center'},
+                {title: "统一资源定位符",  index: 8, field: "url", width: 160,align:'center'},
+                {title: "停用标志",  index: 9, field: "tybz", width: 160,align:'center',formatter:function (value,index,row) {
+                    var map = {Y: '停用', N: "启用"};
+                    var text  = map[value];
+                    return text||"启用";
+                }},
+                {title: "停用日期",  index: 10, field: "tyrq", width: 160,align:'center'},
+                {title: "自定义模块",  index: 11, field: "zdy", width: 160,align:'center',formatter:function (value,index,row) {
+                    var map = {Y: '是', N: "否"};
+                    var text  = map[value];
+                    return text||"是";
+                }},
+                {title: "功能类型",  index: 12, field: "gnlx", width: 160,align:'center'},
+                {title: "菜单位置",  index: 13, field: "position", width: 160,align:'center'},
+                {title: "维护人编码",  index:14, field: "whrid", width: 160,align:'center',hidden:true},
+                {title: "维护人",  index: 15, field: "whr", width: 160,align:'center',},
+                {title: "维护时间",  index:16, field: "whsj", width: 160,align:'center',formatter:function (value,row,index) {
+                    if ( value==undefined || value =='' ){
+                        return "";
+                    }
+                    var date = new Date(parseInt(value));
+                    if ( isNaN(date) ){
+                        return ""
+                    }
+                    return date.Format("yyyy-MM-dd");
+                }},
+                {title: "创建人编码",  index: 17, field: "cjrid", width: 160,align:'center',hidden:true},
+                {title: "创建人",  index: 18, field: "cjr", width: 160,align:'center',hidden:true},
+                {title: "创建时间",  index: 19, field: "cjsj", width: 160,align:'center',hidden:true,formatter:function (value,row,index) {
+                    if ( value==undefined || value =='' ){
+                        return "";
+                    }
+                    var date = new Date(parseInt(value));
+                    if ( isNaN(date) ){
+                        return ""
+                    }
+                    return date.Format("yyyy-MM-dd");
+                }},
+                {title: "版本",  index: 20, field: "sysversion", width: 160,align:'center',hidden:true}
+            ]]
+        };
+        $div.Container(options);
+    });
+</script>

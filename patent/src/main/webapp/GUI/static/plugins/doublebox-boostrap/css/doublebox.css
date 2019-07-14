@@ -1,0 +1,43 @@
+@media print{
+    *,:after,:before{color:#000!important;text-shadow:none!important;background:0 0!important;-webkit-box-shadow:none!important;box-shadow:none!important;}
+}
+*{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;}
+:after,:before{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;}
+.selectue-container .btn{display:inline-block;padding:6px 12px;margin-bottom:0;font-size:14px;font-weight:400;line-height:1.42857143;text-align:center;white-space:nowrap;vertical-align:middle;-ms-touch-action:manipulation;touch-action:manipulation;cursor:pointer;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;background-image:none;border:1px solid transparent;border-radius:4px;}
+.selectue-container .btn:active:focus,.btn:focus{outline:thin dotted;outline:5px auto -webkit-focus-ring-color;outline-offset:-2px;}
+.selectue-container .btn:focus,.btn:hover{color:#333;text-decoration:none;}
+.selectue-container .btn:active{background-image:none;outline:0;-webkit-box-shadow:inset 0 3px 5px rgba(0,0,0,.125);box-shadow:inset 0 3px 5px rgba(0,0,0,.125);}
+.selectue-container .btn-default{color:#333;background-color:#fff;border-color:#ccc;}
+.selectue-container .btn-default:active,.btn-default:focus,.btn-default:hover{color:#333;background-color:#e6e6e6;border-color:#adadad;}
+.selectue-container .btn-default:active{background-image:none;}
+/*@font-face{font-family:'Glyphicons Halflings';src:url(http://localhost:63342/tmis/src/main/webapp/thirdparty/doublebox-boostrap/fonts/glyphicons-halflings-regular.eot);src:url(http://localhost:63342/tmis/src/main/webapp/thirdparty/doublebox-boostrap/fonts/glyphicons-halflings-regular.eot#iefix) format('embedded-opentype'),url(http://localhost:63342/tmis/src/main/webapp/thirdparty/doublebox-boostrap/fonts/glyphicons-halflings-regular.woff2) format('woff2'),url(http://localhost:63342/tmis/src/main/webapp/thirdparty/doublebox-boostrap/fonts/glyphicons-halflings-regular.woff) format('woff'),url(http://localhost:63342/tmis/src/main/webapp/thirdparty/doublebox-boostrap/fonts/glyphicons-halflings-regular.ttf) format('truetype'),url(http://localhost:63342/tmis/src/main/webapp/thirdparty/doublebox-boostrap/fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular) format('svg');}*/
+.selectue-container .glyphicon{position:relative;top:1px;display:inline-block;font-family:'Glyphicons Halflings';font-style:normal;font-weight:400;line-height:1;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;}
+.selectue-container .glyphicon-arrow-left:before{content:"\e091";}
+.selectue-container .glyphicon{position:relative;top:1px;display:inline-block;font-family:'Glyphicons Halflings';font-style:normal;font-weight:400;line-height:1;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;}
+.selectue-container .glyphicon-arrow-right:before{content:"\e092";}
+.glyphicon-arrow-up:before{content:"\e093";}
+.glyphicon-arrow-down:before {
+    content: "\e094";
+}
+.selectue-container {
+    width: 100%;
+    overflow: hidden;
+
+}
+.settingUp-btns .upBtn{margin-bottom:5px;}
+.settingUp-btns .btn{color:#ddd;}
+.settingUp-btns .btn:hover,.settingUp-btns .btn:focus{color:#fff;}
+.db-btn{color:#3e99ff;padding:4px 12px;background-color:#fff;border-color:#ddd;border-radius:0;}
+.db-btn:focus,.db-btn:hover{color:#fff;background-color:#3e99ff;border-color:transparent;}
+
+.selectue-container .col-md-5{
+    width: 45%;
+}
+.selectue-container .col-md-5 label{
+    font-size: 14px;
+    padding-top: 10px;
+}
+.selectue-container select{
+    height: 400px!important;
+    overflow-y: auto;
+}

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module>
+    <id>840000000</id>
+    <name>实时数据</name>
+    <zjm>dashboard-realtime</zjm>
+    <version>1.0</version>
+
+    <menu mkid="840100000" mkmc="数据指标">
+        <menu mkid="840101000" mkmc="采集区域" url="metric/metricsArea/index">
+        </menu>
+        <menu mkid="840102000" mkmc="采集点" url="metric/metrics/index">
+        </menu>
+        <menu mkid="840103000" mkmc="趋势主题" url="trend/qszt/index">
+        </menu>
+        <menu mkid="840104000" mkmc="趋势主题点数据" url="trend/qsztmx/index">
+        </menu>
+        <menu mkid="840105000" mkmc="趋势主题分析" url="trend/qsztfx/index">
+        </menu>
+    </menu>
+
+
+    <menu mkid="840200000" mkmc="实时组态图">
+        <menu mkid="840201000" mkmc="组态图定义" url="configure/configure/index.html">
+        </menu>
+
+        <menu mkid="840300000" mkmc="实时监控">
+        </menu>
+
+    </menu>
+
+    <menu mkid="840400000" mkmc="实时趋势图">
+        <menu mkid="840401000" mkmc="实时趋势图定义" url="trend/qsztrealtime/index.html">
+        </menu>
+
+        <menu mkid="840500000" mkmc="实时数据图">
+        </menu>
+
+    </menu>
+
+
+
+    <menu mkid="840600000" mkmc="数据预处理">
+
+        <menu mkid="840601000" mkmc="点数据" url="rtdata/datapoint/index.html">
+        </menu>
+
+        <menu mkid="840602000" mkmc="数据导入" url="rtdata/datapoint/importpage.html">
+        </menu>
+
+        <menu mkid="840603000" mkmc="预处理定义" url="rtdata/pretreat/index.html">
+        </menu>
+
+        <menu mkid="840700000" mkmc="数据预处理" >
+        </menu>
+
+
+
+
+    </menu>
+
+
+</module>

@@ -1,0 +1,69 @@
+<div id="rtTag" class="gui-div">
+    <table class="toolbar-table" data-options="id: 'rtTagTable',herf:'kzzx/gridset/query'">
+    </table>
+    <div id="rtTagTable-toolbar" class="gui-toolbar" data-options="grid:{type:'datagrid',id:'rtTagTable'}">
+        <a class="toolbar-reload toolbar"  href="javascript:void(0)"></a>
+        <a class="toolbar-export"  href="javascript:void(0)"></a>
+        <a type="submit" class="btn btn-primary serach toolbar-search"></a>
+        <div class="bdsug" style="height: auto; display: none" >
+            <form action="" class="query-criteria">
+                <ul><li class="bdsug-store bdsug-overflow">
+                <span style="margin: 10px">
+                        <label >名称：</label><input type="text" data-toggle="gui-textbox" name="usercx">
+                    </span>
+                </li></ul>
+            </form>
+        </div>
+    </div>
+
+
+</div>
+<script>
+    $(function () {
+        var $div=$('#rtTag');
+        var options={
+            url:'rt/tag',
+            queryParams:{
+                usercx: $div.find('form input[name="usercx"]').val()
+            },
+            columns:[[
+                {title: "ID", index: 10, field: "id", width: 160,  hidden: true},
+                {title: "数据点ID", index: 20, field: "tagid", width: 220,  hidden: false},
+                {title: "名称", index: 30, field: "name", width: 120,  hidden: false},
+                {title: "数据来源(设备)", index: 40, field: "device", width: 160,  hidden: false},
+                {title: "类型", index: 50, field: "type", width: 80,  hidden: false,
+                    formatter:function(value,index,row){
+                        return {temperature: '温度', pressure: "压力"}[value] || value;
+                    }
+                },
+                {title: "单位", index: 60, field: "unit", width: 80,  hidden: false},
+                {title: "单位(中文名称)", index: 70, field: "unitname", width: 120,  hidden: false},
+                {title: "数据采集机器", index: 75, field: "source", width: 160,  hidden: false},
+                {title: "备注", index: 80, field: "bz", width: 160,  hidden: false},
+                {title: "维护人编码", index: 80, field: "whrid", width: 160,  hidden: true},
+                {title: "维护人", index: 90, field: "whr", width: 80,  hidden: false},
+                {title: "维护时间", index: 100, field: "whsj", width: 100,  hidden: false,
+                    formatter:function (value) {
+                        if ( value==undefined || value =='' ){
+                            return "";
+                        }
+                        var date = new Date(parseInt(value));
+                        if ( isNaN(date) ){
+                            return ""
+                        }
+                        return date.Format("yyyy-MM-dd");
+                    }
+                }
+            ]]
+        };
+
+        $div.Container(options);
+
+    });
+
+</script>
+
+
+
+
+

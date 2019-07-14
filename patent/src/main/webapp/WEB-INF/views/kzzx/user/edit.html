@@ -1,0 +1,59 @@
+<div class="gui-fluid  editTable">
+    <input type="hidden"  name="id">
+    <input type="hidden"  name="version">
+    <input type="hidden"  name="flag">
+    <div class="gui-row" style="width: 49%;display: inline-block">
+        <div class="gui-col-sm12">
+            <label class="gui-form-label" for="">用户编码：</label>
+            <div class="gui-input-block">
+                <input type="text" name="userid"  data-options="required:true"  data-toggle="gui-textbox" style="width: 100%">
+            </div>
+        </div>
+    </div>
+    <div class="gui-row" style="width: 50%;display: inline-block">
+        <div class="gui-col-sm12">
+            <label class="gui-form-label" for="">用户名称：</label>
+            <div class="gui-input-block">
+                <input type="text" name="username"  data-options="required:true"  data-toggle="gui-textbox"style="width: 100%">
+            </div>
+        </div>
+    </div>
+    <div class="gui-row">
+        <div class="gui-col-sm12">
+            <label class="gui-form-label" for="">所属组织：</label>
+            <div class="gui-input-block">
+                <input type="text" name="bmid"  data-toggle="gui-combobox"  style="width: 100%">
+            </div>
+        </div>
+    </div>
+    <div class="gui-row">
+        <div class="gui-col-sm12">
+            <label class="gui-form-label" for="">电话：</label>
+            <div class="gui-input-block">
+                <input type="text" name="phone" data-options="prompt:'手机号验证',validType:'telephone'" data-toggle="gui-textbox" style="width: 100%">
+            </div>
+        </div>
+    </div>
+    <div class="gui-row">
+        <div class="gui-col-sm12">
+            <label class="gui-form-label" for="">邮箱：</label>
+            <div class="gui-input-block">
+                <input type="text" name="email"  data-options="prompt:'电子邮箱验证',validType:'email'" data-toggle="gui-textbox" style="width: 100%">
+            </div>
+        </div>
+    </div>
+    <div class="gui-row">
+        <div class="gui-col-sm12">
+            <label class="gui-form-label" for="">备注信息：</label>
+            <div class="gui-input-block">
+                <input type="text" name="bz" data-options="multiline:true" data-toggle="gui-textarea" style="width: 100%;height:66px">
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        var $dialog=$('#kzzxUserEdit');
+        ComboboBox.init($dialog.find('input[name="bmid"]'), {url: 'kzzx/org/query', valueField: 'bmid', textField: 'bmmc', allowNull: true,width:'100%'});
+    })
+</script>

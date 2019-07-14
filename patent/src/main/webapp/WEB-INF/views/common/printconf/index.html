@@ -1,0 +1,109 @@
+﻿<div id="commonPrintconf" class="gui-div" style="width: 70%;height: 100%;display: inline-block">
+    <div id="commonPrintconfTable-toolbar" class="gui-toolbar" data-options="grid:{type:'datagrid',id:'commonPrintconfTable'}">
+        <a class="toolbar-reload toolbar"  href="javascript:void(0)" style="display: none"></a>
+        <a class="toolbar-print toolbar"  href="javascript:void(0)"></a>
+        <a class="toolbar-export toolbar"  href="javascript:void(0)"></a>
+        <a class="toolbar-review toolbar" href="javascript:void(0)"></a>
+        <a class="toolbar-add toolbar" href="javascript:void(0)"></a>
+        <a class="toolbar-copy toolbar" href="javascript:void(0)"></a>
+        <a class="toolbar-edit toolbar" href="javascript:void(0)"></a>
+        <a class="toolbar-delete toolbar" href="javascript:void(0)"></a>
+        <a class="toolbar-printStyle toolbar" href="javascript:void(0)"></a>
+    </div>
+    <table class="toolbar-table" data-options="id:'commonPrintconfTable',herf:'kzzx/gridset/query'">
+    </table>
+</div>
+<div style="width: 29%;height:100%;display: inline-block;border-left:1px #ece7e7 solid">
+    <div style="padding-top: 16px;height: 46px;background: #fafafa;border-bottom: 1px solid lightgrey"><h5 style='margin: 0 auto;text-align: center;font-weight: 700;'>原型</h5></div>
+    <table id="productConfDetail"></table>
+</div>
+<script>
+
+    $(function () {
+
+
+        var $div=$('#commonPrintconf');
+        var options={
+            url:'common/printconf',
+            columns:[[
+                {title: "id", index: 1, field: 'bm', width: 120,hidden:true},
+                {title: "模块ID",  index: 2, field: "mkid", width: 160},
+                {title: "实体类型", index: 3, field: "type", width: 140,hidden:true,formatter:function (value) {
+                    var map = {"0": '主表实体', "1": "明细实体"};
+                    var text  = map[value];
+                    return text||("<span style='color: red'>" + value + "</span>");
+                }},
+                {title: "定义类型",  index: 4, field: "deftype", width: 200,formatter:function (value) {
+                    var map = {"E": '实体类', "S": "自定义SQL"};
+                    var text  = map[value];
+                    return text||("<span style='color: red'>" + value + "</span>");
+                }},
+                {title: "URL",  index: 5, field: "url",width: 160},
+                {title: "实体定义",  index: 6, field: "entity", width:224}
+            ]],
+            dialog:{
+                id:'commonPrintconfEdit',
+                width: 840,
+                height: 320,
+                href:'common/printconf/edit'
+            },
+            onClickRow:function (opt) {
+                HTTP.post('common/printconf/fields',$('#commonPrintconfTable').datagrid('getSelected'),function (result) {
+                    if(result['success']){
+                        $datagrid.iDatagrid('loadData',result['data']['records']);
+                        var columns=[];
+                        $.each(result['data']['records'],function (i,field) {
+                            columns.push({
+                                title: field['caption'],  index:field['index'], field:field['name'], width: 160,align:'center'
+                            })
+                        });
+                        columns.sort(createComparisonFunction('index'));
+                        console.log(JSON.stringify(columns));
+                function createComparisonFunction(propertyName) {//接收属性名
+                    return function(object1, object2) {
+                        var value1 = object1[propertyName];
+                        var value2 = object2[propertyName];
+                        if (value1 < value2) {
+                            return -1;
+                        } else if (value1 > value2) {
+                            return 1;
+                        } else {
+                            return 0;
+                        }
+                    }
+                }
+
+                    }
+                })
+
+            }
+        };
+        $div.Container(options);
+        var $datagrid=$('#productConfDetail');
+        $datagrid.iDatagrid({
+            columns:[[
+                {title: "字段描述", index: 1, field: 'title', width: 120,align:'center'},
+                {title: "字段名称", index: 2, field: "name", align:'center',width: 160},
+                {title: "字段类型", index: 3, field: "type", width: 140,align:'center'}
+            ]],
+            pagination:false
+        });
+        $div.find('.toolbar-printStyle').iMenubutton({
+            event: 'openDialog',
+            text:'打印样式',
+            iconCls: 'fa fa-eercast',
+            dialog:{
+                id:'printConfDialog',
+                width: 1120,
+                height: 630,
+                title:'样式设置',
+                href: 'common/printconf/setting',
+                url:true,
+                grid: {
+                    type:'datagrid',
+                    id:'commonPrintconfTable',
+                },
+                buttonsGroup:[]
+            }});
+    });
+</script>

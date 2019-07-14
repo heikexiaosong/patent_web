@@ -1,0 +1,57 @@
+﻿<div id="kzzxFzsr" class="gui-div">
+    <table class="toolbar-table" data-options="id:'kzzxFzsrTable',herf:'kzzx/gridset/query'"></table>
+    <div id="kzzxFzsrTable-toolbar" class="gui-toolbar" data-options="grid:{type:'datagrid',id:'kzzxFzsrTable'}">
+        <a class="toolbar-reload toolbar"  href="javascript:void(0)" style="display: none"></a>
+        <a class="toolbar-print toolbar"  href="javascript:void(0)"></a>
+        <a class="toolbar-export toolbar"  href="javascript:void(0)"></a>
+        <a class="toolbar-review toolbar" href="javascript:void(0)"></a>
+        <a class="toolbar-add toolbar" href="javascript:void(0)"></a>
+        <a class="toolbar-copy toolbar" href="javascript:void(0)"></a>
+        <a class="toolbar-edit toolbar" href="javascript:void(0)"></a>
+        <a class="toolbar-delete toolbar" href="javascript:void(0)"></a>
+    </div>
+</div>
+<script>
+    $(function () {
+        var $div=$('#kzzxFzsr');
+        var options={
+            url:'kzzx/fzsr',
+            columns:[[
+                /*{title: "id", index: 1, field: "id", width: 160,hidden:true},*/
+                {title: "辅助输入代码", index: 2, field: "code",align:'center', width: 160,},
+                {title: "代码名称", index: 3, field: "name", align:'center',width: 160},
+                {title: "分类", index: 4, field: "flid", align:'center', width: 160,formatter:function(value,index,row){
+                        var map = {A: 'SQL查询', B: "引用其他定义"};
+                        return map[value] || value;
+                }},
+                {title: "参照代码", index: 5, field: "yyid", align:'center', width: 160},
+                {title: "参照模块", index: 6, field: "mkid", align:'center', width: 160},
+                {title: "SQL语句", index: 7, field: "sql",  align:'center',width: 240},
+                {title: "多选", index:8, field: "mutsel", align:'center', width: 160},
+                {title: "备注", index: 9, field: "bz", width: 160,align:'center'},
+                {title: "维护人编码",  index: 10, field: "whrid", width: 160,align:'center',hidden:true},
+                {title: "维护人",  index: 11, field: "whr", width: 160,align:'center'},
+                {title: "维护时间",  index: 12, field: "whsj", width: 160,align:'center',fieldType:'ftDateTime'},
+                {title: "创建人编码",  index: 13, field: "cjrid", width: 160,align:'center',hidden:true},
+                {title: "创建人",  index: 14, field: "cjr", width: 160,align:'center',hidden:true},
+                {title: "创建时间",  index: 15, field: "cjsj", width: 160,align:'center',hidden:true,fieldType:'ftDateTime'}
+               /* {title: "版本",  index: 16, field: "sysversion", width: 160,align:'center',hidden:true}*/
+            ]],
+            dialog:{
+                id:'kzzxFzsrEdit',
+                width: 1200,
+                height: 560,
+                module:'kzzx/fzsr/get',
+                href:'kzzx/fzsr/edit'
+            },
+            addGroup:[
+                {text:'保存',url:'kzzx/fzsr/add',iconCls:'fa fa-plus',btnCls:'gui-btn-normal',
+                    handler:"ajaxForm", queryForm:["#bzEditTable",'kzzx/fzsr/get','FZSRSZ']}
+           ],
+            editGroup:{text:'保存',url:'kzzx/fzsr/update',iconCls:'fa fa-plus',btnCls:'gui-btn-normal',
+                handler:"ajaxForm", queryForm:["#bzEditTable",'kzzx/fzsr/get','FZSRSZ']}
+        };
+        $div.Container(options);
+    });
+
+</script>

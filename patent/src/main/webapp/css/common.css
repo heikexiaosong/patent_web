@@ -1,0 +1,74 @@
+.search-form {
+    margin: 5px;
+}
+
+.label-before {
+    font-size: 16px;
+    display: inline-block;
+    vertical-align: middle;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin: 0 0 0 14px;
+    padding-right: 5px;
+    height: 24px;
+    line-height: 24px;
+}
+.tabs-panels {
+    padding: 3px 3px 0 3px;
+    background-color: #00bbee;
+}
+
+.tabs li.tabs-selected a.tabs-inner {
+    background: -webkit-linear-gradient(top,#00bbee 0,#00bbee 100%);
+    background: -moz-linear-gradient(top,#00bbee 0,#9dd2f1 100%);
+    background: -o-linear-gradient(top,#00bbee 0,#00bbee 100%);
+    background: linear-gradient(to bottom,#00bbee 0,#00bbee 100%);
+}
+
+.tabs li.tabs-selected a.tabs-inner {
+    border-bottom: 1px solid #00bbee;
+}
+
+.tabs li a.tabs-inner {
+    border-radius: 0 0 0 0;
+}
+
+.datagrid-toolbar {
+    border-bottom: 3px solid #9dd2f1;
+
+}
+
+.textbox {
+    -webkit-border-radius: 0;
+    border-radius: 5px;
+}
+
+.page-ctrl {
+    width: 154px;
+}
+
+.dialog-button {
+    border-color: #dddddd #95B8E7 #95B8E7 #95B8E7;
+}
+
+.dialog-toolbar, .dialog-button {
+    background: #F4F4F4;
+    border-width: 1px;
+    border-style: solid;
+}
+
+
+/**
+* EASYUI 扩展组建样式
+ */
+
+.auxinput-arrow {
+    background: url(icons/auxinput1_arrow.png) no-repeat center center;
+    background-color: #E0ECFF;
+}
+
+
+form.singleTableForm {
+    margin: 7px;
+}

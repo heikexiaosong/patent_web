@@ -1,0 +1,89 @@
+<div class="gui-fluid editTable">
+    <input type="hidden"  name="flag">
+    <input type="hidden"  name="id" >
+    <div class="gui-row">
+        <div class="gui-col-sm6">
+            <label class="gui-form-label" for="">年度：</label>
+            <div class="gui-input-block">
+                <input type="text" name="year" data-toggle="gui-textbox" data-options="" style="width: 100%">
+            </div>
+        </div>
+        <div class="gui-col-sm6">
+            <label class="gui-form-label" for="">月份：</label>
+            <div class="gui-input-block">
+                <input type="text" name="month" data-toggle="gui-textbox" data-options="" style="width: 100%">
+            </div>
+        </div>
+    </div>
+    <div class="gui-row">
+        <!--<div class="gui-col-sm6">
+            <label class="gui-form-label" for="">烧结厂：</label>
+            <div class="gui-input-block">
+                <input type="text" name="sjid" data-toggle="gui-textbox" data-options="" style="width: 100%">
+            </div>
+        </div>-->
+        <div class="gui-col-sm6">
+            <label class="gui-form-label" for="">物料编码：</label>
+            <div class="gui-input-block">
+                <input type="text" name="wlid" data-toggle="gui-textbox" data-options="" style="width: 100%" data-title="wlmc">
+                <input type="hidden" name="wlmc">
+            </div>
+        </div>
+    </div>
+    <div class="gui-row">
+        <div class="gui-col-sm6">
+            <label class="gui-form-label" for="">单位消耗：</label>
+            <div class="gui-input-block">
+                <input type="text" name="dwxh" data-toggle="gui-numberbox" data-options="min:0,precision:3" style="width: 100%">
+            </div>
+        </div>
+        <div class="gui-col-sm6">
+            <label class="gui-form-label" for="">单位价格：</label>
+            <div class="gui-input-block">
+                <input type="text" name="jg" data-toggle="gui-numberbox"  data-options="min:0,precision:3" style="width: 100%">
+            </div>
+        </div>
+    </div>
+    <div class="gui-row">
+        <div class="gui-col-sm6">
+            <label class="gui-form-label" for="">单位成本：</label>
+            <div class="gui-input-block">
+                <input type="text" name="dwcb" data-toggle="gui-numberbox" data-options="min:0,precision:3" style="width: 100%">
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        var $dialog=$('#sjzxSjysEdit');
+
+      /*  $dialog.find('input[name="sjid"]').iCombobox({
+            textField: "text",
+            valueField: "value",
+            data: [
+                {text: "1号烧结", value: "1#"},
+                {text: "2号烧结", value: "2#"}
+            ]
+        });*/
+
+        var year=createYear("2018","2100");
+        var mouth=createYear("1","12");
+        $dialog.find("input[name=year]").iCombobox({valueField:'value',textField:'text',data:year,panelHeight:224});
+        $dialog.find("input[name=month]").iCombobox({valueField:'value',textField:'text',data:mouth});
+        Auxiliary.box($dialog.find('input[name="wlid"]'),{
+            code:'WLID',
+            callback:function (row,field) {
+                var value = row[field];
+                var text = "";
+                if(row) $dialog.find('input[textboxname="wlid"]').iTextbox("setValue",value);
+                HTTP.post("sjcj/wlxx/query",{wlid:value},function (result) {
+                    if(result["success"]){
+                        text=result["data"]["records"][0]["wlmc"];
+                        $dialog.find('input[textboxname="wlid"]').iTextbox("setText",text);
+                    }
+                });
+            }
+        });
+    })
+
+</script>

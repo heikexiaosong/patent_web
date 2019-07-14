@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module>
+    <id>850000000</id>
+    <name>数据报表</name>
+    <zjm>dashboard-report</zjm>
+    <version>1.0</version>
+
+    <menu mkid="850100000" mkmc="数据报表">
+        <menu mkid="850200000" mkmc="报表工具">
+            <menu mkid="850201000" mkmc="报表参数" url="report/reportparam/index.html">
+            </menu>
+            <menu mkid="850202000" mkmc="报表定义" url="report/reporttemp/index.html">
+            </menu>
+        </menu>
+
+        <menu mkid="850300000" mkmc="报表生成">
+        </menu>
+
+    </menu>
+
+
+
+</module>

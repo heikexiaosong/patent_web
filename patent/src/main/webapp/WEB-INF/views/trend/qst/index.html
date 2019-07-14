@@ -1,0 +1,76 @@
+<div id="trendQst" class="gui-div">
+	<table  class="toolbar-table" data-options="id: 'trendQstTable',herf:'kzzx/gridset/query'" >
+	</table>
+	
+	<!-- 表格工具栏开始 -->
+	<div id="trendQstTable-toolbar" class="gui-toolbar"
+	     data-options="grid:{
+	           type:'datagrid',
+	           id:'trendQstTable'
+	       }">
+	    <a class="toolbar-reload toolbar"  href="javascript:void(0)" style="display: none"></a>
+	    <a class="toolbar-print toolbar"  href="javascript:void(0)"></a>
+	    <a class="toolbar-export toolbar"  href="javascript:void(0)"></a>
+	    <a class="toolbar-review toolbar" href="javascript:void(0)"></a>
+	    <a class="toolbar-add toolbar" href="javascript:void(0)"></a>
+	    <a class="toolbar-copy toolbar" href="javascript:void(0)"></a>
+	    <a class="toolbar-edit toolbar" href="javascript:void(0)"></a>
+	    <a class="toolbar-delete toolbar" href="javascript:void(0)"></a>
+		<a class="toolbar-pushlsit toolbar" href="javascript:void(0)"></a>
+	    <a type="submit" class="btn btn-primary serach toolbar-search"></a>
+	    <div class="bdsug" style="height: auto; display: none" >
+	        <form action="" class="query-criteria">
+	            <ul><li class="bdsug-store bdsug-overflow">
+	            </li></ul>
+	        </form>
+	    </div>
+	</div>
+</div>
+<!-- 表格工具栏结束 -->
+<script>
+    /*js初始化*/
+    $(function () {
+    	var $div=$('#trendQst');
+        var options={
+            url:'trend/qsztrealtime',
+            queryParams:{
+            },
+            columns:[[
+                {title: "编码", field: "ztid", fieldType:"ftString", width: 160, hidden:false},
+                {title: "名称", field: "ztmc", fieldType:"ftString", width: 512, hidden:false},
+                {title: "刷新频率", field: "rate", fieldType:"ftInteger", width: 100, hidden:false},
+                {title: "数据展示时间范围", field: "timespan", fieldType:"ftInteger", width: 100, hidden:false},
+                {title: "采样间隔", field: "interval", fieldType:"ftInteger", width: 80, hidden:false},
+                {title: "维护人", field: "whr", fieldType:"ftString", width: 80, hidden:false},
+                {title: "维护时间", field: "whsj", fieldType:"ftDateTime", width: 80, hidden:false}
+            ]],
+            dialog:{
+                id:'trendQstEdit',
+                width: 1200,
+                height: 600,
+                href:'trend/qsztrealtime/edit'
+            }
+        };
+        $div.Container(options);
+        $div.find('.toolbar-pushlsit').iMenubutton({
+			text:"发布",
+			onClick:function () {
+				var seletedRow=$div.find('.toolbar-table').datagrid("getSelected");
+				if(!seletedRow){
+					$.messager.alert("提示","请选择一条数据进行发布");
+					return false;
+				}
+				HTTP.post("trend/qsztrealtime/publish",{id:seletedRow["id"]},function (result) {
+					if(result["success"]){
+						$.messager.alert("提示","发布成功");
+						$div.find('.toolbar-reload').click();
+					}else{
+						$.messager.alert("提示",result["message"]||"发布失败");
+					}
+				})
+			}
+		})
+    });
+
+
+</script>

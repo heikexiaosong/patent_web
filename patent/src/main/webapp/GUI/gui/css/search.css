@@ -1,0 +1,53 @@
+/*index searchbox*/
+.aliyun-common-search-container{width:100%;height:26px;background:rgba(255, 255, 255, 0.12);position:relative;-webkit-transition:all 0.3s linear;transition:all 0.3s linear;float:right;}
+.aliyun-common-search-container::after{content:"";width:1px;height:16px;position:absolute;top:5px;background:rgba(255, 255, 255, 0.15);right:26px;}
+.aliyun-common-search-container:hover{background:#262c30;width:150%;}
+.aliyun-common-search-container:hover .aliyun-common-search-outline{opacity:1;}
+.aliyun-common-search-container .aliyun-common-search-outline{position:absolute;z-index:1;border:1px solid #00c1de;top:0;left:0;right:0;bottom:0;opacity:0;-webkit-transition:all 0.3s linear;transition:all 0.3s linear;}
+.aliyun-common-search-container input{position:relative;font-size:12px;z-index:2;-webkit-box-sizing:border-box;box-sizing:border-box;padding-left:12px;padding-right:22px;width:100%;height:100%;outline:none;background:transparent;border:none;color:#fff;line-height:26px;}
+.aliyun-common-search-container input::-webkit-input-placeholder{color:#ccc;}
+.aliyun-common-search-container input:-moz-placeholder{color:#ccc;}
+.aliyun-common-search-container input::-moz-placeholder{color:#ccc;}
+.aliyun-common-search-container input:-ms-input-placeholder{color:#ccc;}
+.aliyun-common-search-container .aliyun-common-search-close{display:none;position:absolute;z-index:3;right:32px;top:7px;bottom:0;width:12px;height:12px;cursor:pointer;background-image:url(https://img.alicdn.com/tfs/TB1QnaDg_nI8KJjSszgXXc8ApXa-28-28.png);background-size:100%;}
+.aliyun-common-search-container .aliyun-common-search-close:hover{background-image:url(https://img.alicdn.com/tfs/TB13xq7g4PI8KJjSspoXXX6MFXa-28-28.png);}
+.aliyun-common-search-container .aliyun-common-search-icon{display:block;position:absolute;z-index:3;right:0px;top:0px;bottom:0;width:26px;height:26px;cursor:pointer;background-image:url(https://img.alicdn.com/tfs/TB1fBsneyqAXuNjy1XdXXaYcVXa-28-28.png);background-size:50%;background-repeat:no-repeat;background-position:center;}
+.aliyun-common-search-container .aliyun-common-search-icon:hover{background-image:url(https://img.alicdn.com/tfs/TB1zv90g8DH8KJjy1zeXXXjepXa-28-28.png);}
+.aliyun-common-search-container .aliyun-common-search-dropdown{color:#fff;position:absolute;z-index:999;top:26px;left:0px;width:100%;background:#262c30;-webkit-box-shadow:0 2px 4px rgba(0, 0, 0, 0.15);box-shadow:0 2px 4px rgba(0, 0, 0, 0.15);-webkit-box-sizing:border-box;box-sizing:border-box;-webkit-transition:all 0.17s ease;transition:all 0.17s ease;padding:0px;height:0px;overflow:hidden;}
+.aliyun-common-search-container .aliyun-common-search-dropdown .dropdown-list{display:none;margin:0;padding:0;}
+/*! CSS Used from: https://g.alicdn.com/aliyun/console-base/1.0.1/main.css */
+.aliyun-console-base-bar *{margin:0;padding:0;-webkit-box-sizing:border-box;box-sizing:border-box;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;}
+.aliyun-console-base-bar ul{list-style:none;}
+.aliyun-common-search-container .aliyun-common-search-dropdown .dropdown-list li:hover a{color:#00c1de;}
+.aliyun-common-search-container .aliyun-common-search-dropdown .dropdown-list li:hover a:after{content:'';background:url(https://img.alicdn.com/tfs/TB19CD3m9_I8KJjy0FoXXaFnVXa-28-28.png);background-size:100%;}
+.aliyun-common-search-container .aliyun-common-search-dropdown .dropdown-list li a{display:inline-block;width:100%;line-height:30px;height:30px;color:#fff;-webkit-transition:all 0.17s ease;transition:all 0.17s ease;text-decoration:none;}
+.aliyun-common-search-container .aliyun-common-search-dropdown .dropdown-list li a:hover{text-decoration:none;}
+/*! CSS Used from: https://g.alicdn.com/aliyun/console-base/1.2.6/main.css */
+.aliyun-console-base-bar *{margin:0;padding:0;-webkit-box-sizing:border-box;box-sizing:border-box;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;}
+.aliyun-console-base-bar a{text-decoration:none;}
+.topbar a{text-rendering:optimizeLegibility;-webkit-font-smoothing:antialiased;letter-spacing:.02em;text-decoration:none;}
+.topbar a:hover{text-decoration:none;}
+.aliyun-console-base-bar .topbar-search .topbar-search-container .aliyun-common-search-dropdown .dropdown-list li:hover a{color:#00c1de;}
+/*! CSS Used from: https://g.alicdn.com/aliyun/console-base/1.2.6/viewframe.css */
+.topbar a{text-rendering:optimizeLegibility;-webkit-font-smoothing:antialiased;letter-spacing:.02em;text-decoration:none;}
+.topbar a:hover{text-decoration:none;}
+.aliyun-console-base-bar .topbar-search .topbar-search-container .aliyun-common-search-dropdown .dropdown-list li:hover a{color:#00c1de;}
+.aliyun-common-search-container .aliyun-common-search-dropdown.open .dropdown-list {
+    display: block;
+}
+.aliyun-common-search-dropdown.open{
+    height: auto;
+    max-height: 480px;
+    overflow: auto;
+}
+.dropdown-list li{
+    padding: 0 10px;
+}
+/*page 搜索框*/
+#head .bdsug{top:33px;}
+.bdsug{/*display:none;*/position:absolute;z-index:1;width:538px;background:#fff;
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;_overflow:hidden;
+    box-shadow:1px 1px 3px #ededed;-webkit-box-shadow:1px 1px 3px #ededed;-moz-box-shadow:1px 1px 3px #ededed;-o-box-shadow:1px 1px 3px #ededed;}
+.bdsug .bdsug-feedback-wrap{text-align:right;background:#fafafa;color:#666;height:25px;line-height:27px;}
+.bdsug .bdsug-feedback{margin-right:10px;text-decoration:underline;color:#666;cursor: pointer}

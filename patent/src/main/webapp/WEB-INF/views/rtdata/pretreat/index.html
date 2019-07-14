@@ -1,0 +1,229 @@
+<div id="pretreat" class="gui-div">
+    <table class="toolbar-table" data-options="id: 'pretreatTable',herf:'report/gridset/query'">
+    </table>
+    <div id="pretreatTable-toolbar" class="gui-toolbar" data-options="grid:{type:'datagrid',id:'pretreatTable'}">
+        <a class="toolbar-reload toolbar"  href="javascript:void(0)"></a>
+        <a class="toolbar-add toolbar" href="javascript:void(0)"></a>
+        <a class="toolbar-edit toolbar" href="javascript:void(0)"></a>
+        <a class="toolbar-delete toolbar" href="javascript:void(0)"></a>
+
+        <a class="toolbar-process toolbar" href="javascript:void(0)"></a>
+        <a class="toolbar-visualdata toolbar" href="javascript:void(0)"></a>
+
+        <a class="toolbar-publish toolbar" href="javascript:void(0)">功能发布</a>
+        <a class="toolbar-unpublish toolbar" href="javascript:void(0)">取消发布</a>
+
+        <a class="btn btn-primary serach toolbar-search"></a>
+        <div class="bdsug" style="height: auto; display: none" >
+            <form action="" class="query-criteria">
+                <ul><li class="bdsug-store bdsug-overflow">
+                <span style="margin: 10px">
+                        <label >日期范围：</label>
+                    <input type="text" data-toggle="gui-datebox" name="start">
+                    <input type="text" data-toggle="gui-datebox" name="end">
+                    </span>
+                </li></ul>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+
+
+    $('#pretreat .toolbar-publish').iMenubutton({
+        onClick: function () {
+            var record = $('#pretreat').find('.toolbar-table').datagrid('getSelected') || {};
+            if ( record==null || record == undefined ) {
+                $.messager.alert('提示','请选择一条记录进行发布');
+                return false;
+            }
+
+            HTTP.post('rtdata/pretreat/publish',{code:  record["code"] },function (result) {
+                console.log(result.data);
+                if ( result.success ){
+                    $.messager.alert('信息','数据预处理功能[' + record["code"]  + ']发布成功');
+                } else {
+                    $.messager.alert('信息', result.message || ('数据预处理功能[' + record["code"]  + ']发布失败'));
+                }
+            });
+
+        },
+        text: '功能发布',
+        iconCls: 'fa fa-share'
+    });
+
+    $('#pretreat .toolbar-unpublish').iMenubutton({
+        onClick: function () {
+
+            var record = $('#pretreat').find('.toolbar-table').datagrid('getSelected');
+            if ( record==null || record == undefined ) {
+                $.messager.alert('提示','请选择一条已发布功能进行取消操作');
+                return false;
+            }
+
+            HTTP.post('rtdata/pretreat/unpublish',{code:  record["code"] },function (result) {
+                console.log(result.data);
+                if ( result.success ){
+                    $.messager.alert('信息','数据预处理功能[' + record["code"]  + ']取消成功');
+                } else {
+                    $.messager.alert('信息', result.message || ('数据预处理功能[' + record["code"]  + ']取消失败'));
+                }
+            });
+
+        },
+        text: '取消发布',
+        iconCls: 'fa fa-ban'
+    });
+
+
+    $('#pretreat .toolbar-process').iMenubutton({
+        onClick: function () {
+
+            var record = $('#pretreat').find('.toolbar-table').datagrid('getSelected');
+            if ( record==null || record == undefined ) {
+                $.messager.alert('提示','请选择一条数据处理的记录');
+                return false;
+            }
+
+
+
+            var  $container=$('<div />');
+            $container.iDialog({
+                title: "数据处理 - " + record["name"],
+                width:400,
+                height:200,
+                buttons: [{
+                    text: '确认',
+                    iconCls: 'fa fa-save',
+                    btnCls: 'gui-btn-save',
+                    handler: function () {
+                        var param = DataBind.collectData($container);
+
+                        param['code'] = record["code"];
+
+
+                        HTTP.post('api/rtdata/process', param,function (result) {
+                            console.log(result.data);
+                            if ( result.success ){
+                                $.messager.alert('信息','[' + record["name"]  + ']数据处理成功');
+                            } else {
+                                $.messager.alert('信息', result.message || ('[' + record["name"]  + ']数据处理失败'));
+                            }
+                        });
+                    }
+                },{
+                    text:'取消',
+                    iconCls: "fa fa-close",
+                    btnCls: "gui-btn-danger",
+                    handler:function () {
+                        $container.iDialog('close');
+                    }
+                }],
+                onOpen:function () {
+                    //$(container).find(".detail-view").html("");
+
+                    $container.find("input[name='theDate']").iDatetimebox({});
+                },
+                onClose: function () {
+                    $(this).form("clear");
+                    $(this).iDialog('destroy');
+                }
+
+            });
+            var $div=$('<div class="editTable" style="margin: 36px 80px;"><label  >数据时间点: </label><input type="text" name="theDate"></div>');
+            $container.html('').append($div);
+            $container.iDialog('open');
+
+        },
+        text: '数据处理',
+        iconCls: 'fa fa-bolt'
+    });
+
+    $('#pretreat .toolbar-visualdata').iMenubutton({
+        onClick: function () {
+
+            var record = $('#pretreat').find('.toolbar-table').datagrid('getSelected');
+            if ( record==null || record == undefined ) {
+                $.messager.alert('提示','请选择一条数据展示的记录');
+                return false;
+            }
+
+            layer.open({
+                type: 2,
+                title: '数据展示',
+                shadeClose: true,
+                shade: false,
+                maxmin: true, //开启最大化最小化按钮
+                area: ['893px', '600px'],
+                content: 'rtdata/pretreat/visualdata/' + record["code"]
+            });
+
+
+        },
+        text: '数据展示',
+        iconCls: 'fa fa-eye'
+    });
+
+
+
+    $(function () {
+
+        $("#pretreat input[name='start']").iDatebox({});
+        $("#pretreat input[name='end']").iDatebox({});
+
+        var $div=$('#pretreat');
+        var options={
+            url:'rtdata/pretreat',
+            columns:[[
+                {title: "ID", index: 10, field: "id", width: 160, halign:'center', align: 'left',  hidden: true },
+                {title: "编码", index: 20, field: "code", width: 160, halign:'center', align: 'left',  hidden: false },
+                {title: "描述", index: 30, field: "name", width: 160, halign:'center', align: 'left',  hidden: false },
+                {title: "取值算法", index: 31, field: "algorithm", width: 160, halign:'center', align: 'left',  hidden: false, formatter:function (value) {
+                        return {"last": "最新值", "first": "最旧值", "max": "最大值", "min": "最小值", "avg": "平均值"}[value] || value;
+                    }
+                },
+                {title: "数据查询窗口(秒)", index: 32, field: "window", width: 160, halign:'center', align: 'left',  hidden: false, formatter:function (value) {
+                        if ( !! value && value > 0 ) return value;
+                        return "时间点";
+                    }
+                },
+                {title: "数据点列表", index: 40, field: "metrics", width: 160, halign:'center', align: 'left',  hidden: false },
+                {title: "维护人编码", index: 50, field: "whrid", width: 240, halign:'center', align: 'left',  hidden: true },
+                {title: "维护人", index: 60, field: "whr", width: 120, halign:'center', align: 'left',  hidden: false },
+                {title: "维护时间", index: 70, field: "whsj", width: 160, halign:'center', align: 'center',  hidden: false , formatter:function (value) {
+                        if ( value==undefined || value =='' ){
+                            return "";
+                        }
+                        var date = new Date(parseInt(value));
+                        if ( isNaN(date) ){
+                            return ""
+                        }
+                        return date.Format("yyyy-MM-dd hh:mm:ss");
+                    }
+                },
+                {title: "创建人编码", index: 80, field: "cjrid", width: 160, halign:'center', align: 'left',  hidden: true },
+                {title: "创建人", index: 90, field: "cjr", width: 120, halign:'center', align: 'left',  hidden: false },
+                {title: "创建时间", index: 100, field: "cjsj", width: 160, halign:'center', align: 'center',  hidden: false , formatter:function (value) {
+                        if ( value==undefined || value =='' ){
+                            return "";
+                        }
+                        var date = new Date(parseInt(value));
+                        if ( isNaN(date) ){
+                            return ""
+                        }
+                        return date.Format("yyyy-MM-dd hh:mm:ss");
+                    }
+                },
+                {title: "系统版本", index: 110, field: "sysversion", width: 160, halign:'center', align: 'left',  hidden: true }
+            ]],
+            dialog:{
+                id:'pretreatEdit',
+                width: 1000,
+                height: 600,
+                href:'rtdata/pretreat/edit'
+            }
+        };
+        $div.Container(options);
+    });
+
+</script>

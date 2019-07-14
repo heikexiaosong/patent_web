@@ -1,0 +1,77 @@
+<div id="wfdefContainer" class="gui-div" style="width:100%;height: 100%">
+<table class="toolbar-table" data-options="id: 'productWfdef'"></table>
+<div id="productWfdef-toolbar" class="gui-toolbar"
+     data-options="grid:{type:'datagrid',id:'productWfdef'}">
+    <a class="toolbar-reload toolbar"  href="javascript:void(0)">查询</a>
+    <a class="toolbar-edit toolbar" href="javascript:void(0)">编辑</a>
+    <form class="query-criteria">
+        <div class="layui-collapse" lay-filter="test_dbtable">
+            <div class="layui-colla-item">
+                <h2 class="layui-colla-title"><span class="l-btn-icon fa fa-binoculars"></span>
+                    <span style="margin-left: 20px">查询条件</span></h2>
+                <div class="layui-colla-content layui-show">
+                    <span style="margin: 0 10px">
+                        <label >工作流：</label><input type="text" name="wfid" style="height: 24px" >
+                    </span>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+</div>
+<!-- 表格工具栏结束 -->
+<script>
+
+    $('#wfdefContainer').find('.toolbar-table').iDatagrid({
+        url: 'wf/wfdef/query',
+        checkOnSelect:true,
+        selectOnCheck:true,
+        singleSelect:true,
+        queryParams:{
+            wfid: $('#wfdefContainer').find('form input[name="wfid"]').val()
+        },
+        onDblClickRow:function () {
+            $('#wfdefContainer').find('.review').click();
+        }
+    });
+    $('#wfdefContainer').find('.toolbar-reload').iMenubutton({
+        event: 'query',
+        iconCls: 'fa fa-search',
+        btnCls: 'gui-btn-danger',
+        form: {'class': 'query-criteria'},
+        grid: {type: 'datagrid'}
+    });
+    
+     $('#wfdefContainer').find('.toolbar-edit').iMenubutton({
+    	 onClick:setWorkFlow,
+         iconCls: 'fa fa-hand-o-up'
+    });
+    
+    function setWorkFlow() {
+    	var selectRow=$('#productWfdef').iDatagrid('getSelected');
+    	if (  selectRow==null ){
+            $.messager.alert("提示信息", "请先选择需要处理的数据.");
+            return ;
+        }
+    	var cookie=window.sessionStorage.getItem('cookie');
+        var href=window.location.href;
+        var index = href.lastIndexOf("\/");
+        href=href.substring(0,index);
+        var queryParams={
+            "data":{
+                wfid: selectRow['wfid']
+            },
+            "url":href,
+            "cookie":cookie
+        };
+        HTTP.post('http://localhost:19529/wf/wfdef',queryParams,function (result) {},false,true,function(res){
+            $.messager.confirm('提示', '是否要下载最近的报表插件', function (r) {
+                if (r) {
+                    HTTP.download('win32/update/download/plugin/reprot',{},'get');
+                }
+            }); 
+        });
+    }
+    
+</script>
+<!-- 表格工具栏结束 -->

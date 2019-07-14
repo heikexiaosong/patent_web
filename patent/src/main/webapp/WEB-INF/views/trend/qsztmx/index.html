@@ -1,0 +1,58 @@
+<div id="trendQsztmx" class="gui-div">
+	<table  class="toolbar-table" data-options="id: 'trendQsztmxTable',herf:'kzzx/gridset/query'" >
+	</table>
+	
+	<!-- 表格工具栏开始 -->
+	<div id="trendQsztmxTable-toolbar" class="gui-toolbar"
+	     data-options="grid:{
+	           type:'datagrid',
+	           id:'trendQsztmxTable'
+	       }">
+	    <a class="toolbar-reload toolbar"  href="javascript:void(0)"></a>
+	   <!-- <a class="toolbar-print toolbar"  href="javascript:void(0)"></a>
+	    <a class="toolbar-export toolbar"  href="javascript:void(0)"></a>-->
+	    <a class="toolbar-review toolbar" href="javascript:void(0)"></a>
+	    <a class="toolbar-add toolbar" href="javascript:void(0)"></a>
+	    <a class="toolbar-copy toolbar" href="javascript:void(0)"></a>
+	    <a class="toolbar-edit toolbar" href="javascript:void(0)"></a>
+	    <a class="toolbar-delete toolbar" href="javascript:void(0)"></a>
+	    <a type="submit" class="btn btn-primary serach toolbar-search"></a>
+	    <div class="bdsug" style="height: auto; display: none" >
+	        <form action="" class="query-criteria">
+	            <ul><li class="bdsug-store bdsug-overflow">
+	            </li></ul>
+	        </form>
+	    </div>
+	</div>
+</div>
+<!-- 表格工具栏结束 -->
+<script>
+    /*js初始化*/
+    $(function () {
+    	var $div=$('#trendQsztmx');
+        var options={
+            url:'trend/qsztmx',
+            queryParams:{
+            },
+            columns:[[
+                {title: "趋势主题", field: "mid", fieldType:"ftString", index: 0, width: 256, hidden:true},
+                {title: "趋势主题", field: "ztmc", fieldType:"ftString", index: 0, width: 256, hidden:false},
+                {title: "序号", field: "xh", fieldType:"ftInteger", index: 1, width: 120, hidden:false},
+                {title: "指标", field: "trend", fieldType:"ftString", index: 2, width: 240, hidden:true},
+                {title: "指标", field: "trendname", fieldType:"ftString", index: 2, width: 240, hidden:false},
+                {title: "颜色", field: "color", fieldType:"ftString", index: 3, width: 160, hidden:false},
+                {title: "维护人", field: "whr", fieldType:"ftString", index: 6, width: 240, hidden:false},
+                {title: "维护时间", field: "whsj", fieldType:"ftDateTime", index: 7, width: 80, hidden:false}
+            ]],
+            dialog:{
+                id:'trendQsztmxEdit',
+                width: 900,
+                height: 386,
+                href:'trend/qsztmx/edit'
+            }
+        };
+        $div.Container(options); 
+    });
+
+
+</script>

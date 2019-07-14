@@ -1,0 +1,115 @@
+<div id="sjcjCpcljh" class="gui-div">
+	<table  class="toolbar-table" data-options="id: 'sjcjCpcljhTable',herf:'kzzx/gridset/query'" >
+	</table>
+	
+	<!-- 表格工具栏开始 -->
+	<div id="sjcjCpcljhTable-toolbar" class="gui-toolbar"
+	     data-options="grid:{
+	           type:'datagrid',
+	           id:'sjcjCpcljhTable'
+	       }">
+	    <a class="toolbar-reload toolbar"  href="javascript:void(0)"></a>
+	    <a class="toolbar-review toolbar" href="javascript:void(0)"></a>
+	    <a class="toolbar-add-cpclijh toolbar" href="javascript:void(0)"></a>
+	    <a class="toolbar-edit toolbar" href="javascript:void(0)"></a>
+	    <a class="toolbar-delete toolbar" href="javascript:void(0)"></a>
+	    <a type="submit" class="btn btn-primary serach toolbar-search"></a>
+	    <div class="bdsug" style="height: auto; display: none" >
+	        <form action="" class="query-criteria">
+	            <ul><li class="bdsug-store bdsug-overflow">
+						<span style="margin: 10px">
+			                <label>年度：</label><input type="text" name="year" data-toggle="gui-numberbox">
+			            </span>
+			    		<span style="margin: 10px">
+			                <label>月度：</label><input type="text" name="month" data-toggle="gui-numberbox">
+			            </span>
+			    		<span style="margin: 10px">
+			                <label>物料：</label><input type="text" name="wlinfo" class="gui-textbox" data-toggle="gui-textbox">
+			            </span>
+	            </li></ul>
+	        </form>
+	    </div>
+	</div>
+</div>
+<!-- 表格工具栏结束 -->
+<script>
+    /*js初始化*/
+    $(function () {
+    	var $div=$('#sjcjCpcljh');
+		var year=createYear("2018","2100");
+		var mouth=createYear("1","12");
+		$div.find("input[name=year]").iCombobox({valueField:'value',textField:'text',data:year,panelHeight:224 });
+		$div.find("input[name=month]").iCombobox({valueField:'value',textField:'text',data:mouth});
+        var options={
+            url:'sjzx/cpcljh',
+            queryParams:{
+                year:$div.find('form input[name="year"]').val(),
+                month:$div.find('form input[name="month"]').val(),
+                wlinfo:$div.find('form input[name="wlinfo"]').val()
+            },
+            columns:[[
+                {title: "年度", field: "year", fieldType:"ftInteger", width: 80},
+                {title: "月度", field: "month", fieldType:"ftInteger", width: 80},
+                {title: "物料编码", field: "wlid", fieldType:"ftString", width: 240},
+                {title: "物料名称", field: "wlmc", fieldType:"ftString", width: 240},
+                {title: "计划数量", field: "jhsl", fieldType:"ftFloat", width: 80},
+                {title: "维护人", field: "whr", fieldType:"ftString", width: 140},
+                {title: "维护时间", field: "whsj", fieldType:"ftDateTime", width: 140}
+            ]],
+            dialog:{
+                id:'sjcjCpcljhEdit',
+                width: 900,
+                height: 506,
+                href:'sjzx/cpcljh/edit'
+			}
+        };
+        $div.Container(options);
+        $div.find(".toolbar-add-cpclijh").iMenubutton({
+			event:'openDialog',
+			iconCls: 'fa fa-plus',
+			text:'新增',
+			dialog:{
+				title:'新增',
+				id:'sjcjCpcljhAdd',
+				width:900,
+				height: 506,
+				href:'sjzx/cpcljh/add',
+				tag:'add',
+				buttonsGroup:[
+					{	text:'保存',
+						iconCls:'fa fa-plus',
+						btnCls:'gui-btn-normal',
+						handler:function(){
+							var $dialog=$('#sjcjCpcljhAdd');$dialog.find('.mx').datagrid("acceptChanges");
+							var rows= $dialog.find('.mx').datagrid("getRows");
+							var queryParams=DataBind.collectData($dialog);
+							var isR=true;
+							$.each(rows,function (i,row) {
+								if(row["jhsl"]===0||row["jhsl"]===''||!row["jhsl"]||row["jhsl"]==='0'){
+									$.messager.alert("警告",row["wlmc"]+"的计划数量不能为0");
+									isR=false;return false;
+								}
+								row.month=queryParams["month"]||'';
+								row.year=queryParams["year"]||'';
+
+							});
+							if(!isR)return false;
+							HTTP.post("sjzx/cpcljh/saveData",{datas:rows},function (result) {
+								if(result["success"]){
+									$.messager.show({
+										title: "温馨提示",
+										msg: "操作成功"
+									});
+									$('#sjcjCpcljhAdd').iDialog("destroy");
+									$div.find(".toolbar-reload").click()
+								}
+							})
+						}
+					}]
+			}
+		});
+
+    });
+
+
+</script>

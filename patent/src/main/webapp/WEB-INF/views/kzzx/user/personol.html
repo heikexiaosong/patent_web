@@ -1,0 +1,57 @@
+<div class="gui-fluid ">
+    <form>
+        <div class="selectue-container">
+            <select multiple="multiple" size="10" name="doublebox" class="demo">
+            </select>
+        </div>
+    </form>
+
+</div>
+
+<script>
+    $(function () {
+        var userid=$("#kzzxUserTable").iDatagrid("getSelected")['userid'];
+        var $container=$('#dpersonal');
+        var undata=[];
+        var ydata=[];
+        HTTP.post("kzzx/user/queryRoleNotInUser", {userid: userid}, function (result) {
+            if (result["success"] == true) {
+                var reords = result.data.records;
+                $.each(reords, function (i, record) {
+                    var node = {
+                        id: record["roleid"],
+                        text: record["roleid"]+record["rolename"],
+                        data:record
+                    };
+                    undata.push(node);
+                });
+            }
+        });
+        HTTP.post(" kzzx/user/queryRoleByUser", {userid: userid}, function (result) {
+            if (result["success"] == true) {
+                var reords = result.data.records;
+                $.each(reords, function (i, record) {
+                    var node = {
+                        id: record["roleid"],
+                        text: record["roleid"]+record["rolename"],
+                        data:record
+                    };
+                    ydata.push(node);
+                });
+            }
+        });
+                var demo2 = $container.find('.demo').doublebox({
+                    nonSelectedListLabel: '待选择',
+                    selectedListLabel: '已选择',
+                    preserveSelectionOnMove: 'moved',
+                    moveOnSelect: false,
+                    nonSelectedList:undata,
+                    selectedList:ydata,
+                    optionValue:"id",
+                    optionText:"text",
+                    optionData:"data",
+                    doubleMove:true
+                });
+        $('.settingUp-btns').css('display','none');
+    })
+</script>

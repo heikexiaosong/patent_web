@@ -1,0 +1,116 @@
+<div class="gui-fluid editTable">
+ <input type="hidden" name="id">
+ <input type="hidden" name="flag">
+
+ 	<div class="gui-row" style="width: 50%;display: inline-block">
+        <div class="gui-col-sm12">
+            <label class="gui-form-label" >参数编码：</label>
+            <div class="gui-input-block">
+                <input type="text" name="csbm" data-options="required:true" data-toggle="gui-textbox" style="width: 100%">
+            </div>
+        </div>
+    </div>
+ 	<div class="gui-row" style="width: 49%;display: inline-block">
+        <div class="gui-col-sm12">
+            <label class="gui-form-label" >参数名称：</label>
+            <div class="gui-input-block">
+                <input type="text" name="csmc" data-options="required:true" data-toggle="gui-textbox" style="width: 100%">
+            </div>
+        </div>
+    </div>
+    <div class="gui-row" style="width: 50%;display: inline-block">
+        <div class="gui-col-sm12">
+            <label class="gui-form-label" >参数类型：</label>
+            <div class="gui-input-block">
+                <input type="text" name="type" data-options="required:true" style="width: 100%">
+            </div>
+        </div>
+    </div>
+ 	<div class="gui-row" style="width: 49%;display: inline-block">
+        <div class="gui-col-sm12">
+            <label class="gui-form-label" >取值方式：</label>
+            <div class="gui-input-block">
+                <input type="text" name="cslx" data-options="required:true" style="width: 100%">
+            </div>
+        </div>
+    </div>
+    <div class="gui-row" style="width: 50%;display: inline-block">
+        <div class="gui-col-sm12">
+            <label class="gui-form-label">返回值类型：</label>
+            <div class="gui-input-block">
+                <input type="text" name="fhzlx" data-options="required:true" style="width: 100%">
+            </div>
+        </div>
+    </div>
+    <div class="gui-row" style="width: 49%;display: inline-block">
+        <div class="gui-col-sm12">
+            <label class="gui-form-label" >参数分组：</label>
+            <div class="gui-input-block">
+                <input type="text" name="csfz" data-options="required:false" data-toggle="gui-textbox" style="width: 100%">
+            </div>
+        </div>
+    </div>
+<!--     <div class="gui-row" style="width: 100%;display: inline-block" style="width: 100%">
+        <div class="gui-col-sm12">
+            <label class="gui-form-label">函数格式：</label>
+            <div class="gui-input-block">
+                <input type="text" name="format" data-options="required:false" data-toggle="gui-textbox" style="width: 100%">
+            </div>
+        </div>
+    </div> -->
+ 	<div class="gui-row">
+        <div class="gui-col-sm12">
+            <label class="gui-form-label" >参数内容：</label>
+            <div class="gui-input-block">
+                <input type="text" name="csxx" data-options="multiline:true"  data-toggle="gui-textarea" style="width: 100%;height:290px">
+            </div>
+        </div>
+    </div>
+<!--     <div class="gui-row">
+        <div class="gui-col-sm12">
+            <label class="gui-form-label" >参数说明：</label>
+            <div class="gui-input-block">
+                <input type="text" name="cssm" data-options="required:false" data-toggle="gui-textbox"
+                       style="">
+            </div>
+        </div>
+    </div> -->
+<!--  <div class="gui-row">
+        <div class="gui-col-sm12">
+            <label class="gui-form-label" >备注：</label>
+            <div class="gui-input-block">
+                <input type="text" name="bz"  data-options="multiline:true"  data-toggle="gui-textarea" style="width: 100%;height:66px">
+            </div>
+        </div>
+    </div> -->
+</div>
+
+<script>
+    ComboboBox.init(
+        $('#reportParamEdit input[name="cslx"]'),
+        {
+            data: [
+                {text: "SQL语句", value: "S", selected: !0 }
+            ]
+        });
+
+    ComboboBox.init(
+        $('#reportParamEdit input[name="type"]'),
+        {
+            data: [
+                {text: "函数", value: "F", selected: !0 },
+                {text: "变量", value: "P" }
+            ]
+        });
+    
+    ComboboBox.init(
+            $('#reportParamEdit input[name="fhzlx"]'),
+            {
+                data: [
+                    {text: "数值", value: "float", selected: !0 },
+                    {text: "日期", value: "datetime"},
+                    {text: "字符串", value: "string"}
+                ]
+            });
+
+</script>

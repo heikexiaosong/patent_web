@@ -1,0 +1,47 @@
+<div class="gui-fluid editTable">
+    <input type="hidden"  name="flag">
+    <input type="hidden"  name="id" >
+	<div class="gui-row" style="width: 100%; display: inline-block">
+        <div class="gui-col-sm12">
+            <label class="gui-form-label" for="">主题编码：</label>
+            <div class="gui-input-block">
+                <input type="text" name="ztid" data-toggle="gui-textbox" data-options="" style="width: 100%">
+            </div>
+        </div>
+    </div>
+	<div class="gui-row" style="width: 100%; display: inline-block">
+        <div class="gui-col-sm12">
+            <label class="gui-form-label" for="">主题名称：</label>
+            <div class="gui-input-block">
+                <input type="text" name="ztmc" data-toggle="gui-textbox" data-options="" style="width: 100%">
+            </div>
+        </div>
+    </div>
+    <div class="gui-row" style="width: 100%; display: inline-block">
+        <div class="gui-col-sm12">
+            <label class="gui-form-label" for="">采样间隔：</label>
+            <div class="gui-input-block">
+                <input type="text" name="interval" data-toggle="gui-textbox" data-options="" style="width: 100%">
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+          var $dialog=$('#trendQsztEdit');
+        //采样频率
+          $dialog.find('input[name="interval"]').iCombobox({valueField: 'value', textField: 'text',
+			data:[{value:"5", text:"5秒"}, 
+				  {value:"10", text:"10秒"},
+				  {value:"30", text:"30秒"},
+				  {value:"60", text:"1分钟"},
+				  {value:"300", text:"5分钟"},
+				  {value:"900", text:"15分钟"},
+				  {value:"1800", text:"30分钟"},
+				  {value:"3600", text:"1小时"},
+				  {value:"7200", text:"2小时"}
+			     ]
+	          });
+    })
+
+</script>

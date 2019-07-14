@@ -1,0 +1,67 @@
+<div id="sjcjCpcl" class="gui-div">
+	<table  class="toolbar-table" data-options="id: 'sjcjCpclTable',herf:'kzzx/gridset/query'" >
+	</table>
+	
+	<!-- 表格工具栏开始 -->
+	<div id="sjcjCpclTable-toolbar" class="gui-toolbar"
+	     data-options="grid:{
+	           type:'datagrid',
+	           id:'sjcjCpclTable'
+	       }">
+	    <a class="toolbar-reload toolbar"  href="javascript:void(0)" style="display: none"></a>
+	    <a class="toolbar-review toolbar" href="javascript:void(0)"></a>
+	    <a class="toolbar-add toolbar" href="javascript:void(0)"></a>
+	    <a class="toolbar-edit toolbar" href="javascript:void(0)"></a>
+	    <a class="toolbar-delete toolbar" href="javascript:void(0)"></a>
+	    <a type="submit" class="btn btn-primary serach toolbar-search"></a>
+	    <div class="bdsug" style="height: auto; display: none" >
+	        <form action="" class="query-criteria">
+	            <ul><li class="bdsug-store bdsug-overflow">
+			        	<span style="margin: 10px">
+			                <label>日期：</label><input type="text" name="date" data-toggle="gui-datetimebox">
+			            </span> 
+			    		<span style="margin: 10px">
+			                <label>物料信息：</label><input type="text" name="wlinfo" data-toggle="gui-textbox">
+			            </span>
+	            </li></ul>
+	        </form>
+	    </div>
+	</div>
+</div>
+<!-- 表格工具栏结束 -->
+<script>
+    /*js初始化*/
+    $(function () {
+    	var $div=$('#sjcjCpcl');
+        var options={
+            url:'sjzx/cpcl',
+            queryParams:{
+                date:$div.find('form input[name="date"]').val(),
+				wlinfo:$div.find('form input[name="wlinfo"]').val()
+            },
+            columns:[[
+                {title: "日期", field: "date", fieldType:"ftDateTime", width: 140},
+                {title: "工厂编码", field: "gcid", fieldType:"ftString",  width: 140,hidden:true},
+                {title: "工厂名称", field: "gcmc", fieldType:"ftString", width: 140},
+                {title: "产品线", field: "cpx", fieldType:"ftString",  width: 140,hidden:true},
+                {title: "产品线", field: "cpxmc", fieldType:"ftString", width: 140},
+                {title: "物料编码", field: "wlid", fieldType:"ftString",  width: 140},
+                {title: "物料名称", field: "wlmc", fieldType:"ftString", width: 140},
+                {title: "数量", field: "sl", fieldType:"ftFloat", width: 80},
+                {title: "维护人", field: "whr", fieldType:"ftString", width: 140},
+                {title: "维护时间", field: "whsj", fieldType:"ftDateTime", width: 180}
+            ]],
+            dialog:{
+                id:'sjcjCpclEdit',
+                width: 900,
+                height:720,
+                href:'sjzx/cpcl/edit',
+				addGroup:[{text:'保存',url:'sjzx/cpcl/add',iconCls:'fa fa-plus',btnCls:'gui-btn-normal',
+					handler:"ajaxForm"}]
+            }
+        };
+        $div.Container(options); 
+    });
+
+
+</script>

@@ -1,0 +1,53 @@
+<div id="nyglGc" class="gui-div">
+	<table  class="toolbar-table" data-options="id: 'nyglGcTable',herf:'kzzx/gridset/query'" >
+	</table>
+	
+	<!-- 表格工具栏开始 -->
+	<div id="nyglGcTable-toolbar" class="gui-toolbar" data-options="grid:{ type:'datagrid',id:'nyglGcTable'}">
+	    <a class="toolbar-reload toolbar"  href="javascript:void(0)" style="display: none"></a>
+	    <a class="toolbar-review toolbar" href="javascript:void(0)"></a>
+	    <a class="toolbar-add toolbar" href="javascript:void(0)"></a>
+	    <a class="toolbar-copy toolbar" href="javascript:void(0)"></a>
+	    <a class="toolbar-edit toolbar" href="javascript:void(0)"></a>
+	    <a class="toolbar-delete toolbar" href="javascript:void(0)"></a>
+	    <a type="submit" class="btn btn-primary serach toolbar-search"></a>
+	    <div class="bdsug" style="height: auto; display: none" >
+	        <form action="" class="query-criteria">
+	            <ul><li class="bdsug-store bdsug-overflow">
+					  <span style="margin: 10px">
+                        <label >工厂信息：</label><input type="text" name="gcinfo" data-toggle="gui-textbox" class="gui-textbox" style="width: 200px" >
+                </span>
+	            </li></ul>
+	        </form>
+	    </div>
+	</div>
+</div>
+<!-- 表格工具栏结束 -->
+<script>
+    /*js初始化*/
+    $(function () {
+    	var $div=$('#nyglGc');
+        var options={
+            url:'sjzx/gc',
+            queryParams:{
+                gcinfo:$div.find('input[name="gcinfo"]').val()
+            },
+            columns:[[
+                {title: "工厂编码", field: "gcid", fieldType:"ftString", index: 0, width: 120, hidden:false},
+                {title: "工厂名称", field: "gcmc", fieldType:"ftString", index: 1, width: 140, hidden:false},
+                {title: "备注", field: "bz", fieldType:"ftString", index: 2, width: 280, hidden:false},
+                {title: "维护人", field: "whr", fieldType:"ftString", index: 3, width: 180, hidden:false},
+                {title: "维护时间", field: "whsj", fieldType:"ftDateTime", index: 4, width: 180, hidden:false}
+            ]],
+            dialog:{
+                id:'nyglGcEdit',
+                width: 600,
+                height: 320,
+                href:'sjzx/gc/edit'
+            }
+        };
+        $div.Container(options); 
+    });
+
+
+</script>

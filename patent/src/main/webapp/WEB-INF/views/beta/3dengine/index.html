@@ -1,0 +1,172 @@
+﻿<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>canvas大面积数据展示</title>
+    <style>
+        #canvas {
+            background-color: #fff;
+            border: 1px solid #ccc;
+            margin: 0 auto;
+            display: block
+        }
+
+        body {
+            margin: 0px;
+        }
+
+    </style>
+</head>
+<body>
+
+<canvas width="600" height="400" id="canvas"></canvas>
+
+
+<script language="JavaScript" type="text/javascript" src="../../easyui/jquery.min.js" charset="utf-8"></script>
+
+<script>
+
+
+    var option = {
+        bgImageUrl: "../../img/bg.png",
+        bgReady: false,
+        code: '${code}'
+    };
+
+
+    function DataLoader(w, h) {
+        this.w = w||1600;
+        this.h = h||920;
+
+    }
+
+    DataLoader.prototype.loadData = function( _handler){
+        $.ajax({
+            type: "POST",
+            url: "../../data/rt/" + option.code,
+            contentType: "application/json", //必须有
+            dataType: "json", //表示返回值类型，不必须
+            async: true,
+            success: function (result) {
+                (_handler || function () {})(result);
+            }
+        });
+    };
+
+
+
+    function RTViewer(canvas, option) {
+
+        this.dataLoader = new DataLoader(1600, 920);
+
+        var dataLoader = this.dataLoader;
+
+        this.canvas = canvas;
+
+        canvas.width = document.body.clientWidth-4;
+        canvas.height = document.body.clientHeight-36;
+
+
+        this.ctx = canvas.getContext('2d');
+
+        this.width = canvas.width;
+        this.height = canvas.height;
+
+        this.tooltip = option.tooltip;
+        this.title = option.text;
+        this.xAxis = option.data;
+        this.series = option.series;
+
+        this.option = option;
+
+        this.items = [];
+        this.changed = false;
+    }
+
+    RTViewer.prototype.initData = function() {
+        var self = this;
+
+        self.bgImage = new Image();
+        self.bgImage.onload = function () {
+            self.bgReady = true;
+        };
+        self.bgImage.src = "../../img/bg.png";
+
+        self.draw();
+    };
+
+
+
+    var second = Math.floor(new Date().getTime()/2000);
+
+    RTViewer.prototype.refreshData = function(){
+        window.requestAnimationFrame(this.refreshData.bind(this));
+        if ( second >= Math.floor(new Date().getTime()/2000) ){
+            return;
+        }
+        second  = Math.floor(new Date().getTime()/2000);
+
+        var self = this;
+
+        self.dataLoader.loadData(function (result) {
+            self.items = result;
+            self.changed = true;
+        })
+    };
+
+    RTViewer.prototype.draw = function() {
+
+        window.requestAnimationFrame(this.draw.bind(this));
+        if ( this.changed == false ){
+            return;
+        }
+
+        this.changed = false;
+
+        var self = this;
+        this.ctx.drawImage(self.bgImage, 0, 0, canvas.width, canvas.height);
+
+        var items = this.items;
+
+        var xScale = this.width / 1600;
+        var yScale = this.height / 920;
+        $.each(items, function (i, item) {
+            console.log(item.name + " ==> " + item.posx + ", " + item.posy);
+            item.posx = Math.floor(item.posx * xScale);
+            item.posy = Math.floor(item.posy * yScale);
+            console.log(item.name + " ==> " + item.posx + ", " + item.posy);
+        });
+
+
+        for ( i in items) {
+            var item = items[i];
+            self.ctx.textBaseline="top";
+            self.ctx.fillStyle = "#FFFF00";
+            self.ctx.font = "12px serif";
+
+            var val = parseFloat(item.val).toFixed(2);
+
+            self.ctx.fillText(val, item.posx, item.posy);
+
+            self.ctx.fillStyle = "#00eff3";
+            var text = self.ctx.measureText(val);
+            self.ctx.fillText(item.unit||"", item.posx + text.width + 2, item.posy);
+
+        }
+    };
+
+    var rtviewer;
+
+    $(function () {
+        rtviewer = new RTViewer(document.getElementById("canvas"), option);
+        rtviewer.initData();
+        rtviewer.refreshData();
+    })
+
+
+
+
+</script>
+</body>
+</html>

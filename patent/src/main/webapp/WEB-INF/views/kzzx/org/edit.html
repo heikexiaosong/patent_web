@@ -1,0 +1,48 @@
+<div class="gui-fluid editTable">
+    <input type="hidden"  name="id">
+    <input type="hidden"  name="flag">
+    <div class="gui-row">
+        <div class="gui-col-sm12">
+            <label class="gui-form-label" >部门编码：</label>
+            <div class="gui-input-block">
+                <input type="text" name="bmid" data-options="required:true"  data-toggle="gui-textbox" style="width: 100%">
+            </div>
+        </div>
+    </div>
+    <div class="gui-row">
+    <div class="gui-col-sm12">
+        <label class="gui-form-label" >部门名称：</label>
+        <div class="gui-input-block">
+            <input type="text" name="bmmc"  data-options="required:true"  data-toggle="gui-textbox" style="width: 100%">
+        </div>
+    </div>
+</div>
+    <div class="gui-row">
+        <div class="gui-col-sm12">
+            <label class="gui-form-label">上级部门：</label>
+            <div class="gui-input-block">
+                <input type="text" name="shbmid" data-toggle="gui-combobox" data-options="required:false" style="width: 100%">
+            </div>
+        </div>
+    </div>
+    <div class="gui-row">
+        <div class="gui-col-sm12">
+            <label class="gui-form-label" >备注信息：</label>
+            <div class="gui-input-block">
+                <input type="text" name="bz"  data-options="multiline:true" data-toggle="gui-textarea" style="width: 100%;height:66px">
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        var $dialog=$('#kzzxOrgEdit');
+        ComboboBox.init( $dialog.find('input[name="shbmid"]'), {url: 'kzzx/org/query', valueField: 'bmid', textField: 'bmmc',width:'100%',allowNull:true});
+       /* Auxiliary.init( $dialog.find('input[name="bmid"]'),{
+            url:'kzzx/fzsr/getColumn',dataUrl:'kzzx/fzsr/select',code:'user',valueField:'USERS_USERID',textField:'USERS_USERNAME',text:'bmmc'
+        });*/
+
+    })
+
+
+</script>
