@@ -2543,3 +2543,31 @@ GO
 /*----数据 DBVERSION, 调整部门表*/
 insert into DBVERSION(DBVERSION_VERSION, DBVERSION_WHSJ)values(7, getdate())
 GO
+
+
+
+create table KHGL
+(
+  KHGL_ID varchar(32) not null ,
+  KHGL_KHMC nvarchar(300) null ,
+  KHGL_DWMC nvarchar(300) null ,
+  KHGL_LXDH varchar(50) null ,
+  KHGL_YX varchar(128) null ,
+  KHGL_DZ nvarchar(300) null ,
+  KHGL_ZYFW nvarchar(200) null ,
+  KHGL_BZ nvarchar(1000) null ,
+  KHGL_WHRID varchar(20) not null ,
+  KHGL_WHR nvarchar(30) not null ,
+  KHGL_WHSJ datetime not null ,
+  KHGL_SYSVERSION int not null
+)
+GO
+alter table KHGL with nocheck add
+  CONSTRAINT DF_KHGL_KHGL_WHSJ default(getdate()) for KHGL_WHSJ,
+  CONSTRAINT DF_KHGL_KHGL_SYSVERSION default(1) for KHGL_SYSVERSION
+GO
+alter table KHGL with nocheck add
+  CONSTRAINT PK_KHGL PRIMARY KEY CLUSTERED
+    (KHGL_ID) ON [PRIMARY]
+GO
+

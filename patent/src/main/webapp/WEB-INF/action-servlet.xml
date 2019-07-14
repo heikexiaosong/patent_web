@@ -24,13 +24,10 @@
     <!-- <mvc:resources mapping="/js/**" location="/js/"/>
     <mvc:resources mapping="/css/**" location="/css/"/> -->
     <mvc:resources mapping="/easyui/**" location="/easyui/"/>
-    <mvc:resources mapping="/kindeditor/**" location="/kindeditor/"/>
     <mvc:resources mapping="/thirdparty/**" location="/thirdparty/"/>
     <mvc:resources mapping="/css/**" location="/css/"/>
     <mvc:resources mapping="/js/**" location="/js/"/>
     <mvc:resources mapping="/WEB-INF/**" location="/WEB-INF/"/>
-    <mvc:resources mapping="/goolflow/**" location="/goolflow/"/>
-    <mvc:resources mapping="/layui/**" location="/layui/"/>
     <mvc:resources mapping="/GUI/**" location="/GUI/"/>
     <mvc:resources mapping="/mock/**" location="/mock/"/>
     <mvc:resources mapping="/img/**" location="/img/"/>
