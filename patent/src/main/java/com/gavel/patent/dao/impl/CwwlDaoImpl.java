@@ -1,6 +1,7 @@
 package com.gavel.patent.dao.impl;
 
 import com.gavel.common.base.dao.impl.BaseDaoImpl;
+import com.gavel.common.utils.DateUtils;
 import com.gavel.common.utils.StringUtils;
 import com.gavel.persistence.sql.RecordSet;
 import com.gavel.persistence.sql.SqlMap;
@@ -26,8 +27,26 @@ public class CwwlDaoImpl extends BaseDaoImpl implements CwwlDao {
         if (StringUtils.isNotEmpty(condition.getId())){
             sqlMap.append("  and " + SqlUtil.getWhereSql("CWWL_ID", condition.getId()));
             sqlMap.setParamValue("CWWL_ID", condition.getId());
-            
         }
+        if (StringUtils.isNotEmpty(condition.getKh())){
+            sqlMap.append("  and CWWL_KH like :CWWL_KH ");
+            sqlMap.setParamValue("CWWL_KH", "%" + condition.getKh() + "%");
+        }
+        if (StringUtils.isNotEmpty(condition.getYw())){
+            sqlMap.append("  and CWWL_YW like :CWWL_YW ");
+            sqlMap.setParamValue("CWWL_YW", "%" + condition.getYw() + "%");
+        }
+        if ( condition.getStart()!=null ){
+            sqlMap.append("  and CWWL_YWRQ >= :CWWL_YWRQ_START");
+            sqlMap.setParamValue("CWWL_YWRQ_START", DateUtils.beginOfDay(condition.getStart()));
+        }
+
+        if ( condition.getEnd()!=null ){
+            sqlMap.append("  and CWWL_YWRQ <= :CWWL_YWRQ_END");
+            sqlMap.setParamValue("CWWL_YWRQ_END", DateUtils.endOfDay(condition.getEnd()));
+        }
+
+
         sqlMap.query(CwwlVO.class);
         return sqlMap.getRecordSet();
 

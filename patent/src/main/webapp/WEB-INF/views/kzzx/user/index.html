@@ -2,37 +2,44 @@
     <table class="toolbar-table" data-options="id: 'kzzxUserTable'">
     </table>
     <div id="kzzxUserTable-toolbar" class="gui-toolbar" data-options="grid:{type:'datagrid',id:'kzzxUserTable'}">
-        <a class="toolbar-reload toolbar"  href="javascript:void(0)" style="display: none"></a>
-        <a class="toolbar-print toolbar"  href="javascript:void(0)"></a>
-        <a class="toolbar-export toolbar"  href="javascript:void(0)"></a>
-        <a class="toolbar-review toolbar" href="javascript:void(0)"></a>
+        <a class="toolbar-reload toolbar" href="javascript:void(0)"></a>
+        <!--<a class="toolbar-print toolbar" href="javascript:void(0)"></a>-->
+        <!--<a class="toolbar-export toolbar" href="javascript:void(0)"></a>-->
+        <!--<a class="toolbar-review toolbar" href="javascript:void(0)"></a>-->
         <a class="toolbar-add toolbar" href="javascript:void(0)"></a>
-        <a class="toolbar-copy toolbar" href="javascript:void(0)"></a>
+        <!--<a class="toolbar-copy toolbar" href="javascript:void(0)"></a>-->
         <a class="toolbar-edit toolbar" href="javascript:void(0)"></a>
         <a class="toolbar-delete toolbar" href="javascript:void(0)"></a>
         <a class="toolbar-run toolbar" href="javascript:void(0)"></a>
         <a class="toolbar-filter toolbar" href="javascript:void(0)" style="display: none"></a>
-        <a class="toolbar-copyFilter toolbar" href="javascript:void(0)" style="display:none;" ></a>
-        <a class="toolbar-reviewFilter toolbar" href="javascript:void(0)"  style="display: none"></a>
-        <div style="position: relative;display: inline-block">
-            <a href="javascript:void(0)" class="toolbar toolbar-more">权限</a>
-            <div  class="arrowdown-css exportSubMenu">
-                <span class="l-btn-left l-btn-icon-left arrowdown-span exportSubMenu1" ><span class="l-btn-text">分配</span><span class="l-btn-icon fa fa-eercast">&nbsp;</span></span>
-                <span class="l-btn-left l-btn-icon-left arrowdown-span exportSubMenu2"><span class="l-btn-text">复制</span><span class="l-btn-icon fa fa-copy">&nbsp;</span></span>
-                <span class="l-btn-left l-btn-icon-left exportSubMenu3"  style="display: block"  ><span class="l-btn-text">查看</span><span class="l-btn-icon fa fa-eye">&nbsp;</span></span>
-            </div>
-        </div>
-        <a class="toolbar-arrangeRole toolbar" href="javascript:void(0)"></a>
+        <a class="toolbar-copyFilter toolbar" href="javascript:void(0)" style="display:none;"></a>
+        <a class="toolbar-reviewFilter toolbar" href="javascript:void(0)" style="display: none"></a>
+        <!--<div style="position: relative;display: inline-block">-->
+            <!--<a href="javascript:void(0)" class="toolbar toolbar-more">权限</a>-->
+            <!--<div class="arrowdown-css exportSubMenu">-->
+                <!--<span class="l-btn-left l-btn-icon-left arrowdown-span exportSubMenu1"><span-->
+                        <!--class="l-btn-text">分配</span><span class="l-btn-icon fa fa-eercast">&nbsp;</span></span>-->
+                <!--<span class="l-btn-left l-btn-icon-left arrowdown-span exportSubMenu2"><span-->
+                        <!--class="l-btn-text">复制</span><span class="l-btn-icon fa fa-copy">&nbsp;</span></span>-->
+                <!--<span class="l-btn-left l-btn-icon-left exportSubMenu3" style="display: block"><span class="l-btn-text">查看</span><span-->
+                        <!--class="l-btn-icon fa fa-eye">&nbsp;</span></span>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<a class="toolbar-arrangeRole toolbar" href="javascript:void(0)"></a>-->
         <a class="toolbar-repassword toolbar" href="javascript:void(0)"></a>
-        <a type="submit" class="btn btn-primary serach toolbar-search"></a>
         <div class="bdsug" style="height: auto;">
             <form action="" class="query-criteria">
-                <ul><li class="bdsug-store bdsug-overflow">
-                <span style="margin: 10px">
-                        <label >用户信息：</label><input type="text" name="usercx"  data-toggle="gui-textbox" class="gui-textbox" style="height: 30px">
-                    </span>
-                    <button type="submit" class="btn btn-primary ng-binding datagrid-search" style="display: none">搜索</button>
-                </li></ul>
+                <ul>
+                    <li class="bdsug-store bdsug-overflow">
+                        <span style="margin: 10px">
+                            <label >用户信息：</label><input type="text" name="usercx"   class="gui-textbox" style="width: 100px;height: 24px">
+                        </span>
+
+                        <span class="serach">
+                             <button type="button" class="btn btn-primary ng-binding datagrid-search query">搜索</button>
+                        </span>
+                    </li>
+                </ul>
             </form>
         </div>
     </div>
@@ -41,50 +48,47 @@
 </div>
 <script>
     $(function () {
-        var $div=$('#kzzxUser');
-        var options={
-            url:'kzzx/user',
-            queryParams:{
+        var $div = $('#kzzxUser');
+        var options = {
+            url: 'kzzx/user',
+            queryParams: {
                 usercx: $div.find('form input[name="usercx"]').val()
             },
-            columns:[[
-                {title: "用户编码",  index: 2, field: "userid"},
-                {title: "姓名", index: 3, field: "username", width:130},
-                {title: "助记码",  index: 4, field: "zjm", width:70,hidden:true},
-                {title: "所属组织",  index: 5, field: "bmmc", width:180},
-                {title: "电话",  index:7, field: "phone", width:150},
-                {title: "邮箱",  index: 8, field: "email", width:200},
-                {title: "状态",  index:9, field: "tybz"},
-                {title: "停用日期", index: 10, field: "tyrq", fieldType:'ftDate'},
-                {title: "备注", index: 11, field: "bz", width:100},
-                {title: "维护人编码",  index: 13, field: "whrid",  hidden:true},
-                {title: "维护人",  index: 14, field: "whr"},
-                {title: "维护时间",  index: 15, field: "whsj", fieldType:'ftDateTime'},
-                {title: "创建人编码",  index: 16, field: "cjrid", hidden:true, width:130},
-                {title: "创建人",  index: 17, field: "cjr", hidden:true, width:120},
-                {title: "创建时间",  index: 18, field: "cjsj", hidden:true,fieldType:'ftDateTime'}
+            columns: [[
+                {title: "用户编码", index: 2, field: "userid"},
+                {title: "姓名", index: 3, field: "username", width: 130},
+                {title: "助记码", index: 4, field: "zjm", width: 70, hidden: true},
+                // {title: "所属组织", index: 5, field: "bmmc", width: 180},
+                {title: "电话", index: 7, field: "phone", width: 150},
+                {title: "邮箱", index: 8, field: "email", width: 200},
+                {title: "状态", index: 9, field: "tybz"},
+                {title: "停用日期", index: 10, field: "tyrq", fieldType: 'ftDate'},
+                {title: "备注", index: 11, field: "bz", width: 100},
+                // {title: "维护人编码", index: 13, field: "whrid", hidden: true},
+                {title: "维护人", index: 14, field: "whr"},
+                {title: "维护时间", index: 15, field: "whsj", fieldType: 'ftDateTime'}
             ]],
-            dialog:{
-                id:'kzzxUserEdit',
+            dialog: {
+                id: 'kzzxUserEdit',
                 width: 720,
                 height: 480,
-                href:'kzzx/user/edit'
+                href: 'kzzx/user/edit'
             }
         };
         $div.Container(options);
         $div.find(".toolbar-more").iMenubutton({
-            hasDownArrow:true,
-            iconCls:'fa fa-list',
-            onClick:function () {
+            hasDownArrow: true,
+            iconCls: 'fa fa-list',
+            onClick: function () {
                 $div.find(".toolbar-filter").click();
             }
         });
         $div.find(".toolbar-more .m-btn-downarrow").click(function (evetn) {
             evetn.stopPropagation();
-            if( $div.find('.exportSubMenu').css('display')=='block'){
-                $div.find('.exportSubMenu').css('display','none');
-            }else{
-                $div.find('.exportSubMenu').css('display','block');
+            if ($div.find('.exportSubMenu').css('display') == 'block') {
+                $div.find('.exportSubMenu').css('display', 'none');
+            } else {
+                $div.find('.exportSubMenu').css('display', 'block');
             }
         });
         $div.find('.exportSubMenu1').click(function () {
@@ -99,141 +103,157 @@
         /*分配权限*/
         $div.find(".toolbar-filter").iMenubutton({
             event: 'openDialog',
-            text:'分配权限',
+            text: '分配权限',
             iconCls: 'fa fa-eercast',
-            btnCls:'gui-btn-warm',
-            dialog:{
-                id:'userpermiss',
+            btnCls: 'gui-btn-warm',
+            dialog: {
+                id: 'userpermiss',
                 width: 1120,
                 height: 630,
-                title:'权限--分配',
+                title: '权限--分配',
                 href: 'kzzx/user/permission',
-                url:true,
+                url: true,
                 grid: {
-                    type:'datagrid',
-                    id:'kzzxUserTable'
+                    type: 'datagrid',
+                    id: 'kzzxUserTable'
                 },
-                buttonsGroup:[
-                    {text:'保存',url:'kzzx/user/yhqx/save',iconCls:'fa fa-plus',btnCls:'gui-btn-normal',handler:"parameterForm",
-                        callback:function(){
+                buttonsGroup: [
+                    {
+                        text: '保存',
+                        url: 'kzzx/user/yhqx/save',
+                        iconCls: 'fa fa-plus',
+                        btnCls: 'gui-btn-normal',
+                        handler: "parameterForm",
+                        callback: function () {
                             var nodes = $('#ttUser').iTreegrid("getCheckedAndIndeter");
-                            if ( nodes!=null ){
+                            if (nodes != null) {
                                 var yhqx = [];
                                 $.each(nodes, function (i, node) {
-                                    if( node !=null ){
+                                    if (node != null) {
                                         yhqx.push(node);
                                     }
                                 });
                             }
-                            var obj={
-                                parmas:{modules:yhqx, userid:$("#kzzxUserTable").datagrid("getSelected")['userid']}
+                            var obj = {
+                                parmas: {modules: yhqx, userid: $("#kzzxUserTable").datagrid("getSelected")['userid']}
                             };
-                            return  obj;
-                        }}]
-            }});
+                            return obj;
+                        }
+                    }]
+            }
+        });
         /*复制权限*/
         $div.find(".toolbar-copyFilter").iMenubutton({
             iconCls: 'fa fa-eercast',
-            btnCls:'gui-btn-warm',
-            text:'复制权限',
-            onClick:copyQx
+            btnCls: 'gui-btn-warm',
+            text: '复制权限',
+            onClick: copyQx
         });
         /*查看权限*/
         $div.find(".toolbar-reviewFilter").iMenubutton({
             event: 'openDialog',
-            text:'权限--角色',
+            text: '权限--角色',
             iconCls: 'fa fa-eercast',
-            btnCls:'gui-btn-warm',
-            dialog:{
-                id:'userpermiss',
+            btnCls: 'gui-btn-warm',
+            dialog: {
+                id: 'userpermiss',
                 width: 1120,
                 height: 630,
-                tag:'view',
-                title:'查看',
+                tag: 'view',
+                title: '查看',
                 href: 'kzzx/user/permission',
-                url:true,
+                url: true,
                 grid: {
-                    type:'datagrid',
-                    id:'kzzxUserTable'
+                    type: 'datagrid',
+                    id: 'kzzxUserTable'
                 },
-                buttonsGroup:[
-                ]
-            }});
+                buttonsGroup: []
+            }
+        });
         /*所属角色*/
         $div.find(".toolbar-arrangeRole").iMenubutton({
             event: 'openDialog',
-            text:'分配角色',
+            text: '分配角色',
             iconCls: 'fa  fa-window-maximize',
-            dialog:{
-                id:'dpersonal',
+            dialog: {
+                id: 'dpersonal',
                 width: 1080,
                 height: 630,
-                title:'分配角色',
+                title: '分配角色',
                 href: 'kzzx/user/personol',
-                tag:'edit',
+                tag: 'edit',
                 grid: {
-                    id:'kzzxUserTable'
+                    id: 'kzzxUserTable'
                 },
-                buttonsGroup:[
-                    {text:'保存',url:'kzzx/user/saveUserRoles',iconCls:'fa fa-plus',btnCls:'gui-btn-normal',handler:"parameterForm",
-                        callback:function(){
-                            var dlgContainer=$('#dpersonal');
+                buttonsGroup: [
+                    {
+                        text: '保存',
+                        url: 'kzzx/user/saveUserRoles',
+                        iconCls: 'fa fa-plus',
+                        btnCls: 'gui-btn-normal',
+                        handler: "parameterForm",
+                        callback: function () {
+                            var dlgContainer = $('#dpersonal');
                             dlgContainer.find('#bootstrap-duallistbox-selected-list_doublebox').prev('input').val('');
                             dlgContainer.find('#bootstrap-duallistbox-selected-list_doublebox').prev('input').change();
-                            var option=dlgContainer.find('#bootstrap-duallistbox-selected-list_doublebox option');
-                            var userid=[];
+                            var option = dlgContainer.find('#bootstrap-duallistbox-selected-list_doublebox option');
+                            var userid = [];
                             $(option).each(function () {
                                 /*userid.push($(this).data().options)*/
                                 /*     console.log($(this).data().options);
                                      console.log($(this).val());*/
                                 userid.push({
-                                    roleid:$(this).data().options.roleid
+                                    roleid: $(this).data().options.roleid
                                 })
 
                             });
-                            var obj={
-                                parmas:{userid:$('#kzzxUser').find('.toolbar-table').datagrid('getSelected')['userid'],
-                                    list:userid
+                            var obj = {
+                                parmas: {
+                                    userid: $('#kzzxUser').find('.toolbar-table').datagrid('getSelected')['userid'],
+                                    list: userid
                                 }
                             };
-                            return  obj;
-                        }}
+                            return obj;
+                        }
+                    }
                 ]
-            }});
+            }
+        });
         /*密码重置*/
         $div.find(".toolbar-repassword").iMenubutton({
-            text:'密码重置',
+            text: '密码重置',
             iconCls: 'fa  fa-lock',
-            onClick:resetPassword
+            onClick: resetPassword
         });
+
         function copyQx() {
-            var selectered=$('#kzzxUser').find('.toolbar-table').datagrid('getSelected');
-            if(selectered==null){
+            var selectered = $('#kzzxUser').find('.toolbar-table').datagrid('getSelected');
+            if (selectered == null) {
                 $.messager.alert('请选择用户进行权限复制功能');
                 return false
             }
-            var columns=[
-                {title: "用户编码",  index: 2, field: "userid",width:160},
-                {title: "姓名", index: 3, field: "username",width:200},
-                {title: "所属组织",  index: 5, field: "bmid",width:200 },
-                {title: "备注", index: 11, field: "bz" ,width:320}
+            var columns = [
+                {title: "用户编码", index: 2, field: "userid", width: 160},
+                {title: "姓名", index: 3, field: "username", width: 200},
+                {title: "所属组织", index: 5, field: "bmid", width: 200},
+                {title: "备注", index: 11, field: "bz", width: 320}
             ];
-            Appent.choose('选择用户',columns,'kzzx/user/copy/yhqx/query',{sourceuserid:$('#kzzxUser').find('.toolbar-table').datagrid('getSelected')['userid']},function (row) {
-                layer.confirm('确定后，该用户该覆盖已选择用户的权限',{
-                    btn: ['确定','取消']
-                }, function(){
-                    HTTP.post('kzzx/user/yhqx/copy',{
-                        sourceuserid:row['userid'],
-                        targetuserid:$('#kzzxUserTable').iDatagrid('getSelected')['userid']
-                    },function (result) {
-                        if(result['success']){
+            Appent.choose('选择用户', columns, 'kzzx/user/copy/yhqx/query', {sourceuserid: $('#kzzxUser').find('.toolbar-table').datagrid('getSelected')['userid']}, function (row) {
+                layer.confirm('确定后，该用户该覆盖已选择用户的权限', {
+                    btn: ['确定', '取消']
+                }, function () {
+                    HTTP.post('kzzx/user/yhqx/copy', {
+                        sourceuserid: row['userid'],
+                        targetuserid: $('#kzzxUserTable').iDatagrid('getSelected')['userid']
+                    }, function (result) {
+                        if (result['success']) {
                             layer.message('更新成功');
-                        }else{
+                        } else {
                             layer.message(result['message']);
                         }
                     })
 
-                }, function(){
+                }, function () {
 
                 });
 
@@ -241,17 +261,17 @@
         }
 
         function resetPassword() {
-            var selectedRow =  $('#kzzxUserTable').iDatagrid('getSelected');
-            if (  selectedRow==null ){
+            var selectedRow = $('#kzzxUserTable').iDatagrid('getSelected');
+            if (selectedRow == null) {
                 $.messager.alert("提示信息", "请先选择一个用户.");
-                return ;
+                return;
             }
             var userId = selectedRow["id"];
-            var user=selectedRow['username'];
-            $.messager.confirm('操作提示','确定要重置'+user+'的密码？',function (data) {
+            var user = selectedRow['username'];
+            $.messager.confirm('操作提示', '确定要重置' + user + '的密码？', function (data) {
                 if (data) {
                     HTTP.post("kzzx/user/password/reset", {userid: userId}, function (result) {
-                        if ( result["success"]==true ) {
+                        if (result["success"] == true) {
                             $.messager.alert("提示信息", "密码重置成功");
                         } else {
                             $.messager.alert("提示信息", result["message"] || "密码重置失败");

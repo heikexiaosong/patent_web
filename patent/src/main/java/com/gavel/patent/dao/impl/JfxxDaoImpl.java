@@ -1,6 +1,7 @@
 package com.gavel.patent.dao.impl;
 
 import com.gavel.common.base.dao.impl.BaseDaoImpl;
+import com.gavel.common.utils.DateUtils;
 import com.gavel.common.utils.StringUtils;
 import com.gavel.persistence.sql.RecordSet;
 import com.gavel.persistence.sql.SqlMap;
@@ -26,8 +27,27 @@ public class JfxxDaoImpl extends BaseDaoImpl implements JfxxDao {
         if (StringUtils.isNotEmpty(condition.getId())){
             sqlMap.append("  and " + SqlUtil.getWhereSql("JFXX_ID", condition.getId()));
             sqlMap.setParamValue("JFXX_ID", condition.getId());
-            
         }
+
+        if (StringUtils.isNotEmpty(condition.getCode())){
+            sqlMap.append("  and JFXX_CODE like :JFXX_CODE ");
+            sqlMap.setParamValue("JFXX_CODE", "%" + condition.getCode() + "%");
+        }
+        if (StringUtils.isNotEmpty(condition.getSqmc())){
+            sqlMap.append("  and JFXX_SQMC like :JFXX_SQMC ");
+            sqlMap.setParamValue("JFXX_SQMC", "%" + condition.getSqmc() + "%");
+        }
+        if ( condition.getStart()!=null ){
+            sqlMap.append("  and JFXX_JFRQ >= :JFXX_JFRQ_START");
+            sqlMap.setParamValue("JFXX_JFRQ_START", DateUtils.beginOfDay(condition.getStart()));
+        }
+
+        if ( condition.getEnd()!=null ){
+            sqlMap.append("  and JFXX_JFRQ <= :JFXX_JFRQ_END");
+            sqlMap.setParamValue("JFXX_JFRQ_END", DateUtils.endOfDay(condition.getEnd()));
+        }
+
+
         sqlMap.query(JfxxVO.class);
         return sqlMap.getRecordSet();
 

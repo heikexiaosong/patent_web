@@ -20,14 +20,6 @@
     </div>
     <div class="gui-row">
         <div class="gui-col-sm12">
-            <label class="gui-form-label" for="">所属组织：</label>
-            <div class="gui-input-block">
-                <input type="text" name="bmid"  data-toggle="gui-combobox"  style="width: 100%">
-            </div>
-        </div>
-    </div>
-    <div class="gui-row">
-        <div class="gui-col-sm12">
             <label class="gui-form-label" for="">电话：</label>
             <div class="gui-input-block">
                 <input type="text" name="phone" data-options="prompt:'手机号验证',validType:'telephone'" data-toggle="gui-textbox" style="width: 100%">
@@ -54,6 +46,6 @@
 <script>
     $(function () {
         var $dialog=$('#kzzxUserEdit');
-        ComboboBox.init($dialog.find('input[name="bmid"]'), {url: 'kzzx/org/query', valueField: 'bmid', textField: 'bmmc', allowNull: true,width:'100%'});
+        //ComboboBox.init($dialog.find('input[name="bmid"]'), {data: [{value:"salesman", text: "业务人员"}, {value:"financial", text: "财务人员"}, {value:"admin", text: "管理员"}], allowNull: false,width:'100%'});
     })
 </script>

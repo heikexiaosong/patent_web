@@ -1,58 +1,81 @@
 <div id="patentYjf" class="gui-div">
-	<table  class="toolbar-table" data-options="id: 'patentYjfTable',herf:'kzzx/gridset/query'" >
+	<table class="toolbar-table" data-options="id: 'patentYjfTable',herf:'kzzx/gridset/query'">
 	</table>
-	
+
 	<!-- 表格工具栏开始 -->
 	<div id="patentYjfTable-toolbar" class="gui-toolbar"
-	     data-options="grid:{
+		 data-options="grid:{
 	           type:'datagrid',
 	           id:'patentYjfTable'
 	       }">
-	    <a class="toolbar-reload toolbar"  href="javascript:void(0)"></a>
-	    <!--<a class="toolbar-print toolbar"  href="javascript:void(0)"></a>-->
-	    <a class="toolbar-export toolbar"  href="javascript:void(0)"></a>
-	    <!--<a class="toolbar-review toolbar" href="javascript:void(0)"></a>-->
-	    <!--<a class="toolbar-add toolbar" href="javascript:void(0)"></a>-->
-	    <!--<a class="toolbar-copy toolbar" href="javascript:void(0)"></a>-->
-	    <!--<a class="toolbar-edit toolbar" href="javascript:void(0)"></a>-->
-	    <!--<a class="toolbar-delete toolbar" href="javascript:void(0)"></a>-->
-	    <a type="submit" class="btn btn-primary serach toolbar-search"></a>
-	    <div class="bdsug" style="height: auto;">
-	        <form action="" class="query-criteria">
-	            <ul><li class="bdsug-store bdsug-overflow">
-	            </li></ul>
-	        </form>
-	    </div>
+		<a class="toolbar-reload toolbar" href="javascript:void(0)" style="display: none"></a>
+		<!--<a class="toolbar-print toolbar" href="javascript:void(0)"></a>-->
+		<!--<a class="toolbar-export toolbar" href="javascript:void(0)"></a>-->
+		<!--<a class="toolbar-review toolbar" href="javascript:void(0)"></a>-->
+		<!--<a class="toolbar-add toolbar" href="javascript:void(0)"></a>-->
+		<!--<a class="toolbar-copy toolbar" href="javascript:void(0)"></a>-->
+		<!--<a class="toolbar-edit toolbar" href="javascript:void(0)"></a>-->
+		<!--<a class="toolbar-delete toolbar" href="javascript:void(0)"></a>-->
+		<!--<a type="submit" class="btn btn-primary serach toolbar-search"></a>-->
+		<div class="bdsug" style="height: auto;">
+			<form action="" class="query-criteria">
+				<ul>
+					<li class="bdsug-store bdsug-overflow">
+                        <span style="margin: 10px">
+                            <label >案件编码：</label><input type="text" name="code"  class="gui-textbox" style="height: 24px">
+                        </span>
+
+						<span style="margin: 10px">
+                            <label >案件名称：</label><input type="text" name="sqmc"  class="gui-textbox" style="height: 24px">
+                        </span>
+
+						<span style="margin: 10px">
+                            <label >缴费日期：</label>
+                            <input type="text" name="start"   class="gui-textbox" style="width: 100px;height: 24px">
+                            -
+                            <input type="text" name="end"   class="gui-textbox" style="width: 100px;height: 24px">
+                        </span>
+
+						<span class="serach">
+                             <button type="button" class="btn btn-primary ng-binding datagrid-search query">搜索</button>
+                        </span>
+					</li>
+				</ul>
+			</form>
+		</div>
 	</div>
 </div>
 <!-- 表格工具栏结束 -->
 <script>
     /*js初始化*/
     $(function () {
-    	var $div=$('#patentYjf');
-        var options={
-            url:'patent/jfxx',
-            queryParams:{
-            },
-            columns:[[
-                {title: "案件编码", field: "code", fieldType:"ftString", width: 160},
-                {title: "申请名称", field: "sqmc", fieldType:"ftString", width: 160},
-                {title: "申请号", field: "sqh", fieldType:"ftString", width: 160},
-                {title: "费用名称", field: "fymc", fieldType:"ftString", width: 160},
-                {title: "缴费金额", field: "jfje", fieldType:"ftInteger", width: 160},
-                {title: "缴费日期", field: "jfrq", fieldType:"ftDateTime", width: 160},
-                {title: "缴费人", field: "jfr", fieldType:"ftString", width: 160},
-                {title: "收据", field: "sj", fieldType:"ftString", width: 160},
-                {title: "备注", field: "bz", fieldType:"ftString", width: 160}
+        var $div = $('#patentYjf');
+
+        $('#patentYjf input[name="start"]').iDatebox({});
+        $('#patentYjf input[name="end"]').iDatebox({});
+
+        var options = {
+            url: 'patent/jfxx',
+            queryParams: {},
+            columns: [[
+                {title: "案件编码", field: "code", fieldType: "ftString", width: 120},
+                {title: "申请名称", field: "sqmc", fieldType: "ftString", width: 160},
+                {title: "申请号", field: "sqh", fieldType: "ftString", width: 160},
+                {title: "费用名称", field: "fymc", fieldType: "ftString", width: 160},
+                {title: "缴费金额", field: "jfje", fieldType: "ftInteger", width: 100, align: 'right'},
+                {title: "缴费日期", field: "jfrq", fieldType: "ftDate", width: 110},
+                {title: "缴费人", field: "jfr", fieldType: "ftString", width: 100},
+                {title: "收据", field: "sj", fieldType: "ftString", width: 160},
+                {title: "备注", field: "bz", fieldType: "ftString", width: 160}
             ]],
-            dialog:{
-                id:'patentYjfEdit',
+            dialog: {
+                id: 'patentYjfEdit',
                 width: 900,
                 height: 506,
-                href:'patent/jfxx/edit'
+                href: 'patent/jfxx/edit'
             }
         };
-        $div.Container(options); 
+        $div.Container(options);
     });
 
 

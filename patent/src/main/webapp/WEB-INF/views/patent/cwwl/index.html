@@ -1,62 +1,87 @@
 <div id="patentCwwl" class="gui-div">
-	<table  class="toolbar-table" data-options="id: 'patentCwwlTable',herf:'kzzx/gridset/query'" >
-	</table>
-	
-	<!-- 表格工具栏开始 -->
-	<div id="patentCwwlTable-toolbar" class="gui-toolbar"
-	     data-options="grid:{
+    <table class="toolbar-table" data-options="id: 'patentCwwlTable',herf:'kzzx/gridset/query'">
+    </table>
+
+    <!-- 表格工具栏开始 -->
+    <div id="patentCwwlTable-toolbar" class="gui-toolbar"
+         data-options="grid:{
 	           type:'datagrid',
 	           id:'patentCwwlTable'
 	       }">
-	    <a class="toolbar-reload toolbar"  href="javascript:void(0)"></a>
-	    <!--<a class="toolbar-print toolbar"  href="javascript:void(0)"></a>-->
-	    <a class="toolbar-export toolbar"  href="javascript:void(0)"></a>
-	    <a class="toolbar-review toolbar" href="javascript:void(0)"></a>
-	    <a class="toolbar-add toolbar" href="javascript:void(0)"></a>
-	    <!--<a class="toolbar-copy toolbar" href="javascript:void(0)"></a>-->
-	    <a class="toolbar-edit toolbar" href="javascript:void(0)"></a>
-	    <!--<a class="toolbar-delete toolbar" href="javascript:void(0)"></a>-->
-	    <a type="submit" class="btn btn-primary serach toolbar-search"></a>
-	    <div class="bdsug" style="height: auto;">
-	        <form action="" class="query-criteria">
-	            <ul><li class="bdsug-store bdsug-overflow">
-	            </li></ul>
-	        </form>
-	    </div>
-	</div>
+        <a class="toolbar-reload toolbar" href="javascript:void(0)"></a>
+        <!--<a class="toolbar-print toolbar"  href="javascript:void(0)"></a>-->
+        <!--<a class="toolbar-export toolbar" href="javascript:void(0)"></a>-->
+        <a class="toolbar-review toolbar" href="javascript:void(0)"></a>
+        <a class="toolbar-add toolbar" href="javascript:void(0)"></a>
+        <!--<a class="toolbar-copy toolbar" href="javascript:void(0)"></a>-->
+        <a class="toolbar-edit toolbar" href="javascript:void(0)"></a>
+        <!--<a class="toolbar-delete toolbar" href="javascript:void(0)"></a>-->
+        <!--<a type="submit" class="btn btn-primary serach toolbar-search"></a>-->
+        <div class="bdsug" style="height: auto;">
+            <form action="" class="query-criteria">
+                <ul>
+                    <li class="bdsug-store bdsug-overflow">
+
+                         <span style="margin: 10px">
+                            <label >日期范围：</label>
+                            <input type="text" name="start"   class="gui-textbox" style="width: 100px;height: 24px">
+                            -
+                            <input type="text" name="end"   class="gui-textbox" style="width: 100px;height: 24px">
+                        </span>
+
+                        <span style="margin: 10px">
+                            <label >客户：</label><input type="text" name="kh"   class="gui-textbox" style="width: 100px; height: 24px">
+                        </span>
+
+                        <span style="margin: 10px">
+                            <label >业务：</label><input type="text" name="yw"   class="gui-textbox" style="width: 100px; height: 24px">
+                        </span>
+
+                        <span class="serach">
+                             <button type="button" class="btn btn-primary ng-binding datagrid-search query">搜索</button>
+                        </span>
+
+                    </li>
+                </ul>
+            </form>
+        </div>
+    </div>
 </div>
 <!-- 表格工具栏结束 -->
 <script>
     /*js初始化*/
     $(function () {
-    	var $div=$('#patentCwwl');
-        var options={
-            url:'patent/cwwl',
-            queryParams:{
-            },
-            columns:[[
-                {title: "日期", field: "ywrq", fieldType:"ftDateTime", width: 120},
-                {title: "业务员", field: "ywy", fieldType:"ftString", width: 140},
-                {title: "客户", field: "kh", fieldType:"ftString", width: 160},
-                {title: "业务", field: "yw", fieldType:"ftString", width: 160},
-                {title: "金额", field: "je", fieldType:"ftInteger", width: 140},
-                {title: "收款账户", field: "skzh", fieldType:"ftString", width: 400},
-                {title: "实际收款金额", field: "sjskje", fieldType:"ftInteger", width: 140},
-                {title: "发票（税费）", field: "fp", fieldType:"ftInteger", width: 140},
-                {title: "全部成本", field: "qbcb", fieldType:"ftInteger", width: 140},
-                {title: "官费", field: "gf", fieldType:"ftInteger", width: 140},
-                {title: "业绩", field: "yj", fieldType:"ftInteger", width: 140},
-                {title: "提成", field: "tc", fieldType:"ftInteger", width: 140},
-                {title: "专利名称", field: "zlmc", fieldType:"ftString", width: 8000}
+        var $div = $('#patentCwwl');
+
+        $('#patentCwwl input[name="start"]').iDatebox({});
+        $('#patentCwwl input[name="end"]').iDatebox({});
+
+        var options = {
+            url: 'patent/cwwl',
+            queryParams: {},
+            columns: [[
+                {title: "日期", field: "ywrq", fieldType: "ftDateTime", width: 120},
+                {title: "业务员", field: "ywy", fieldType: "ftString", width: 140},
+                {title: "客户", field: "kh", fieldType: "ftString", width: 160},
+                {title: "业务", field: "yw", fieldType: "ftString", width: 160},
+                {title: "金额", field: "je", fieldType: "ftInteger", width: 140},
+                {title: "收款账户", field: "skzh", fieldType: "ftString", width: 400},
+                {title: "实际收款金额", field: "sjskje", fieldType: "ftInteger", width: 140},
+                {title: "发票（税费）", field: "fp", fieldType: "ftInteger", width: 140},
+                {title: "全部成本", field: "qbcb", fieldType: "ftInteger", width: 140},
+                {title: "官费", field: "gf", fieldType: "ftInteger", width: 140},
+                {title: "业绩", field: "yj", fieldType: "ftInteger", width: 140},
+                {title: "提成", field: "tc", fieldType: "ftInteger", width: 140},
+                {title: "专利名称", field: "zlmc", fieldType: "ftString", width: 8000}
             ]],
-            dialog:{
-                id:'patentCwwlEdit',
+            dialog: {
+                id: 'patentCwwlEdit',
                 width: 900,
                 height: 506,
-                href:'patent/cwwl/edit'
+                href: 'patent/cwwl/edit'
             }
         };
-        $div.Container(options); 
+        $div.Container(options);
     });
 
 
