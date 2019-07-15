@@ -1,0 +1,75 @@
+<div id="patentAjxx" class="gui-div">
+	<table  class="toolbar-table" data-options="id: 'patentAjxxTable',herf:'kzzx/gridset/query'" >
+	</table>
+	
+	<!-- 表格工具栏开始 -->
+	<div id="patentAjxxTable-toolbar" class="gui-toolbar"
+	     data-options="grid:{
+	           type:'datagrid',
+	           id:'patentAjxxTable'
+	       }">
+	    <a class="toolbar-reload toolbar"  href="javascript:void(0)"></a>
+	    <!--<a class="toolbar-print toolbar"  href="javascript:void(0)"></a>-->
+	    <a class="toolbar-export toolbar"  href="javascript:void(0)"></a>
+	    <a class="toolbar-review toolbar" href="javascript:void(0)"></a>
+	    <a class="toolbar-add toolbar" href="javascript:void(0)"></a>
+	    <!--<a class="toolbar-copy toolbar" href="javascript:void(0)"></a>-->
+	    <a class="toolbar-edit toolbar" href="javascript:void(0)"></a>
+	    <!--<a class="toolbar-delete toolbar" href="javascript:void(0)"></a>-->
+	    <a type="submit" class="btn btn-primary serach toolbar-search"></a>
+	    <div class="bdsug" style="height: auto; display: none" >
+	        <form action="" class="query-criteria">
+	            <ul><li class="bdsug-store bdsug-overflow">
+	            </li></ul>
+	        </form>
+	    </div>
+	</div>
+</div>
+<!-- 表格工具栏结束 -->
+<script>
+    /*js初始化*/
+    $(function () {
+    	var $div=$('#patentAjxx');
+        var options={
+            url:'patent/ajxx',
+            queryParams:{
+            },
+            columns:[[
+                {title: "编号", field: "code", fieldType:"ftString", width: 160},
+                {title: "案件类型", field: "type", fieldType:"ftString", width: 100, align:'center',formatter:function (value,index,row) {
+                        var map = {1: '发明', 2: "实用新型", 3: "外观设计", 4: "商标注册", 5: "版权登记"};
+                        var text  = map[value];
+                        return text||value;
+                    }
+				},
+                {title: "编码", field: "bm", fieldType:"ftString", width: 100},
+                {title: "客户", field: "kh", fieldType:"ftString", width: 120},
+                {title: "申请人", field: "sqr", fieldType:"ftString", width: 120},
+                {title: "申请号", field: "sqh", fieldType:"ftString", width: 120},
+					{title: "案件名称", field: "sqmc", fieldType:"ftString", width: 120},
+                {title: "撰写人", field: "jxr", fieldType:"ftString", width: 120},
+                {title: "申请日", field: "sqrq", fieldType:"ftDateTime", width: 140},
+                {title: "申请费", field: "sqf", fieldType:"ftInteger", width: 140, align:'right'},
+                {title: "状态", field: "zt", fieldType:"ftString", width: 120},
+                {title: "是否监控年费", field: "nfjk", fieldType:"ftString", width: 64, align:'center',formatter:function (value,index,row) {
+                        var map = {Y: '是', N: "否"};
+                        var text  = map[value];
+                        return text||"否";
+                    }
+				},
+                {title: "证书", field: "zs", fieldType:"ftString", width: 120},
+                {title: "类别", field: "lb", fieldType:"ftString", width: 120},
+                {title: "递交人", field: "djr", fieldType:"ftString", width: 120}
+            ]],
+            dialog:{
+                id:'patentAjxxEdit',
+                width: 900,
+                height: 506,
+                href:'patent/ajxx/edit'
+            }
+        };
+        $div.Container(options); 
+    });
+
+
+</script>

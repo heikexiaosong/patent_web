@@ -2608,3 +2608,66 @@ alter table CWWL with nocheck add
     CONSTRAINT PK_CWWL PRIMARY KEY CLUSTERED
     (CWWL_ID) ON [PRIMARY]
 GO
+
+create table AJXX
+(
+  AJXX_ID varchar(32) not null ,
+  AJXX_CODE varchar(20) null ,
+  AJXX_TYPE varchar(8) null ,
+  AJXX_BM nvarchar(30) null ,
+  AJXX_KH nvarchar(100) null ,
+  AJXX_SQR nvarchar(100) null ,
+  AJXX_SQH varchar(50) null ,
+  AJXX_SQMC nvarchar(300) null ,
+  AJXX_JXR nvarchar(30) null ,
+  AJXX_SQRQ datetime null ,
+  AJXX_SQF int null ,
+  AJXX_ZT nvarchar(2000) null ,
+  AJXX_NFJK varchar(8) null ,
+  AJXX_ZS nvarchar(1000) null ,
+  AJXX_LB varchar(20) null ,
+  AJXX_DJR nvarchar(100) null ,
+  AJXX_WHRID varchar(20) not null ,
+  AJXX_WHR nvarchar(30) not null ,
+  AJXX_WHSJ datetime not null ,
+  AJXX_SYSVERSION int not null
+)
+GO
+alter table AJXX with nocheck add
+  CONSTRAINT DF_AJXX_AJXX_SQF default(0) for AJXX_SQF,
+  CONSTRAINT DF_AJXX_AJXX_WHSJ default(getdate()) for AJXX_WHSJ,
+  CONSTRAINT DF_AJXX_AJXX_SYSVERSION default(1) for AJXX_SYSVERSION
+GO
+alter table AJXX with nocheck add
+  CONSTRAINT PK_AJXX PRIMARY KEY CLUSTERED
+    (AJXX_ID) ON [PRIMARY]
+GO
+
+
+create table JFXX
+(
+    JFXX_ID varchar(32) not null ,
+    JFXX_CODE varchar(20) null ,
+    JFXX_SQMC nvarchar(300) null ,
+    JFXX_SQH varchar(50) null ,
+    JFXX_FYMC nvarchar(100) null ,
+    JFXX_JFJE int null ,
+    JFXX_JFRQ datetime null ,
+    JFXX_JFR nvarchar(100) null ,
+    JFXX_SJ nvarchar(300) null ,
+    JFXX_BZ nvarchar(2000) null ,
+    JFXX_WHRID varchar(20) not null ,
+    JFXX_WHR nvarchar(30) not null ,
+    JFXX_WHSJ datetime not null ,
+    JFXX_SYSVERSION int not null
+)
+GO
+alter table JFXX with nocheck add
+    CONSTRAINT DF_JFXX_JFXX_JFJE default(0) for JFXX_JFJE,
+    CONSTRAINT DF_JFXX_JFXX_WHSJ default(getdate()) for JFXX_WHSJ,
+    CONSTRAINT DF_JFXX_JFXX_SYSVERSION default(1) for JFXX_SYSVERSION
+GO
+alter table JFXX with nocheck add
+    CONSTRAINT PK_JFXX PRIMARY KEY CLUSTERED
+    (JFXX_ID) ON [PRIMARY]
+GO

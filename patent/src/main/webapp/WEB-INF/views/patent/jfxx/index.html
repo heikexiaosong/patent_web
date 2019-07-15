@@ -1,0 +1,59 @@
+<div id="patentJfxx" class="gui-div">
+	<table  class="toolbar-table" data-options="id: 'patentJfxxTable',herf:'kzzx/gridset/query'" >
+	</table>
+	
+	<!-- 表格工具栏开始 -->
+	<div id="patentJfxxTable-toolbar" class="gui-toolbar"
+	     data-options="grid:{
+	           type:'datagrid',
+	           id:'patentJfxxTable'
+	       }">
+	    <a class="toolbar-reload toolbar"  href="javascript:void(0)"></a>
+	    <a class="toolbar-print toolbar"  href="javascript:void(0)"></a>
+	    <a class="toolbar-export toolbar"  href="javascript:void(0)"></a>
+	    <a class="toolbar-review toolbar" href="javascript:void(0)"></a>
+	    <a class="toolbar-add toolbar" href="javascript:void(0)"></a>
+	    <a class="toolbar-copy toolbar" href="javascript:void(0)"></a>
+	    <a class="toolbar-edit toolbar" href="javascript:void(0)"></a>
+	    <a class="toolbar-delete toolbar" href="javascript:void(0)"></a>
+	    <a type="submit" class="btn btn-primary serach toolbar-search"></a>
+	    <div class="bdsug" style="height: auto; display: none" >
+	        <form action="" class="query-criteria">
+	            <ul><li class="bdsug-store bdsug-overflow">
+	            </li></ul>
+	        </form>
+	    </div>
+	</div>
+</div>
+<!-- 表格工具栏结束 -->
+<script>
+    /*js初始化*/
+    $(function () {
+    	var $div=$('#patentJfxx');
+        var options={
+            url:'patent/jfxx',
+            queryParams:{
+            },
+            columns:[[
+                {title: "案件编码", field: "code", fieldType:"ftString", width: 160},
+                {title: "申请名称", field: "sqmc", fieldType:"ftString", width: 2400},
+                {title: "申请号", field: "sqh", fieldType:"ftString", width: 400},
+                {title: "费用名称", field: "fymc", fieldType:"ftString", width: 800},
+                {title: "缴费金额", field: "jfje", fieldType:"ftInteger", width: 140},
+                {title: "缴费日期", field: "jfrq", fieldType:"ftDateTime", width: 140},
+                {title: "缴费人", field: "jfr", fieldType:"ftString", width: 800},
+                {title: "收据", field: "sj", fieldType:"ftString", width: 2400},
+                {title: "备注", field: "bz", fieldType:"ftString", width: 16000}
+            ]],
+            dialog:{
+                id:'patentJfxxEdit',
+                width: 900,
+                height: 506,
+                href:'patent/jfxx/edit'
+            }
+        };
+        $div.Container(options); 
+    });
+
+
+</script>

@@ -1,0 +1,129 @@
+<div class="gui-fluid editTable">
+    <input type="hidden"  name="flag">
+    <input type="hidden"  name="id" >
+	<div class="gui-row" >
+        <div class="gui-col-sm6">
+            <label class="gui-form-label" for="">编号：</label>
+            <div class="gui-input-block">
+                <input type="text" name="code" data-toggle="gui-textbox" data-options="" style="width: 100%">
+            </div>
+        </div>
+    </div>
+	<div class="gui-row" >
+        <div class="gui-col-sm6">
+            <label class="gui-form-label" for="">案件类型：</label>
+            <div class="gui-input-block">
+                <input type="text" name="type" data-toggle="gui-textbox" data-options="" style="width: 100%">
+            </div>
+        </div>
+    </div>
+    <div class="gui-row" >
+        <div class="gui-col-sm6">
+            <label class="gui-form-label" for="">案件名称：</label>
+            <div class="gui-input-block">
+                <input type="text" name="sqmc" data-toggle="gui-textbox" data-options="" style="width: 100%">
+            </div>
+        </div>
+    </div>
+	<div class="gui-row" >
+        <div class="gui-col-sm6">
+            <label class="gui-form-label" for="">编码：</label>
+            <div class="gui-input-block">
+                <input type="text" name="bm" data-toggle="gui-textbox" data-options="" style="width: 100%">
+            </div>
+        </div>
+    </div>
+	<div class="gui-row" >
+        <div class="gui-col-sm6">
+            <label class="gui-form-label" for="">客户：</label>
+            <div class="gui-input-block">
+                <input type="text" name="kh" data-toggle="gui-textbox" data-options="" style="width: 100%">
+            </div>
+        </div>
+    </div>
+	<div class="gui-row" >
+        <div class="gui-col-sm6">
+            <label class="gui-form-label" for="">申请人：</label>
+            <div class="gui-input-block">
+                <input type="text" name="sqr" data-toggle="gui-textbox" data-options="" style="width: 100%">
+            </div>
+        </div>
+    </div>
+	<div class="gui-row" >
+        <div class="gui-col-sm6">
+            <label class="gui-form-label" for="">申请号：</label>
+            <div class="gui-input-block">
+                <input type="text" name="sqh" data-toggle="gui-textbox" data-options="" style="width: 100%">
+            </div>
+        </div>
+    </div>
+
+	<div class="gui-row" >
+        <div class="gui-col-sm6">
+            <label class="gui-form-label" for="">撰写人：</label>
+            <div class="gui-input-block">
+                <input type="text" name="jxr" data-toggle="gui-textbox" data-options="" style="width: 100%">
+            </div>
+        </div>
+    </div>
+	<div class="gui-row" >
+        <div class="gui-col-sm6">
+            <label class="gui-form-label" for="">申请日：</label>
+            <div class="gui-input-block">
+                <input type="text" name="sqrq" data-toggle="gui-datetimebox" data-options="" style="width: 100%">
+            </div>
+        </div>
+    </div>
+	<div class="gui-row" >
+        <div class="gui-col-sm6">
+            <label class="gui-form-label" for="">申请费：</label>
+            <div class="gui-input-block">
+                <input type="text" name="sqf" data-toggle="gui-textbox" data-options="" style="width: 100%">
+            </div>
+        </div>
+    </div>
+	<div class="gui-row" >
+        <div class="gui-col-sm6">
+            <label class="gui-form-label" for="">是否监控年费：</label>
+            <div class="gui-input-block" data-toggle="gui-checkbox">
+                <input type="checkbox" name="nfjk">
+            </div>
+
+        </div>
+    </div>
+	<div class="gui-row" >
+        <div class="gui-col-sm6">
+            <label class="gui-form-label" for="">证书：</label>
+            <div class="gui-input-block">
+                <input type="text" name="zs" data-toggle="gui-textbox" data-options="" style="width: 100%">
+            </div>
+        </div>
+    </div>
+	<div class="gui-row" >
+        <div class="gui-col-sm6">
+            <label class="gui-form-label" for="">类别：</label>
+            <div class="gui-input-block">
+                <input type="text" name="lb" data-toggle="gui-textbox" data-options="" style="width: 100%">
+            </div>
+        </div>
+    </div>
+	<div class="gui-row" >
+        <div class="gui-col-sm6">
+            <label class="gui-form-label" for="">递交人：</label>
+            <div class="gui-input-block">
+                <input type="text" name="djr" data-toggle="gui-textbox" data-options="" style="width: 100%">
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+            var $dialog=$('#patentAjxxEdit');
+
+        ComboboBox.init($('#patentAjxxEdit input[name="type"]'),
+            { data: [{value: "1", text: "发明"}, {value: "2", text: "实用新型"}, {value: "3", text: "外观设计"}, {value: "4", text: "商标注册"}, {value: "5", text: "版权登记"}], allowNull: true,width:'100%'});
+
+        ComboboBox.init($('#patentAjxxEdit input[name="kh"]'), {url: 'patent/khgl/query', valueField: 'khmc', textField: 'khmc', allowNull: true,width:'100%'});
+    })
+
+</script>
