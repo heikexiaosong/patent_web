@@ -6,12 +6,13 @@ import com.gavel.common.base.entity.BaseEntity;
 import com.gavel.common.utils.CodeStrategy;
 import com.gavel.persistence.annotation.FieldMeta;
 import com.gavel.persistence.annotation.TableMeta;
+import org.aspectj.apache.bcel.classfile.Code;
 
 
 @TableMeta(id = "KHGL", name = "KHGL")
 public class Khgl extends BaseEntity {
 
-   	@FieldMeta(fieldName = "KHGL_ID", caption = "ID", primaryKey = true,  codeStrategy = CodeStrategy.UUID, notEmpty = true, index = 1)
+   	@FieldMeta(fieldName = "KHGL_ID", caption = "ID", primaryKey = true, codeStrategy = CodeStrategy.UUID, notEmpty = true, index = 1)
 	private String id;
 	@FieldMeta(fieldName = "KHGL_KHMC", caption = "客户名称", index = 2)
 	private String khmc;
@@ -35,6 +36,10 @@ public class Khgl extends BaseEntity {
 	private Date whsj;
 	@FieldMeta(fieldName = "KHGL_SYSVERSION", caption = "系统版本", index = 12)
 	private Integer sysversion;
+	@FieldMeta(fieldName = "KHGL_NLRY", caption = "内联人员", index = 13)
+	private String nlry;
+	@FieldMeta(fieldName = "KHGL_WLRY", caption = "外联人员", index = 14)
+	private String wlry;
 
 	public String getId() {
 		return id;
@@ -107,6 +112,18 @@ public class Khgl extends BaseEntity {
 	}	
 	public void setSysversion(Integer sysversion) {
 		this.sysversion = sysversion;
+	}
+	public String getNlry() {
+		return nlry;
+	}	
+	public void setNlry(String nlry) {
+		this.nlry = nlry;
+	}
+	public String getWlry() {
+		return wlry;
+	}	
+	public void setWlry(String wlry) {
+		this.wlry = wlry;
 	}
 
 }

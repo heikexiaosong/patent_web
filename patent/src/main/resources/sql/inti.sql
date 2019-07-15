@@ -2548,28 +2548,31 @@ GO
 
 create table KHGL
 (
-  KHGL_ID varchar(32) not null ,
-  KHGL_KHMC nvarchar(300) null ,
-  KHGL_DWMC nvarchar(300) null ,
-  KHGL_LXDH varchar(50) null ,
-  KHGL_YX varchar(128) null ,
-  KHGL_DZ nvarchar(300) null ,
-  KHGL_ZYFW nvarchar(200) null ,
-  KHGL_BZ nvarchar(1000) null ,
-  KHGL_WHRID varchar(20) not null ,
-  KHGL_WHR nvarchar(30) not null ,
-  KHGL_WHSJ datetime not null ,
-  KHGL_SYSVERSION int not null
+    KHGL_ID varchar(32) not null ,
+    KHGL_KHMC nvarchar(300) null ,
+    KHGL_DWMC nvarchar(300) null ,
+    KHGL_LXDH varchar(50) null ,
+    KHGL_YX varchar(128) null ,
+    KHGL_DZ nvarchar(300) null ,
+    KHGL_ZYFW nvarchar(200) null ,
+    KHGL_BZ nvarchar(1000) null ,
+    KHGL_WHRID varchar(20) not null ,
+    KHGL_WHR nvarchar(30) not null ,
+    KHGL_WHSJ datetime not null ,
+    KHGL_SYSVERSION int not null ,
+    KHGL_NLRY nvarchar(30) null ,
+    KHGL_WLRY nvarchar(30) null
 )
 GO
 alter table KHGL with nocheck add
-  CONSTRAINT DF_KHGL_KHGL_WHSJ default(getdate()) for KHGL_WHSJ,
-  CONSTRAINT DF_KHGL_KHGL_SYSVERSION default(1) for KHGL_SYSVERSION
+    CONSTRAINT DF_KHGL_KHGL_WHSJ default(getdate()) for KHGL_WHSJ,
+    CONSTRAINT DF_KHGL_KHGL_SYSVERSION default(1) for KHGL_SYSVERSION
 GO
 alter table KHGL with nocheck add
-  CONSTRAINT PK_KHGL PRIMARY KEY CLUSTERED
+    CONSTRAINT PK_KHGL PRIMARY KEY CLUSTERED
     (KHGL_ID) ON [PRIMARY]
 GO
+
 
 create table CWWL
 (

@@ -20,13 +20,24 @@ public class KhglDaoImpl extends BaseDaoImpl implements KhglDao {
         sqlMap.setPageNo(condition.getPageNo());
         sqlMap.setRowCount(condition.getPageSize());
         sqlMap.append("select KHGL_ID, KHGL_KHMC, KHGL_DWMC, KHGL_LXDH, KHGL_YX, KHGL_DZ, KHGL_ZYFW ");
-        sqlMap.append(", KHGL_BZ, KHGL_WHRID, KHGL_WHR, KHGL_WHSJ, KHGL_SYSVERSION ");
+        sqlMap.append(", KHGL_BZ, KHGL_WHRID, KHGL_WHR, KHGL_WHSJ, KHGL_SYSVERSION, KHGL_NLRY, KHGL_WLRY ");
         sqlMap.append("from KHGL ");
         sqlMap.append("where 1=1  ");
         if (StringUtils.isNotEmpty(condition.getId())){
             sqlMap.append("  and " + SqlUtil.getWhereSql("KHGL_ID", condition.getId()));
             sqlMap.setParamValue("KHGL_ID", condition.getId());
             
+        }
+        if (StringUtils.isNotEmpty(condition.getKhmc())){
+            sqlMap.append("  and KHGL_KHMC like :KHGL_KHMC");
+            sqlMap.setParamValue("KHGL_KHMC", "%" + condition.getKhmc() + "%");
+
+        }
+        if (StringUtils.isNotEmpty(condition.getYwy())){
+            sqlMap.append("  and ( KHGL_NLRY like :KHGL_NLRY or KHGL_WLRY like :KHGL_WLRY )");
+            sqlMap.setParamValue("KHGL_NLRY", "%" + condition.getYwy() + "%");
+            sqlMap.setParamValue("KHGL_WLRY", "%" + condition.getYwy() + "%");
+
         }
         sqlMap.query(KhglVO.class);
         return sqlMap.getRecordSet();
