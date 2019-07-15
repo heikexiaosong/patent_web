@@ -792,30 +792,16 @@
     }
     function searh_initialize(obj) {
         var ele=obj.$ele;
-        ele.find('.bdsug').css('width',$(document).width()-240);
-        ele.find('.serach').click(function (event) {
+        ele.find('.bdsug').css('width',$(document).width()-180);
+        ele.find('.query').click(function (event) {
             event.stopPropagation();
-            var id=$(this).closest('.gui-div').attr('id');
-            var $obj=$('#'+id).find('.bdsug');
-            if($obj.css('display')=='none'){
-                $obj.css('display','block');
-                $('#'+id).find('.bdsug').addClass('animated fadeInDown');
-                setTimeout(function(){
-                    $('#'+id).find('.bdsug').removeClass('slideInDown');
-                }, 2000);
-            }else{
-                ele.find('.toolbar-reload').click();
-                $('#'+id).find('.bdsug').css('display','none');
-            }
+            ele.find('.toolbar-reload').click();
         });
         ele.find('.bdsug').click(function (event) {
             event=event||window.event;
             event.stopPropagatio?event.stopPropagation:event.cancelBubble=true;
             event.stopPropagation();
         });
-        $('div.datagrid-view').click(function (event) {
-            ele.find('.bdsug').css('display','none');
-        })
     }
 })($, window, document);
 

@@ -44,10 +44,10 @@
     padding: 0 10px;
 }
 /*page 搜索框*/
-#head .bdsug{top:33px;}
-.bdsug{/*display:none;*/position:absolute;z-index:1;width:538px;background:#fff;
-    border-top: 1px solid #ccc;
-    border-bottom: 1px solid #ccc;_overflow:hidden;
-    box-shadow:1px 1px 3px #ededed;-webkit-box-shadow:1px 1px 3px #ededed;-moz-box-shadow:1px 1px 3px #ededed;-o-box-shadow:1px 1px 3px #ededed;}
-.bdsug .bdsug-feedback-wrap{text-align:right;background:#fafafa;color:#666;height:25px;line-height:27px;}
-.bdsug .bdsug-feedback{margin-right:10px;text-decoration:underline;color:#666;cursor: pointer}
+/*#head .bdsug{top:33px;}*/
+/*.bdsug{!*display:none;*!position:absolute;z-index:1;width:538px;background:#fff;*/
+    /*border-top: 1px solid #ccc;*/
+    /*border-bottom: 1px solid #ccc;_overflow:hidden;*/
+    /*box-shadow:1px 1px 3px #ededed;-webkit-box-shadow:1px 1px 3px #ededed;-moz-box-shadow:1px 1px 3px #ededed;-o-box-shadow:1px 1px 3px #ededed;}*/
+/*.bdsug .bdsug-feedback-wrap{text-align:right;background:#fafafa;color:#666;height:25px;line-height:27px;}*/
+/*.bdsug .bdsug-feedback{margin-right:10px;text-decoration:underline;color:#666;cursor: pointer}*/
