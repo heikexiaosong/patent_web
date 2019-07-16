@@ -12,7 +12,7 @@
         <!--<a class="toolbar-print toolbar"  href="javascript:void(0)"></a>-->
         <!--<a class="toolbar-export toolbar" href="javascript:void(0)"></a>-->
         <a class="toolbar-review toolbar" href="javascript:void(0)"></a>
-        <a class="toolbar-add toolbar" href="javascript:void(0)"></a>
+        <!--<a class="toolbar-add toolbar" href="javascript:void(0)"></a>-->
         <!--<a class="toolbar-copy toolbar" href="javascript:void(0)"></a>-->
         <a class="toolbar-edit toolbar" href="javascript:void(0)"></a>
         <!--<a class="toolbar-delete toolbar" href="javascript:void(0)"></a>-->
@@ -22,7 +22,11 @@
                 <ul>
                     <li class="bdsug-store bdsug-overflow">
 
-                         <span style="margin: 10px">
+                        <span style="margin: 10px">
+                            <label >状态：</label><input type="text" name="stat"   class="gui-textbox" style="width: 160px; height: 24px">
+                        </span>
+
+                        <span style="margin: 10px">
                             <label >日期范围：</label>
                             <input type="text" name="start"   class="gui-textbox" style="width: 100px;height: 24px">
                             -
@@ -56,14 +60,24 @@
         $('#patentKxrl input[name="start"]').iDatebox({});
         $('#patentKxrl input[name="end"]').iDatebox({});
 
+        ComboboBox.init($('#patentKxrl input[name="stat"]'),
+            { data: [{value: "", text: ""}, {value: "pending", text: "待认领"}, {value: "claim", text: "已认领"}], allowNull: true,width:'100%'});
+
+
+
+
         var options = {
-            url: 'patent/cwwl',
+            url: 'patent/kxrl',
             queryParams: {},
             columns: [[
                 {title: "日期", field: "ywrq", fieldType: "ftDateTime", width: 120},
-                {title: "业务员", field: "ywy", fieldType: "ftString", width: 110},
                 {title: "客户", field: "kh", fieldType: "ftString", width: 160},
                 {title: "业务", field: "yw", fieldType: "ftString", width: 160},
+                {title: "状态", field: "stat", fieldType: "ftString", width: 100, align: 'center', formatter: function (value, index, row) {
+                        var map = {"pending": '<span style="color: red">待认领</span>', "claim": '<span style="color: green">已认领</span>'};
+                        var text = map[value];
+                        return text || value;
+                    }},
                 {title: "金额", field: "je", fieldType: "ftInteger", width: 90, align: 'right'},
                 {title: "收款账户", field: "skzh", fieldType: "ftString", width: 140},
                 {title: "实际收款金额", field: "sjskje", fieldType: "ftInteger", width: 120, align: 'right'},
@@ -72,13 +86,18 @@
                 {title: "官费", field: "gf", fieldType: "ftInteger", width: 140},
                 {title: "业绩", field: "yj", fieldType: "ftInteger", width: 140},
                 {title: "提成", field: "tc", fieldType: "ftInteger", width: 140},
-                {title: "专利名称", field: "zlmc", fieldType: "ftString", width: 8000}
+                {title: "业务员", field: "ywy", fieldType: "ftString", width: 110},
+                {title: "专利名称", field: "zlmc", fieldType: "ftString", width: 140}
             ]],
             dialog: {
                 id: 'patentKxrlEdit',
                 width: 900,
                 height: 506,
-                href: 'patent/cwwl/edit'
+                href: 'patent/kxrl/edit'
+            },
+
+            toolbarname: {
+                "edit": "认领"
             }
         };
         $div.Container(options);

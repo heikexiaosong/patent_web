@@ -62,7 +62,7 @@ public class KxrlController extends BaseController {
     @ResponseBody
     public Object query(@RequestBody JSONObject param) {
         CwwlCondition condition = DataConvert.getCondition(param, CwwlCondition.class);
-        RecordSet<CwwlVO> records = cwwlService.query(condition);
+        RecordSet<CwwlVO> records = cwwlService.queryOwner(condition);
         return buildReturnData(records, CwwlVO.class);
     }
 

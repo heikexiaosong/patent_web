@@ -41,4 +41,9 @@ public class CwwlServiceImpl extends BaseEditServiceImpl implements CwwlService 
 	    return cwwlDao.query(condition);
 	}
 
+    @Override
+    public RecordSet<CwwlVO> queryOwner(CwwlCondition condition) {
+        return cwwlDao.queryOwner(condition);
+    }
+
 }

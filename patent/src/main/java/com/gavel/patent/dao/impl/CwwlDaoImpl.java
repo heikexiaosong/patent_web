@@ -3,6 +3,7 @@ package com.gavel.patent.dao.impl;
 import com.gavel.common.base.dao.impl.BaseDaoImpl;
 import com.gavel.common.utils.DateUtils;
 import com.gavel.common.utils.StringUtils;
+import com.gavel.common.utils.UserInfoUtil;
 import com.gavel.persistence.sql.RecordSet;
 import com.gavel.persistence.sql.SqlMap;
 import com.gavel.persistence.sql.SqlUtil;
@@ -17,7 +18,7 @@ import com.gavel.patent.vo.CwwlVO;
 public class CwwlDaoImpl extends BaseDaoImpl implements CwwlDao {
 	
 	public RecordSet<CwwlVO> query(CwwlCondition condition){
-		 SqlMap sqlMap = new SqlMap();
+	    SqlMap sqlMap = new SqlMap();
         sqlMap.setPageNo(condition.getPageNo());
         sqlMap.setRowCount(condition.getPageSize());
         sqlMap.append("select CWWL_ID, CWWL_YWRQ, CWWL_KH, CWWL_YW, CWWL_JE, CWWL_SKZH, CWWL_SJSKJE, CWWL_FP, CWWL_QBCB, CWWL_GF ");
@@ -56,4 +57,47 @@ public class CwwlDaoImpl extends BaseDaoImpl implements CwwlDao {
         return sqlMap.getRecordSet();
 
 	}
+
+    @Override
+    public RecordSet<CwwlVO> queryOwner(CwwlCondition condition) {
+        SqlMap sqlMap = new SqlMap();
+        sqlMap.setPageNo(condition.getPageNo());
+        sqlMap.setRowCount(condition.getPageSize());
+        sqlMap.append("select CWWL_ID, CWWL_YWRQ, CWWL_KH, CWWL_YW, CWWL_JE, CWWL_SKZH, CWWL_SJSKJE, CWWL_FP, CWWL_QBCB, CWWL_GF ");
+        sqlMap.append(", CWWL_YJ, CWWL_TC, CWWL_ZLMC, CWWL_WHRID, CWWL_WHR, CWWL_WHSJ, CWWL_SYSVERSION, CWWL_YWY, CWWL_STAT ");
+        sqlMap.append("from CWWL ");
+        sqlMap.append("where ( CWWL_STAT = 'pending' or ( CWWL_STAT = 'claim' and CWWL_YWY = :CWWL_YWY  )  )  ");
+        sqlMap.setParamValue("CWWL_YWY", UserInfoUtil.getUserId());
+
+        if (StringUtils.isNotEmpty(condition.getId())){
+            sqlMap.append("  and " + SqlUtil.getWhereSql("CWWL_ID", condition.getId()));
+            sqlMap.setParamValue("CWWL_ID", condition.getId());
+        }
+        if (StringUtils.isNotEmpty(condition.getKh())){
+            sqlMap.append("  and CWWL_KH like :CWWL_KH ");
+            sqlMap.setParamValue("CWWL_KH", "%" + condition.getKh() + "%");
+        }
+        if (StringUtils.isNotEmpty(condition.getYw())){
+            sqlMap.append("  and CWWL_YW like :CWWL_YW ");
+            sqlMap.setParamValue("CWWL_YW", "%" + condition.getYw() + "%");
+        }
+        if ( condition.getStart()!=null ){
+            sqlMap.append("  and CWWL_YWRQ >= :CWWL_YWRQ_START");
+            sqlMap.setParamValue("CWWL_YWRQ_START", DateUtils.beginOfDay(condition.getStart()));
+        }
+
+        if ( condition.getEnd()!=null ){
+            sqlMap.append("  and CWWL_YWRQ <= :CWWL_YWRQ_END");
+            sqlMap.setParamValue("CWWL_YWRQ_END", DateUtils.endOfDay(condition.getEnd()));
+        }
+
+        if (StringUtils.isNotEmpty(condition.getStat())){
+            sqlMap.append("  and " + SqlUtil.getWhereSql("CWWL_STAT", condition.getStat()));
+            sqlMap.setParamValue("CWWL_STAT", condition.getStat());
+        }
+
+
+        sqlMap.query(CwwlVO.class);
+        return sqlMap.getRecordSet();
+    }
 }

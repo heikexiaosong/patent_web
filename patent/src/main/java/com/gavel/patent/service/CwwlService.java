@@ -10,5 +10,6 @@ import com.gavel.patent.vo.CwwlVO;
 public interface CwwlService extends BaseEditService {
 	
     RecordSet<CwwlVO> query(CwwlCondition condition);
-    
+
+    RecordSet<CwwlVO> queryOwner(CwwlCondition condition);
 }

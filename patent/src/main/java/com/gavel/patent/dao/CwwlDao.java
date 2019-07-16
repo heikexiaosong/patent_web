@@ -10,4 +10,5 @@ public interface CwwlDao extends BaseDao {
 
     RecordSet<CwwlVO> query(CwwlCondition condition);
 
+    RecordSet<CwwlVO> queryOwner(CwwlCondition condition);
 }
