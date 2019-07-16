@@ -2593,7 +2593,8 @@ create table CWWL
     CWWL_WHR nvarchar(30) not null ,
     CWWL_WHSJ datetime not null ,
     CWWL_SYSVERSION int not null ,
-    CWWL_YWY varchar(30) null
+    CWWL_YWY varchar(30) null ,
+    CWWL_ZT varchar(20) null
 )
 GO
 alter table CWWL with nocheck add
@@ -2611,6 +2612,7 @@ alter table CWWL with nocheck add
     CONSTRAINT PK_CWWL PRIMARY KEY CLUSTERED
     (CWWL_ID) ON [PRIMARY]
 GO
+
 
 create table AJXX
 (

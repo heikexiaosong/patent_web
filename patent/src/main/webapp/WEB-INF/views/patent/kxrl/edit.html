@@ -1,7 +1,6 @@
 <div class="gui-fluid editTable">
     <input type="hidden"  name="flag">
     <input type="hidden"  name="id" >
-    <input type="hidden"  name="zt" value="pending" >
 	<div class="gui-row" >
         <div class="gui-col-sm6">
             <label class="gui-form-label" for="">客户：</label>
@@ -98,14 +97,14 @@
 </div>
 <script>
     $(function () {
-            var $dialog=$('#patentCwwlEdit');
+        var $dialog=$('#patentKxrlEdit');
         ComboboBox.init(
-            $('#patentCwwlEdit input[name="kh"]'),
+            $('#patentKxrlEdit input[name="kh"]'),
             {url: 'patent/khgl/query', valueField: 'khmc', textField: 'khmc', allowNull: true,width:'100%'}
         );
 
         ComboboBox.init(
-            $('#patentCwwlEdit input[name="ywy"]'),
+            $('#patentKxrlEdit input[name="ywy"]'),
             {url: 'kzzx/user/query', valueField: 'userid', textField: 'username', allowNull: true,width:'100%'}
         );
     })
