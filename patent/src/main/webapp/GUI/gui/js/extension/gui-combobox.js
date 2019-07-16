@@ -21,7 +21,7 @@
             valueFiled: 'value',
             textFiled: 'text',
            /* width:200,*/
-            height:30,
+            height:24,
             panelHeight: 220,
             editable: 1,
             showValue:false,

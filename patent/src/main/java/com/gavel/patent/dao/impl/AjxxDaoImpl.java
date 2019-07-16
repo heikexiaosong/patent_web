@@ -66,11 +66,14 @@ public class AjxxDaoImpl extends BaseDaoImpl implements AjxxDao {
             sqlMap.setParamValue("AJXX_SQR", condition.getSqmc());
         }
 
-        if ( condition.getSqrq()!=null ){
+        if ( condition.getStart()!=null ){
             sqlMap.append("  and AJXX_SQRQ >= :START");
-            sqlMap.setParamValue("START", DateUtils.beginOfDay(condition.getSqrq()));
+            sqlMap.setParamValue("START", DateUtils.beginOfDay(condition.getStart()));
+        }
+
+        if ( condition.getEnd()!=null ){
             sqlMap.append("  and AJXX_SQRQ <= :END");
-            sqlMap.setParamValue("END", DateUtils.endOfDay(condition.getSqrq()));
+            sqlMap.setParamValue("END", DateUtils.endOfDay(condition.getEnd()));
         }
 
         sqlMap.query(AjxxVO.class);

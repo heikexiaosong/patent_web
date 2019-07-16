@@ -23,21 +23,25 @@ public class Jfxx extends BaseEntity {
 	private String fymc;
 	@FieldMeta(fieldName = "JFXX_JFJE", caption = "缴费金额", index = 6)
 	private Integer jfje;
-	@FieldMeta(fieldName = "JFXX_JFRQ", caption = "缴费日期", index = 7)
+	@FieldMeta(fieldName = "JFXX_JFQX", caption = "缴费期限", index = 7)
+	private Date jfqx;
+	@FieldMeta(fieldName = "JFXX_ZT", caption = "状态", index = 8)
+	private String zt;
+	@FieldMeta(fieldName = "JFXX_JFRQ", caption = "缴费日期", index = 9)
 	private Date jfrq;
-	@FieldMeta(fieldName = "JFXX_JFR", caption = "缴费人", index = 8)
+	@FieldMeta(fieldName = "JFXX_JFR", caption = "缴费人", index = 10)
 	private String jfr;
-	@FieldMeta(fieldName = "JFXX_SJ", caption = "收据", index = 9)
+	@FieldMeta(fieldName = "JFXX_SJ", caption = "收据", index = 11)
 	private String sj;
-	@FieldMeta(fieldName = "JFXX_BZ", caption = "备注", index = 10)
+	@FieldMeta(fieldName = "JFXX_BZ", caption = "备注", index = 12)
 	private String bz;
-	@FieldMeta(fieldName = "JFXX_WHRID", caption = "维护人编码", autoUserId = true, index = 11)
+	@FieldMeta(fieldName = "JFXX_WHRID", caption = "维护人编码", autoUserId = true, index = 13)
 	private String whrid;
-	@FieldMeta(fieldName = "JFXX_WHR", caption = "维护人", autoUserName = true, index = 12)
+	@FieldMeta(fieldName = "JFXX_WHR", caption = "维护人", autoUserName = true, index = 14)
 	private String whr;
-	@FieldMeta(fieldName = "JFXX_WHSJ", caption = "维护时间", autoDateTime = true, index = 13)
+	@FieldMeta(fieldName = "JFXX_WHSJ", caption = "维护时间", autoDateTime = true, index = 15)
 	private Date whsj;
-	@FieldMeta(fieldName = "JFXX_SYSVERSION", caption = "系统版本", index = 14)
+	@FieldMeta(fieldName = "JFXX_SYSVERSION", caption = "系统版本", index = 16)
 	private Integer sysversion;
 
 	public String getId() {
@@ -75,6 +79,18 @@ public class Jfxx extends BaseEntity {
 	}	
 	public void setJfje(Integer jfje) {
 		this.jfje = jfje;
+	}
+	public Date getJfqx() {
+		return jfqx;
+	}	
+	public void setJfqx(Date jfqx) {
+		this.jfqx = jfqx;
+	}
+	public String getZt() {
+		return zt;
+	}	
+	public void setZt(String zt) {
+		this.zt = zt;
 	}
 	public Date getJfrq() {
 		return jfrq;

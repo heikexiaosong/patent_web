@@ -2662,7 +2662,9 @@ create table JFXX
     JFXX_WHRID varchar(20) not null ,
     JFXX_WHR nvarchar(30) not null ,
     JFXX_WHSJ datetime not null ,
-    JFXX_SYSVERSION int not null
+    JFXX_SYSVERSION int not null ,
+    JFXX_JFQX datetime null ,
+    JFXX_ZT varchar(20) null
 )
 GO
 alter table JFXX with nocheck add
@@ -2674,3 +2676,4 @@ alter table JFXX with nocheck add
     CONSTRAINT PK_JFXX PRIMARY KEY CLUSTERED
     (JFXX_ID) ON [PRIMARY]
 GO
+

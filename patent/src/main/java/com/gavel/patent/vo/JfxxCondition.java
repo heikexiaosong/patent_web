@@ -9,6 +9,9 @@ public class JfxxCondition extends BaseEntity {
     
 	private String id;
 
+
+	private String zt;
+
 	private String code;
 
 	private String sqmc;
@@ -22,6 +25,14 @@ public class JfxxCondition extends BaseEntity {
 	}	
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public String getZt() {
+		return zt;
+	}
+
+	public void setZt(String zt) {
+		this.zt = zt;
 	}
 
 	public String getCode() {
