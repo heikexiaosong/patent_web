@@ -47,8 +47,8 @@ public class Cwwl extends BaseEntity {
 	private Integer sysversion;
 	@FieldMeta(fieldName = "CWWL_YWY", caption = "业务员", index = 18)
 	private String ywy;
-	@FieldMeta(fieldName = "CWWL_ZT", caption = "状态", index = 18)
-	private String zt;
+	@FieldMeta(fieldName = "CWWL_STAT", caption = "状态", index = 18)
+	private String stat;
 
 	public String getId() {
 		return id;
@@ -159,12 +159,12 @@ public class Cwwl extends BaseEntity {
 		this.ywy = ywy;
 	}
 
-	public String getZt() {
-		return zt;
+	public String getStat() {
+		return stat;
 	}
 
-	public void setZt(String zt) {
-		this.zt = zt;
+	public void setStat(String stat) {
+		this.stat = stat;
 	}
 }
 

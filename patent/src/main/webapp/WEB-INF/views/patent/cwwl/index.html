@@ -22,6 +22,10 @@
                 <ul>
                     <li class="bdsug-store bdsug-overflow">
 
+                        <span style="margin: 10px">
+                            <label >状态：</label><input type="text" name="stat"   class="gui-textbox" style="width: 160px; height: 24px">
+                        </span>
+
                          <span style="margin: 10px">
                             <label >日期范围：</label>
                             <input type="text" name="start"   class="gui-textbox" style="width: 100px;height: 24px">
@@ -30,11 +34,11 @@
                         </span>
 
                         <span style="margin: 10px">
-                            <label >客户：</label><input type="text" name="kh"   class="gui-textbox" style="width: 100px; height: 24px">
+                            <label >客户：</label><input type="text" name="kh"   class="gui-textbox" style="width: 160px; height: 24px">
                         </span>
 
                         <span style="margin: 10px">
-                            <label >业务：</label><input type="text" name="yw"   class="gui-textbox" style="width: 100px; height: 24px">
+                            <label >业务：</label><input type="text" name="yw"   class="gui-textbox" style="width: 160px; height: 24px">
                         </span>
 
                         <span class="serach">
@@ -56,6 +60,11 @@
         $('#patentCwwl input[name="start"]').iDatebox({});
         $('#patentCwwl input[name="end"]').iDatebox({});
 
+        ComboboBox.init($('#patentCwwl input[name="stat"]'),
+            { data: [{value: "", text: ""}, {value: "pending", text: "待认领"}, {value: "claim", text: "已认领"}], allowNull: true,width:'100%'});
+
+
+
         var options = {
             url: 'patent/cwwl',
             queryParams: {},
@@ -67,7 +76,11 @@
                 {title: "收款账户", field: "skzh", fieldType: "ftString", width: 140},
                 {title: "实际收款金额", field: "sjskje", fieldType: "ftInteger", width: 120, align: 'right'},
                 {title: "发票（税费）", field: "fp", fieldType: "ftInteger", width: 100, align: 'right'},
-                {title: "状态", field: "zt", fieldType: "ftString", width: 120},
+                {title: "状态", field: "stat", fieldType: "ftString", width: 100, align: 'center', formatter: function (value, index, row) {
+                        var map = {"pending": '<span style="color: red">待认领</span>', "claim": '<span style="color: green">已认领</span>'};
+                        var text = map[value];
+                        return text || value;
+                    }},
                 {title: "全部成本", field: "qbcb", fieldType: "ftInteger", width: 140},
                 {title: "官费", field: "gf", fieldType: "ftInteger", width: 140},
                 {title: "业绩", field: "yj", fieldType: "ftInteger", width: 140},

@@ -21,7 +21,7 @@ public class CwwlDaoImpl extends BaseDaoImpl implements CwwlDao {
         sqlMap.setPageNo(condition.getPageNo());
         sqlMap.setRowCount(condition.getPageSize());
         sqlMap.append("select CWWL_ID, CWWL_YWRQ, CWWL_KH, CWWL_YW, CWWL_JE, CWWL_SKZH, CWWL_SJSKJE, CWWL_FP, CWWL_QBCB, CWWL_GF ");
-        sqlMap.append(", CWWL_YJ, CWWL_TC, CWWL_ZLMC, CWWL_WHRID, CWWL_WHR, CWWL_WHSJ, CWWL_SYSVERSION, CWWL_YWY, CWWL_ZT ");
+        sqlMap.append(", CWWL_YJ, CWWL_TC, CWWL_ZLMC, CWWL_WHRID, CWWL_WHR, CWWL_WHSJ, CWWL_SYSVERSION, CWWL_YWY, CWWL_STAT ");
         sqlMap.append("from CWWL ");
         sqlMap.append("where 1=1  ");
         if (StringUtils.isNotEmpty(condition.getId())){
@@ -44,6 +44,11 @@ public class CwwlDaoImpl extends BaseDaoImpl implements CwwlDao {
         if ( condition.getEnd()!=null ){
             sqlMap.append("  and CWWL_YWRQ <= :CWWL_YWRQ_END");
             sqlMap.setParamValue("CWWL_YWRQ_END", DateUtils.endOfDay(condition.getEnd()));
+        }
+
+        if (StringUtils.isNotEmpty(condition.getStat())){
+            sqlMap.append("  and " + SqlUtil.getWhereSql("CWWL_STAT", condition.getStat()));
+            sqlMap.setParamValue("CWWL_STAT", condition.getStat());
         }
 
 

@@ -17,6 +17,8 @@ public class CwwlCondition extends BaseEntity {
 
 	private Date end;
 
+	private String stat;
+
 	public String getId() {
 		return id;
 	}	
@@ -54,5 +56,13 @@ public class CwwlCondition extends BaseEntity {
 
 	public void setEnd(Date end) {
 		this.end = end;
+	}
+
+	public String getStat() {
+		return stat;
+	}
+
+	public void setStat(String stat) {
+		this.stat = stat;
 	}
 }

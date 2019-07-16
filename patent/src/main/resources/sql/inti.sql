@@ -2594,7 +2594,7 @@ create table CWWL
     CWWL_WHSJ datetime not null ,
     CWWL_SYSVERSION int not null ,
     CWWL_YWY varchar(30) null ,
-    CWWL_ZT varchar(20) null
+    CWWL_STAT varchar(20) null
 )
 GO
 alter table CWWL with nocheck add

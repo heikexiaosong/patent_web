@@ -1,5 +1,6 @@
 package com.gavel.patent.service.impl;
 
+import com.gavel.common.base.entity.BaseEntity;
 import com.gavel.common.base.service.impl.BaseEditServiceImpl;
 import com.gavel.persistence.sql.RecordSet;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,16 @@ public class CwwlServiceImpl extends BaseEditServiceImpl implements CwwlService 
 
     @Autowired
     private CwwlDao cwwlDao;
+
+    @Override
+    public void beforePost(BaseEntity entity) {
+        if ( entity!=null && entity instanceof Cwwl  ) {
+            Cwwl cwwl = (Cwwl)entity;
+            if ( cwwl.getStat()==null || cwwl.getStat().trim().length()==0  ){
+                cwwl.setStat("pending");
+            }
+        }
+    }
 
     @Override
     public void initService() {
