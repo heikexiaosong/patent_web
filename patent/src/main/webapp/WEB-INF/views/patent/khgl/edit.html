@@ -48,15 +48,7 @@
             </div>
         </div>
     </div>
-	<div class="gui-row" >
-        <div class="gui-col-sm12">
-            <label class="gui-form-label" for="">备注：</label>
-            <div class="gui-input-block">
-                <input type="text" name="bz" data-toggle="gui-textbox" data-options="" style="width: 100%">
-            </div>
-        </div>
-    </div>
-	<div class="gui-row" >
+    <div class="gui-row" >
         <div class="gui-col-sm6">
             <label class="gui-form-label" for="">内联人员：</label>
             <div class="gui-input-block">
@@ -70,10 +62,29 @@
             </div>
         </div>
     </div>
+	<div class="gui-row" >
+        <div class="gui-col-sm12">
+            <label class="gui-form-label" for="">备注：</label>
+            <div class="gui-input-block">
+                <input type="text" name="bz" data-toggle="gui-textarea" data-options="" style="width: 100%; height: 72px">
+            </div>
+        </div>
+    </div>
+
 </div>
 <script>
     $(function () {
-            var $dialog=$('#patentKhglEdit');
+        var $dialog=$('#patentKhglEdit');
+
+        ComboboBox.init(
+            $('#patentKhglEdit input[name="nlry"]'),
+            {url: 'kzzx/user/query', valueField: 'userid', textField: 'username', allowNull: true,width:'100%'}
+        );
+
+        ComboboBox.init(
+            $('#patentKhglEdit input[name="wlry"]'),
+            {url: 'kzzx/user/query', valueField: 'userid', textField: 'username', allowNull: true,width:'100%'}
+        );
     })
 
 </script>

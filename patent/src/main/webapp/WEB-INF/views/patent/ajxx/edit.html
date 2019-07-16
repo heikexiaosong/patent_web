@@ -3,7 +3,7 @@
     <input type="hidden"  name="id" >
 	<div class="gui-row" >
         <div class="gui-col-sm6">
-            <label class="gui-form-label" for="">编号：</label>
+            <label class="gui-form-label" for="">案件编号：</label>
             <div class="gui-input-block">
                 <input type="text" name="code" data-toggle="gui-textbox" data-options="" style="width: 100%">
             </div>
@@ -75,7 +75,7 @@
         <div class="gui-col-sm6">
             <label class="gui-form-label" for="">申请费：</label>
             <div class="gui-input-block">
-                <input type="text" name="sqf" data-toggle="gui-textbox" data-options="" style="width: 100%">
+                <input type="text" name="sqf"  data-toggle="gui-textbox" data-options="" style="width: 100%">
             </div>
         </div>
         <div class="gui-col-sm6">
@@ -116,7 +116,13 @@
         ComboboBox.init($('#patentAjxxEdit input[name="type"]'),
             { data: [{value: "1", text: "发明"}, {value: "2", text: "实用新型"}, {value: "3", text: "外观设计"}, {value: "4", text: "商标注册"}, {value: "5", text: "版权登记"}], allowNull: true,width:'100%'});
 
-        ComboboBox.init($('#patentAjxxEdit input[name="kh"]'), {url: 'patent/khgl/query', valueField: 'khmc', textField: 'khmc', allowNull: true,width:'100%'});
+        ComboboBox.init($('#patentAjxxEdit input[name="kh"]'),
+            {url: 'patent/khgl/query', valueField: 'khmc', textField: 'khmc', allowNull: true,width:'100%', onSelected(item){debugger;}});
+
+        ComboboBox.init(
+            $('#patentAjxxEdit input[name="bm"]'),
+            {url: 'kzzx/user/query', valueField: 'userid', textField: 'username', allowNull: true,width:'100%'}
+        );
     })
 
 </script>

@@ -21,7 +21,10 @@ public class KhglDaoImpl extends BaseDaoImpl implements KhglDao {
         sqlMap.setRowCount(condition.getPageSize());
         sqlMap.append("select KHGL_ID, KHGL_KHMC, KHGL_DWMC, KHGL_LXDH, KHGL_YX, KHGL_DZ, KHGL_ZYFW ");
         sqlMap.append(", KHGL_BZ, KHGL_WHRID, KHGL_WHR, KHGL_WHSJ, KHGL_SYSVERSION, KHGL_NLRY, KHGL_WLRY ");
+        sqlMap.append(", n.USERS_USERNAME as KHGL_NLRY_NAME, w.USERS_USERNAME as KHGL_WLRY_NAME ");
         sqlMap.append("from KHGL ");
+        sqlMap.append("     left join USERS n on n.USERS_USERID = KHGL_NLRY ");
+        sqlMap.append("     left join USERS w on w.USERS_USERID = KHGL_WLRY ");
         sqlMap.append("where 1=1  ");
         if (StringUtils.isNotEmpty(condition.getId())){
             sqlMap.append("  and " + SqlUtil.getWhereSql("KHGL_ID", condition.getId()));

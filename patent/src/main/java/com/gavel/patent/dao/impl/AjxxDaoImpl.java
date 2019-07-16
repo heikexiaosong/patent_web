@@ -36,6 +36,12 @@ public class AjxxDaoImpl extends BaseDaoImpl implements AjxxDao {
 
         }
 
+        if (StringUtils.isNotEmpty(condition.getType())){
+            sqlMap.append("  and " + SqlUtil.getWhereSql("AJXX_TYPE", condition.getType()));
+            sqlMap.setParamValue("AJXX_TYPE", condition.getType());
+
+        }
+
         if (StringUtils.isNotEmpty(condition.getKh())){
             sqlMap.append("  and " + SqlUtil.getWhereSql("AJXX_KH", condition.getKh()));
             sqlMap.setParamValue("AJXX_KH", condition.getKh());

@@ -90,7 +90,7 @@
             textField: "text",
             valueField: "value",
             data: data,
-            height:30,
+            height:24,
             /* value:_selectValue,*/
             width:options['width'],
             panelHeight: 220,
@@ -98,6 +98,7 @@
             disabled:options['disabled'],
             onSelect: options["onSelected"],
             onChange: function (b, c) {
+                debugger;
                 if(options["onChanged"] && b){
                     var data=$(this).combobox('getData');
                     $.each( data,function (i,item) {
