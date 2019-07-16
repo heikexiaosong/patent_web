@@ -112,10 +112,11 @@
                     dataType: 'json'
                 }).done(function(data, status, jqXHR){
                     var toolbar_name=name_text(data['toolbar']);
-
                     if ( !!opt["toolbarname"] ) $.extend(toolbar_name, opt["toolbarname"]);
 
                     var btn_name=name_text(data['btn']);
+                    if ( !!opt["toolbarname"] ) $.extend(btn_name, opt["toolbarname"]);
+
                     var module=opt['url']+'/query';
                     if(opt['queryUrl']){
                         module=opt['queryUrl']
