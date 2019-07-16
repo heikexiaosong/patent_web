@@ -2679,3 +2679,21 @@ alter table JFXX with nocheck add
     (JFXX_ID) ON [PRIMARY]
 GO
 
+create table DAILYTASK
+(
+    DAILYTASK_ID varchar(32) not null ,
+    DAILYTASK_THEDATE datetime null ,
+    DAILYTASK_STAT nvarchar(300) null ,
+    DAILYTASK_TIME datetime null ,
+    DAILYTASK_BZ nvarchar(2000) null ,
+    DAILYTASK_NAME nvarchar(100) null ,
+    DAILYTASK_TYPE varchar(20) null
+)
+GO
+
+alter table DAILYTASK with nocheck add
+    CONSTRAINT PK_DAILYTASK PRIMARY KEY CLUSTERED
+    (DAILYTASK_ID) ON [PRIMARY]
+GO
+
+

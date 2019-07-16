@@ -1,0 +1,73 @@
+<div id="patentDailytask" class="gui-div">
+    <table class="toolbar-table" data-options="id: 'patentDailytaskTable',herf:'kzzx/gridset/query'">
+    </table>
+
+    <!-- 表格工具栏开始 -->
+    <div id="patentDailytaskTable-toolbar" class="gui-toolbar"
+         data-options="grid:{
+	           type:'datagrid',
+	           id:'patentDailytaskTable'
+	       }">
+        <a class="toolbar-reload toolbar" href="javascript:void(0)" style="display: none"></a>
+        <!--<a class="toolbar-print toolbar" href="javascript:void(0)"></a>-->
+        <!--<a class="toolbar-export toolbar" href="javascript:void(0)"></a>-->
+        <!--<a class="toolbar-review toolbar" href="javascript:void(0)"></a>-->
+        <!--<a class="toolbar-add toolbar" href="javascript:void(0)"></a>-->
+        <!--<a class="toolbar-copy toolbar" href="javascript:void(0)"></a>-->
+        <!--<a class="toolbar-edit toolbar" href="javascript:void(0)"></a>-->
+        <!--<a class="toolbar-delete toolbar" href="javascript:void(0)"></a>-->
+        <div class="bdsug" style="height: auto;">
+            <form action="" class="query-criteria">
+                <ul>
+                    <li class="bdsug-store bdsug-overflow">
+
+                        <span style="margin: 10px">
+                            <label >日期范围：</label>
+                            <input type="text" name="start"   class="gui-textbox" style="width: 100px;height: 24px">
+                            -
+                            <input type="text" name="end"   class="gui-textbox" style="width: 100px;height: 24px">
+                        </span>
+
+                        <span class="serach">
+                             <button type="button" class="btn btn-primary ng-binding datagrid-search query">搜索</button>
+                        </span>
+
+                    </li>
+                </ul>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- 表格工具栏结束 -->
+<script>
+    /*js初始化*/
+    $(function () {
+        var $div = $('#patentDailytask');
+
+
+        $('#patentDailytask input[name="start"]').iDatebox({});
+        $('#patentDailytask input[name="end"]').iDatebox({});
+
+        var options = {
+            url: 'patent/dailytask',
+            queryParams: {},
+            columns: [[
+                {title: "日期", field: "thedate", fieldType: "ftDate", width: 110},
+                {title: "名称", field: "name", fieldType: "ftString", width: 200},
+                {title: "类型", field: "type", fieldType: "ftString", width: 100},
+                {title: "状态", field: "stat", fieldType: "ftString", width: 80, align: 'center'},
+                {title: "处理时间", field: "time", fieldType: "ftDateTime", width: 160},
+                {title: "备注", field: "bz", fieldType: "ftString", width: 140}
+            ]],
+            dialog: {
+                id: 'patentDailytaskEdit',
+                width: 900,
+                height: 506,
+                href: 'patent/dailytask/edit'
+            }
+        };
+        $div.Container(options);
+    });
+
+
+</script>

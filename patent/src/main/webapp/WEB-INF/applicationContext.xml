@@ -13,8 +13,6 @@
 
     <beans:bean id="gavelBeanPostProcessor" class="com.gavel.framework.listener.GavelBeanPostProcessor"/>
 
-	<bean id="dataLoaderInit" class="com.gavel.kzzx.utils.DataLoaderInit"></bean>
-    
 	<!-- 注解扫描 @Service -->
     <context:component-scan base-package="com.gavel.*" />
     

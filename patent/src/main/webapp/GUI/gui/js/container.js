@@ -124,9 +124,11 @@
                     var _toolBar =  _that.$ele.find(".datagrid-toolbar a");
                     /*export*/
                     _that.$ele.find('.toolbar-export').iMenubutton({
-                        event: 'query',
                         text:toolbar_name['export'],
-                        iconCls: 'fa fa-file-excel-o'
+                        iconCls: 'fa fa-file-excel-o',
+                        onClick:function () {
+                            HTTP.download(opt['url']+'/export',DataBind.collectData(_that.$ele.find('.query-criteria')));
+                        }
                     });
                     if(opt['dialog']&&opt['dialog']['addGroup']){
 
