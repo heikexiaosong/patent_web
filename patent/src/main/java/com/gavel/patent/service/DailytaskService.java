@@ -10,5 +10,6 @@ import com.gavel.patent.vo.DailytaskVO;
 public interface DailytaskService extends BaseEditService {
 	
     RecordSet<DailytaskVO> query(DailytaskCondition condition);
-    
+
+    void exec();
 }

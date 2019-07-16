@@ -21,7 +21,7 @@ public class AjxxDaoImpl extends BaseDaoImpl implements AjxxDao {
         sqlMap.setPageNo(condition.getPageNo());
         sqlMap.setRowCount(condition.getPageSize());
         sqlMap.append("select AJXX_ID, AJXX_CODE, AJXX_TYPE, AJXX_BM, AJXX_KH, AJXX_SQR, AJXX_SQH ");
-        sqlMap.append(", AJXX_SQMC, AJXX_JXR, AJXX_SQRQ, AJXX_SQF, AJXX_ZT, AJXX_NFJK, AJXX_ZS, AJXX_LB, AJXX_DJR, AJXX_WHRID, AJXX_WHR, AJXX_WHSJ, AJXX_SYSVERSION ");
+        sqlMap.append(", AJXX_SQMC, AJXX_JXR, AJXX_SQRQ, AJXX_SQF, AJXX_STAT, AJXX_NFJK, AJXX_ZS, AJXX_LB, AJXX_DJR, AJXX_WHRID, AJXX_WHR, AJXX_WHSJ, AJXX_SYSVERSION ");
         sqlMap.append("from AJXX ");
         sqlMap.append("where 1=1  ");
         if (StringUtils.isNotEmpty(condition.getId())){

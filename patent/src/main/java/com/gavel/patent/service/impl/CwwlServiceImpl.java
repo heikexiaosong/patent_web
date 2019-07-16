@@ -2,6 +2,7 @@ package com.gavel.patent.service.impl;
 
 import com.gavel.common.base.entity.BaseEntity;
 import com.gavel.common.base.service.impl.BaseEditServiceImpl;
+import com.gavel.common.utils.UserInfoUtil;
 import com.gavel.persistence.sql.RecordSet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,23 @@ public class CwwlServiceImpl extends BaseEditServiceImpl implements CwwlService 
             if ( cwwl.getStat()==null || cwwl.getStat().trim().length()==0  ){
                 cwwl.setStat("pending");
             }
+
+            int yj = cwwl.getSjskje()==null ? 0 : cwwl.getSjskje();
+            if ( cwwl.getFp()!=null ){
+                yj -= cwwl.getFp();
+            }
+
+            if ( cwwl.getGf()!=null ){
+                yj -= cwwl.getGf();
+            }
+
+            if ( cwwl.getQbcb()!=null ){
+                yj -= cwwl.getQbcb();
+            }
+
+            cwwl.setYj(yj);
+            cwwl.setTc( yj/5 );
+            cwwl.setYwy(UserInfoUtil.getUserId());
         }
     }
 

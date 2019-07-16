@@ -15,7 +15,7 @@
         <a class="toolbar-add toolbar" href="javascript:void(0)"></a>
         <!--<a class="toolbar-copy toolbar" href="javascript:void(0)"></a>-->
         <a class="toolbar-edit toolbar" href="javascript:void(0)"></a>
-        <!--<a class="toolbar-delete toolbar" href="javascript:void(0)"></a>-->
+        <a class="toolbar-delete toolbar" href="javascript:void(0)"></a>
         <div class="bdsug" style="height: auto;">
             <form action="" class="query-criteria">
                 <ul>
@@ -127,7 +127,11 @@
                 {title: "撰写人", field: "jxr", fieldType: "ftString", width: 120},
                 {title: "申请日", field: "sqrq", fieldType: "ftDateTime", width: 140},
                 {title: "申请费", field: "sqf", fieldType: "ftInteger", width: 140, align: 'right'},
-                {title: "状态", field: "zt", fieldType: "ftString", width: 120},
+                {title: "状态", field: "stat", fieldType: "ftString", width: 120, formatter: function(value, row, index) {
+                        var content = value || "";
+                        return '<span  title="' + content + '" class="note">' + content + '</span>';
+                    }
+                },
                 {
                     title: "是否监控年费",
                     field: "nfjk",
@@ -147,7 +151,7 @@
             dialog: {
                 id: 'patentAjxxEdit',
                 width: 900,
-                height: 506,
+                height: 540,
                 href: 'patent/ajxx/edit'
             }
         };

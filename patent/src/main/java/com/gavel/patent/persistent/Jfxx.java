@@ -43,6 +43,8 @@ public class Jfxx extends BaseEntity {
 	private Date whsj;
 	@FieldMeta(fieldName = "JFXX_SYSVERSION", caption = "系统版本", index = 16)
 	private Integer sysversion;
+	@FieldMeta(fieldName = "JFXX_YEAR", caption = "年份", index = 6)
+	private Integer year;
 
 	public String getId() {
 		return id;
@@ -141,6 +143,13 @@ public class Jfxx extends BaseEntity {
 		this.sysversion = sysversion;
 	}
 
+	public Integer getYear() {
+		return year;
+	}
+
+	public void setYear(Integer year) {
+		this.year = year;
+	}
 }
 
 

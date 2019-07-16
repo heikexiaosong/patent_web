@@ -33,8 +33,8 @@ public class Ajxx extends BaseEntity {
 	private Date sqrq;
 	@FieldMeta(fieldName = "AJXX_SQF", caption = "申请费", index = 11)
 	private Integer sqf;
-	@FieldMeta(fieldName = "AJXX_ZT", caption = "状态", index = 12)
-	private String zt;
+	@FieldMeta(fieldName = "AJXX_STAT", caption = "状态", index = 12)
+	private String stat;
 	@FieldMeta(fieldName = "AJXX_NFJK", caption = "是否监控年费", index = 13)
 	private String nfjk;
 	@FieldMeta(fieldName = "AJXX_ZS", caption = "证书", index = 14)
@@ -118,12 +118,6 @@ public class Ajxx extends BaseEntity {
 	public void setSqf(Integer sqf) {
 		this.sqf = sqf;
 	}
-	public String getZt() {
-		return zt;
-	}	
-	public void setZt(String zt) {
-		this.zt = zt;
-	}
 	public String getNfjk() {
 		return nfjk;
 	}	
@@ -173,6 +167,13 @@ public class Ajxx extends BaseEntity {
 		this.sysversion = sysversion;
 	}
 
+	public String getStat() {
+		return stat;
+	}
+
+	public void setStat(String stat) {
+		this.stat = stat;
+	}
 }
 
 

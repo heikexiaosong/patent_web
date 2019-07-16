@@ -78,6 +78,7 @@ public class KxrlController extends BaseController {
     @ResponseBody
     public Object update(@RequestBody JSONObject param) {
         BaseEditJSON editJson = BaseEditJSON.parseJSON(param);
+        editJson.getMaster().put("stat", "claim");
         cwwlService.update(editJson);
         return ThreadContext.getReturnData();
     }

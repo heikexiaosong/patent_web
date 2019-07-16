@@ -2627,7 +2627,7 @@ create table AJXX
   AJXX_JXR nvarchar(30) null ,
   AJXX_SQRQ datetime null ,
   AJXX_SQF int null ,
-  AJXX_ZT nvarchar(2000) null ,
+  AJXX_STAT nvarchar(2000) null ,
   AJXX_NFJK varchar(8) null ,
   AJXX_ZS nvarchar(1000) null ,
   AJXX_LB varchar(20) null ,
@@ -2657,6 +2657,8 @@ create table JFXX
     JFXX_SQH varchar(50) null ,
     JFXX_FYMC nvarchar(100) null ,
     JFXX_JFJE int null ,
+    JFXX_JFQX datetime null ,
+    JFXX_ZT varchar(20) null ,
     JFXX_JFRQ datetime null ,
     JFXX_JFR nvarchar(100) null ,
     JFXX_SJ nvarchar(300) null ,
@@ -2665,19 +2667,20 @@ create table JFXX
     JFXX_WHR nvarchar(30) not null ,
     JFXX_WHSJ datetime not null ,
     JFXX_SYSVERSION int not null ,
-    JFXX_JFQX datetime null ,
-    JFXX_ZT varchar(20) null
+    JFXX_YEAR int null
 )
 GO
 alter table JFXX with nocheck add
     CONSTRAINT DF_JFXX_JFXX_JFJE default(0) for JFXX_JFJE,
     CONSTRAINT DF_JFXX_JFXX_WHSJ default(getdate()) for JFXX_WHSJ,
-    CONSTRAINT DF_JFXX_JFXX_SYSVERSION default(1) for JFXX_SYSVERSION
+    CONSTRAINT DF_JFXX_JFXX_SYSVERSION default(1) for JFXX_SYSVERSION,
+    CONSTRAINT DF_JFXX_JFXX_YEAR default(0) for JFXX_YEAR
 GO
 alter table JFXX with nocheck add
     CONSTRAINT PK_JFXX PRIMARY KEY CLUSTERED
     (JFXX_ID) ON [PRIMARY]
 GO
+
 
 create table DAILYTASK
 (
