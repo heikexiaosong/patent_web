@@ -9,9 +9,6 @@
     <name>patent</name>
 
     <modules>
-        <module>./datacenter-core</module>
-        <module>./dashboard-realtime</module>
-        <module>./dashboard-report</module>
         <module>./patent</module>
     </modules>
 </project>
