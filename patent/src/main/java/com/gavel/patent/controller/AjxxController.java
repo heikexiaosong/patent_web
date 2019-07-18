@@ -6,6 +6,8 @@ import com.gavel.common.base.controller.BaseController;
 import com.gavel.common.converter.DataConvert;
 import com.gavel.common.utils.DateUtils;
 import com.gavel.common.utils.ReturnData;
+import com.gavel.common.utils.UserInfoUtil;
+import com.google.common.collect.Sets;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,7 +27,8 @@ import com.gavel.common.excel.DefaultDataConverter;
 import com.gavel.common.excel.ExcelColumnSelector;
 import com.gavel.common.excel.ExcelUtils;
 import com.gavel.common.excel.ExcelUtilsBuilder;
-import java.io.OutputStream; 
+import java.io.OutputStream;
+import java.util.Set;
 import javax.servlet.http.HttpServletResponse;
 
 @Controller
@@ -37,6 +40,10 @@ public class AjxxController extends BaseController {
 
     @RequestMapping("/index")
     public String index() {
+        if (UserInfoUtil.isRole("admin")){
+            return "patent/ajxx/admin";
+        }
+
         return "patent/ajxx/index";
     }
 
@@ -65,6 +72,7 @@ public class AjxxController extends BaseController {
     @ResponseBody
     public Object query(@RequestBody JSONObject param) {
         AjxxCondition condition = DataConvert.getCondition(param, AjxxCondition.class);
+        condition.setFilter(!UserInfoUtil.isRole("admin"));
         RecordSet<AjxxVO> records = ajxxService.query(condition);
         return buildReturnData(records, AjxxVO.class);
     }
@@ -99,7 +107,7 @@ public class AjxxController extends BaseController {
         AjxxCondition condition = DataConvert.getCondition(param, AjxxCondition.class);
         RecordSet<AjxxVO> records = ajxxService.query(condition);
 
-        final String fileName= "xxxx表" + DateUtils.getDatetimeStr("yyyyMMdd") + ".xls";
+        final String fileName= "案件管理-" + DateUtils.getDatetimeStr("yyyyMMdd") + ".xls";
         response.setContentType("application/vnd.ms-excel");
         response.setHeader("Content-disposition", "attachment;filename=" + new String(fileName.getBytes(), "ISO-8859-1"));
 
@@ -117,22 +125,18 @@ public class AjxxController extends BaseController {
     class DataConverter extends DefaultDataConverter {
         @Override
         public String convert(String fieldName, String value) {
-
-		return value;
+		    return value;
         }
     }
 
     class ColumnFilter implements ExcelColumnSelector {
-        String[] attributeNames = {};
+        Set<String> attributeNames = Sets.newHashSet("id", "type", "whrid", "whr", "whsj", "sysversion");
         
         @Override
         public boolean accept(String fieldName) {
-            //for (String attributeName : attributeNames) {
-                //if ( attributeName.equalsIgnoreCase(fieldName) ) {
-                    //return true;
-                //}
-            //}
-            //return  false;
+            if ( attributeNames.contains(fieldName) ){
+                return false;
+            }
             return true;
         }
     }

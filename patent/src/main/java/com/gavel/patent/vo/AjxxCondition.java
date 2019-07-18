@@ -11,6 +11,8 @@ public class AjxxCondition extends Ajxx {
 
     private Date end;
 
+    private boolean filter;
+
     public Date getStart() {
         return start;
     }
@@ -25,5 +27,13 @@ public class AjxxCondition extends Ajxx {
 
     public void setEnd(Date end) {
         this.end = end;
+    }
+
+    public boolean isFilter() {
+        return filter;
+    }
+
+    public void setFilter(boolean filter) {
+        this.filter = filter;
     }
 }

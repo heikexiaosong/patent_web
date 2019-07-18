@@ -6,6 +6,8 @@ import com.gavel.common.base.controller.BaseController;
 import com.gavel.common.converter.DataConvert;
 import com.gavel.common.utils.DateUtils;
 import com.gavel.common.utils.ReturnData;
+import com.gavel.common.utils.UserInfoUtil;
+import com.google.common.collect.Sets;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,7 +27,8 @@ import com.gavel.common.excel.DefaultDataConverter;
 import com.gavel.common.excel.ExcelColumnSelector;
 import com.gavel.common.excel.ExcelUtils;
 import com.gavel.common.excel.ExcelUtilsBuilder;
-import java.io.OutputStream; 
+import java.io.OutputStream;
+import java.util.Set;
 import javax.servlet.http.HttpServletResponse;
 
 @Controller
@@ -37,6 +40,10 @@ public class KhglController extends BaseController {
 
     @RequestMapping("/index")
     public String index() {
+
+        if (UserInfoUtil.isRole("admin")){
+            return "patent/khgl/admin";
+        }
         return "patent/khgl/index";
     }
 
@@ -99,7 +106,7 @@ public class KhglController extends BaseController {
         KhglCondition condition = DataConvert.getCondition(param, KhglCondition.class);
         RecordSet<KhglVO> records = khglService.query(condition);
 
-        final String fileName= "xxxx表" + DateUtils.getDatetimeStr("yyyyMMdd") + ".xls";
+        final String fileName= "客户信息表-" + DateUtils.getDatetimeStr("yyyyMMdd") + ".xls";
         response.setContentType("application/vnd.ms-excel");
         response.setHeader("Content-disposition", "attachment;filename=" + new String(fileName.getBytes(), "ISO-8859-1"));
 
@@ -123,16 +130,13 @@ public class KhglController extends BaseController {
     }
 
     class ColumnFilter implements ExcelColumnSelector {
-        String[] attributeNames = {};
-        
+        Set<String> attributeNames = Sets.newHashSet("id", "type", "whrid", "whr", "whsj", "sysversion", "khglnlryname", "khglwlryname", "nlry", "wlry");
+
         @Override
         public boolean accept(String fieldName) {
-            //for (String attributeName : attributeNames) {
-                //if ( attributeName.equalsIgnoreCase(fieldName) ) {
-                    //return true;
-                //}
-            //}
-            //return  false;
+            if ( attributeNames.contains(fieldName) ){
+                return false;
+            }
             return true;
         }
     }

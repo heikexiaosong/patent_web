@@ -15,14 +15,34 @@
         <a class="toolbar-add toolbar" href="javascript:void(0)"></a>
         <!--<a class="toolbar-copy toolbar" href="javascript:void(0)"></a>-->
         <a class="toolbar-edit toolbar" href="javascript:void(0)"></a>
-        <!--<a class="toolbar-delete toolbar" href="javascript:void(0)"></a>-->
+        <a class="toolbar-delete toolbar" href="javascript:void(0)"></a>
         <div class="bdsug" style="height: auto;">
             <form action="" class="query-criteria">
                 <ul>
                     <li class="bdsug-store bdsug-overflow">
+                        <span style="margin: 10px">
+                            <label style="width: 70px;">业务员：</label><input type="text" name="bm"   class="gui-textbox" style="width: 140px; height: 24px">
+                        </span>
 
                         <span style="margin: 10px">
                             <label style="width: 70px;">案件类型：</label><input type="text" name="type"   class="gui-textbox" style="width: 140px; height: 24px">
+                        </span>
+
+                        <span style="margin: 10px">
+                            <label style="width: 70px;">客户：</label><input type="text" name="kh"   class="gui-textbox" style="width: 140px; height: 24px">
+                        </span>
+
+                        <span style="margin: 10px">
+                            <label style="width: 70px;">申请号：</label><input type="text" name="sqh"   class="gui-textbox" style="width: 140px; height: 24px">
+                        </span>
+
+
+                    </li>
+
+                    <li class="bdsug-store bdsug-overflow">
+
+                        <span style="margin: 10px">
+                            <label style="width: 70px;">申请人：</label><input type="text" name="sqr"   class="gui-textbox" style="width: 140px; height: 24px">
                         </span>
 
                         <span style="margin: 10px">
@@ -30,28 +50,10 @@
                         </span>
 
                         <span style="margin: 10px">
-                            <label style="width: 70px;">申请人：</label><input type="text" name="sqr"   class="gui-textbox" style="width: 140px; height: 24px">
-                        </span>
-
-                        <span style="margin: 10px">
-                            <label style="width: 70px;">申请号：</label><input type="text" name="sqh"   class="gui-textbox" style="width: 140px; height: 24px">
-                        </span>
-
-                    </li>
-
-                    <li class="bdsug-store bdsug-overflow">
-
-                        <span style="margin: 10px">
-                            <label style="width: 70px;">申请日期：</label>
+                            <label style="width: 70px;">日期：</label>
                             <input type="text" name="start"   class="gui-textbox" style="width: 120px;height: 24px">
                             -
                             <input type="text" name="end"   class="gui-textbox" style="width: 120px;height: 24px">
-                        </span>
-
-
-
-                        <span style="margin: 10px">
-                            <label style="width: 70px;">客户：</label><input type="text" name="kh"   class="gui-textbox" style="width: 140px; height: 24px">
                         </span>
 
                         <span class="serach">
@@ -78,9 +80,6 @@
             { data: [{value: "", text: ""}, {value: "1", text: "发明"}, {value: "2", text: "实用新型"}, {value: "3", text: "外观设计"}, {value: "4", text: "商标注册"}, {value: "5", text: "版权登记"}], allowNull: true,width:'100%'});
 
 
-        ComboboBox.init($('#patentAjxx input[name="kh"]'),
-            {url: 'patent/khgl/query', valueField: 'khmc', textField: 'khmc', allowNull: true,width:'100%'});
-
 
         var $div = $('#patentAjxx');
         var options = {
@@ -99,7 +98,7 @@
                 );
             },
             columns: [[
-                {title: "编码", field: "bm", patentAjxxEditfieldType: "ftString", width: 100, hidden: true},
+                {title: "编码", field: "bm", patentAjxxEditfieldType: "ftString", width: 100},
                 {title: "编号", field: "code", fieldType: "ftString", width: 160},
                 {
                     title: "案件类型",

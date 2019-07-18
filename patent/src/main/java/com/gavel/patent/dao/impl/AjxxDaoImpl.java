@@ -3,6 +3,7 @@ package com.gavel.patent.dao.impl;
 import com.gavel.common.base.dao.impl.BaseDaoImpl;
 import com.gavel.common.utils.DateUtils;
 import com.gavel.common.utils.StringUtils;
+import com.gavel.common.utils.UserInfoUtil;
 import com.gavel.persistence.sql.RecordSet;
 import com.gavel.persistence.sql.SqlMap;
 import com.gavel.persistence.sql.SqlUtil;
@@ -74,6 +75,11 @@ public class AjxxDaoImpl extends BaseDaoImpl implements AjxxDao {
         if ( condition.getEnd()!=null ){
             sqlMap.append("  and AJXX_SQRQ <= :END");
             sqlMap.setParamValue("END", DateUtils.endOfDay(condition.getEnd()));
+        }
+
+        if ( condition.isFilter() ){
+            sqlMap.append("  and AJXX_BM = :FILTER_AJXX_BM");
+            sqlMap.setParamValue("FILTER_AJXX_BM", UserInfoUtil.getUserId());
         }
 
         sqlMap.query(AjxxVO.class);
