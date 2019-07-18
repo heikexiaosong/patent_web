@@ -433,7 +433,6 @@
             onSelect: function (title, index) {
             },
             onClose: function (title, index) {
-
             }
         });
 
@@ -477,9 +476,6 @@
         var navbarQuerms=[];
         $('#tabs').iTabs({
             onSelect:function(title,index){
-                window.clearInterval(TimerCustom.getValue());
-                window.clearInterval(TimerCustom.getNum());
-                window.clearInterval(TimerCustom.getTrend());
                 var currentTab = $('#tabs').tabs('getSelected');
                 var isRresh=currentTab.data('panel').options.type;
                 if(isRresh){
@@ -488,9 +484,6 @@
                 layer.closeAll();
             },
             onClose:function (title,index) {
-                window.clearInterval(TimerCustom.getValue());
-                window.clearInterval(TimerCustom.getNum());
-                window.clearInterval(TimerCustom.getTrend());
             },
                 fit: true,
                 tools: [{
@@ -499,23 +492,10 @@
                         openFullscreen(document.body);
                         exitFullScreen();
                     }
-                },{
+                }, {
                     iconCls: 'fa fa-home',
                     handler: function () {
                         $('#tabs').iTabs('select', 0);
-                    }
-                }, {
-                    iconCls: 'fa fa-chevron-circle-left',
-                    handler: function () {
-                        var p = $("#index_layout").iLayout("panel", "west")[0].clientWidth;
-                        if (p > 0) {
-                            $('#index_layout').iLayout('collapse', 'west');
-                            //$(this).children('span').removeClass('fa-chevron-circle-left').addClass('fa-chevron-circle-right');
-                        } else {
-                            $('#index_layout').iLayout('expand', 'west');
-                            /*  $(this).children('span').removeClass('fa-chevron-circle-right').addClass('fa-chevron-circle-left');*/
-                        }
-
                     }
                 }, {
                     iconCls: 'fa fa-close',
@@ -530,17 +510,7 @@
                             $('#tabs').iTabs('close',i);
                         }
                     }
-                }],
-                //监听右键事件，创建右键菜单
-                onContextMenu: function (e, title, index) {
-                    e.preventDefault();
-                    if (index >= 0) {
-                        $('#mm').iMenu('show', {
-                            left: e.pageX,
-                            top: e.pageY
-                        }).data("tabTitle", title);
-                    }
-                }
+                }]
             });
 
 
@@ -644,55 +614,7 @@
                     }
                 });
             });
-        /*待我处理*/
 
-        HTTP.post("wf/common/get/mywfawt",{},function (result) {
-            if(result['success']){
-                if(result['data']['records']&&result['data']['records'].length>0){
-                    $.each(result['data']['records'],function (i,record) {
-                        var nodeName=record['nodeName'];
-                        var href=record["href"]||'';
-                        var title=record["title"]||'';
-                        var person=record["preUserName"]||'';
-                        var time='';
-                        if(record["actionTime"]){
-                            time=new Date(record["actionTime"]).Format('yyyy-MM-dd hh:mm:ss');
-                        }
-                        var news=title+'<span style="color: #00bbee">  '+nodeName+'</span>  '+person;
-                        var li=' <li class="ewb-ideas-item clearfix">' +
-                            '<a href="#">'+news+'</a><font color="red"></font>' +
-                            ' <span class="ewb-date">'+time+'</span>' +
-                            ' </li>';
-                        $('#unsolved_work').find('.ewb-ideas-items').append(li);
-                    })
-                }
-                $('#unsolved_work').find('.ewb-add').text(result['data'].total);
-            }
-        });
-        /*我的事务*/
-        HTTP.post("wf/common/get/mywork",{},function (result) {
-            if(result['success']){
-                if(result['data']['records']&&result['data']['records'].length>0){
-                    $.each(result['data']['records'],function (i,record) {
-                        var nodeName=record['nodeName'];
-                        var href=record["href"]||'';
-                        var title=record["title"]||'';
-                        var person=record["preUserName"]||'';
-                        var time='';
-                        if(record["actionTime"]){
-                            time=new Date(record["actionTime"]).Format('yyyy-MM-dd hh:mm:ss');
-                        }
-                        var news=title+'<span style="color: #00bbee">  '+nodeName+'</span>  '+person;
-                        var li=' <li class="ewb-ideas-item clearfix">' +
-                            '<a href="#" target="_blank">'+news+'</a><font color="red"></font>' +
-                            ' <span class="ewb-date">'+time+'</span>' +
-                            ' </li>';
-                        $('#solved_work').find('.ewb-ideas-items').append(li);
-                    })
-                }
-                $('#solved_work').find('.ewb-add').text(result['data'].total);
-            }
-        });
         var lis=$('.item_container').find('li a');
         for(var i=0;i<lis.length;i++){
             lis[i].onmouseover=function(){
@@ -763,7 +685,7 @@
                 title: title,
                 data:data,
                 href: url,
-                closable: true,
+                closable: true
             })
         }
 
