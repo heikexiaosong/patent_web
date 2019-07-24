@@ -10,6 +10,7 @@
 	       }">
         <a class="toolbar-reload toolbar" href="javascript:void(0)"></a>
         <!--<a class="toolbar-print toolbar" href="javascript:void(0)"></a>-->
+        <a class="toolbar-import toolbar" href="javascript:void(0)"></a>
         <a class="toolbar-export toolbar" href="javascript:void(0)"></a>
         <a class="toolbar-review toolbar" href="javascript:void(0)"></a>
         <a class="toolbar-add toolbar" href="javascript:void(0)"></a>
@@ -60,6 +61,46 @@
             }
         };
         $div.Container(options);
+
+        $("#patentKhgl .toolbar-import").iMenubutton({
+            event:'openDialog',
+            iconCls: 'fa fa-upload',
+            text:'导入',
+            dialog:{
+                title:'导入',
+                id:'patentKhglAdd',
+                width:840,
+                height: 510,
+                href:'patent/khgl/importpage',
+                tag:'add',
+                buttonsGroup:[
+                    {	text:'保存',
+                        iconCls:'fa fa-plus',
+                        btnCls:'gui-btn-normal',
+                        handler:function(){
+                            var $dialog=$('#patentKhglAdd');$dialog.find('.cgjhmx').datagrid("acceptChanges");
+                            var rows= $dialog.find('.cgjhmx').datagrid("getRows");
+                            var queryParams=DataBind.collectData($dialog);
+                            $.each(rows,function (i,row) {
+                                row.month=queryParams["month"]||'';
+                                row.year=queryParams["year"]||'';
+
+                            });
+                            HTTP.post("sjzx/cgjh/saveData",{datas:rows},function (result) {
+                                if(result["success"]){
+                                    $.messager.show({
+                                        title: "温馨提示",
+                                        msg: "操作成功"
+                                    });
+                                    $('#patentKhglAdd').iDialog("destroy");
+                                    $div.find(".toolbar-reload").click();
+                                }
+                            })
+                        }
+                    }]
+            }
+        });
+
     });
 
 
