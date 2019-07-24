@@ -1,0 +1,65 @@
+<div id="patentZcqk" class="gui-div">
+	<table  class="toolbar-table" data-options="id: 'patentZcqkTable',herf:'kzzx/gridset/query'" >
+	</table>
+	
+	<!-- 表格工具栏开始 -->
+	<div id="patentZcqkTable-toolbar" class="gui-toolbar"
+	     data-options="grid:{
+	           type:'datagrid',
+	           id:'patentZcqkTable'
+	       }">
+	    <a class="toolbar-reload toolbar"  href="javascript:void(0)"></a>
+	    <!--<a class="toolbar-print toolbar"  href="javascript:void(0)"></a>-->
+	    <a class="toolbar-export toolbar"  href="javascript:void(0)"></a>
+	    <a class="toolbar-review toolbar" href="javascript:void(0)"></a>
+	    <a class="toolbar-add toolbar" href="javascript:void(0)"></a>
+	    <!--<a class="toolbar-copy toolbar" href="javascript:void(0)"></a>-->
+	    <a class="toolbar-edit toolbar" href="javascript:void(0)"></a>
+	    <a class="toolbar-delete toolbar" href="javascript:void(0)"></a>
+	    <a type="submit" class="btn btn-primary serach toolbar-search"></a>
+	    <div class="bdsug" style="height: auto; display: none" >
+	        <form action="" class="query-criteria">
+	            <ul><li class="bdsug-store bdsug-overflow">
+	            </li></ul>
+	        </form>
+	    </div>
+	</div>
+</div>
+<!-- 表格工具栏结束 -->
+<script>
+    /*js初始化*/
+    $(function () {
+    	var $div=$('#patentZcqk');
+        var options={
+            url:'patent/zcqk',
+            queryParams:{
+            },
+            columns:[[
+                {title: "请款日期", field: "qkrq", fieldType:"ftDateTime", width: 140},
+                {title: "请款人", field: "qkr", fieldType:"ftString", width: 100},
+                {title: "请款用途", field: "qkyt", fieldType:"ftString", width: 200},
+                {title: "金额", field: "je", fieldType:"ftInteger", width: 80},
+                {title: "联系单位", field: "lxdw", fieldType:"ftString", width: 160},
+                {title: "付款方式", field: "fkfs", fieldType:"ftString", width: 100},
+                {title: "户名", field: "hm", fieldType:"ftString", width: 100},
+                {title: "开户行", field: "khh", fieldType:"ftString", width: 180},
+                {title: "银行帐号", field: "yhzh", fieldType:"ftString", width: 40},
+                {title: "备注", field: "bz", fieldType:"ftString", width: 80},
+                {title: "状态", field: "zt", fieldType:"ftString", width: 8},
+                {title: "维护人", field: "whr", fieldType:"ftString", width: 240},
+                {title: "维护时间", field: "whsj", fieldType:"ftDateTime", width: 140},
+                {title: "创建人", field: "cjr", fieldType:"ftString", width: 240},
+                {title: "创建时间", field: "cjsj", fieldType:"ftDateTime", width: 140}
+            ]],
+            dialog:{
+                id:'patentZcqkEdit',
+                width: 900,
+                height: 506,
+                href:'patent/zcqk/edit'
+            }
+        };
+        $div.Container(options); 
+    });
+
+
+</script>

@@ -2,6 +2,7 @@ package com.gavel.patent.dao.impl;
 
 import com.gavel.common.base.dao.impl.BaseDaoImpl;
 import com.gavel.common.utils.StringUtils;
+import com.gavel.common.utils.UserInfoUtil;
 import com.gavel.persistence.sql.RecordSet;
 import com.gavel.persistence.sql.SqlMap;
 import com.gavel.persistence.sql.SqlUtil;
@@ -34,14 +35,19 @@ public class KhglDaoImpl extends BaseDaoImpl implements KhglDao {
         if (StringUtils.isNotEmpty(condition.getKhmc())){
             sqlMap.append("  and KHGL_KHMC like :KHGL_KHMC");
             sqlMap.setParamValue("KHGL_KHMC", "%" + condition.getKhmc() + "%");
-
         }
-        if (StringUtils.isNotEmpty(condition.getYwy())){
+
+        if ( condition.isFilter() ){
+            sqlMap.append("  and (KHGL_NLRY = :KHGL_NLRY or KHGL_WLRY=:KHGL_WLRY )");
+            sqlMap.setParamValue("KHGL_NLRY",  UserInfoUtil.getUserId());
+            sqlMap.setParamValue("KHGL_WLRY",  UserInfoUtil.getUserId());
+
+        } else if (StringUtils.isNotEmpty(condition.getYwy())){
             sqlMap.append("  and ( KHGL_NLRY like :KHGL_NLRY or KHGL_WLRY like :KHGL_WLRY )");
             sqlMap.setParamValue("KHGL_NLRY", "%" + condition.getYwy() + "%");
             sqlMap.setParamValue("KHGL_WLRY", "%" + condition.getYwy() + "%");
-
         }
+
         sqlMap.query(KhglVO.class);
         return sqlMap.getRecordSet();
 

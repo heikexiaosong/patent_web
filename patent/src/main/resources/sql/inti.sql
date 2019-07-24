@@ -2700,3 +2700,5 @@ alter table DAILYTASK with nocheck add
 GO
 
 
+
+ALTER TABLE patent.dbo.USERS ADD USERS_INIT varchar(8) NULL

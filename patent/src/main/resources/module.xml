@@ -6,28 +6,31 @@
     <version>1.0</version>
 
     <menu mkid="800000000" mkmc="案件管理">
-        <menu mkid="800100000" mkmc="案件信息" url="patent/ajxx/index.html">
+        <menu mkid="800100000" mkmc="案件信息" url="patent/ajxx/index">
         </menu>
 
-        <menu mkid="800200000" mkmc="待缴费" url="patent/djf/index.html">
+        <menu mkid="800200000" mkmc="待缴费" url="patent/djf/index">
         </menu>
 
-        <menu mkid="800300000" mkmc="已缴费" url="patent/yjf/index.html">
+        <menu mkid="800300000" mkmc="已缴费" url="patent/yjf/index">
         </menu>
 
-        <menu mkid="800400000" mkmc="待答复" url="patent/ddf/index.html">
+        <menu mkid="800400000" mkmc="待答复" url="patent/ddf/index">
         </menu>
 
-        <menu mkid="800500000" mkmc="客户管理" url="patent/khgl/index.html">
+        <menu mkid="800500000" mkmc="客户管理" url="patent/khgl/index">
         </menu>
 
-        <menu mkid="800600000" mkmc="财务往来" url="patent/cwwl/index.html">
+        <menu mkid="800600000" mkmc="财务往来" url="patent/cwwl/index">
         </menu>
 
-        <menu mkid="800700000" mkmc="款项认领" url="patent/kxrl/index.html">
+        <menu mkid="800700000" mkmc="款项认领" url="patent/kxrl/index">
         </menu>
 
-        <menu mkid="800800000" mkmc="任务日志" url="patent/dailytask/index.html">
+        <menu mkid="800900000" mkmc="支出请款" url="patent/zcqk/index">
+        </menu>
+
+        <menu mkid="800800000" mkmc="任务日志" url="patent/dailytask/index">
         </menu>
 
     </menu>

@@ -11,6 +11,8 @@ public class KhglCondition extends BaseEntity {
 
 	private String ywy;
 
+	private boolean filter;
+
 	public String getId() {
 		return id;
 	}	
@@ -32,5 +34,13 @@ public class KhglCondition extends BaseEntity {
 
 	public void setYwy(String ywy) {
 		this.ywy = ywy;
+	}
+
+	public boolean isFilter() {
+		return filter;
+	}
+
+	public void setFilter(boolean filter) {
+		this.filter = filter;
 	}
 }
