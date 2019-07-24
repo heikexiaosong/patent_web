@@ -43,7 +43,7 @@ public class KhglDaoImpl extends BaseDaoImpl implements KhglDao {
             sqlMap.setParamValue("KHGL_WLRY",  UserInfoUtil.getUserId());
 
         } else if (StringUtils.isNotEmpty(condition.getYwy())){
-            sqlMap.append("  and ( KHGL_NLRY like :KHGL_NLRY or KHGL_WLRY like :KHGL_WLRY )");
+            sqlMap.append("  and ( n.USERS_USERNAME like :KHGL_NLRY or w.USERS_USERNAME like :KHGL_WLRY )");
             sqlMap.setParamValue("KHGL_NLRY", "%" + condition.getYwy() + "%");
             sqlMap.setParamValue("KHGL_WLRY", "%" + condition.getYwy() + "%");
         }
