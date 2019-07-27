@@ -3,6 +3,7 @@ package com.gavel.patent.persistent;
 import java.util.Date;
 
 import com.gavel.common.base.entity.BaseEntity;
+import com.gavel.common.utils.CodeStrategy;
 import com.gavel.persistence.annotation.FieldMeta;
 import com.gavel.persistence.annotation.TableMeta;
 
@@ -10,7 +11,7 @@ import com.gavel.persistence.annotation.TableMeta;
 @TableMeta(id = "ZCQK", name = "ZCQK")
 public class Zcqk extends BaseEntity {
 
-   	@FieldMeta(fieldName = "ZCQK_ID", caption = "ID", primaryKey = true, notEmpty = true, index = 1)
+   	@FieldMeta(fieldName = "ZCQK_ID", caption = "ID", primaryKey = true, codeStrategy = CodeStrategy.UUID, notEmpty = true, index = 1)
 	private String id;
 	@FieldMeta(fieldName = "ZCQK_QKRQ", caption = "请款日期", index = 2)
 	private Date qkrq;

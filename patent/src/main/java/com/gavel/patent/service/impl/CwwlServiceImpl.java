@@ -23,9 +23,31 @@ public class CwwlServiceImpl extends BaseEditServiceImpl implements CwwlService 
     private CwwlDao cwwlDao;
 
     @Override
+    public void beforeDelete(BaseEntity entity) {
+        if ( entity!=null && entity instanceof Cwwl  ) {
+            Cwwl cwwl = (Cwwl) entity;
+
+            if (cwwl.getId() != null) {
+                Cwwl exist = cwwlDao.queryById(Cwwl.class, cwwl.getId());
+                if (exist != null && "claim".equalsIgnoreCase(exist.getStat())) {
+                    throw new RuntimeException("不能删除已认领记录");
+                }
+            }
+        }
+    }
+
+    @Override
     public void beforePost(BaseEntity entity) {
         if ( entity!=null && entity instanceof Cwwl  ) {
             Cwwl cwwl = (Cwwl)entity;
+
+            if ( cwwl.getId()!=null ){
+                Cwwl exist = cwwlDao.queryById(Cwwl.class, cwwl.getId());
+                if ( exist!=null && "claim".equalsIgnoreCase(exist.getStat()) ){
+                    throw new RuntimeException("记录已认领, 不能进行修改");
+                }
+            }
+
             if ( cwwl.getStat()==null || cwwl.getStat().trim().length()==0  ){
                 cwwl.setStat("pending");
             }

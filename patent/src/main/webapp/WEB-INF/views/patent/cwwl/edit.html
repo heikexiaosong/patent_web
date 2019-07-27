@@ -23,21 +23,22 @@
                 <input type="text" name="yw" data-toggle="gui-textbox" data-options="" style="width: 100%">
             </div>
         </div>
-        <div class="gui-col-sm6">
-            <label class="gui-form-label" for="">业务员：</label>
-            <div class="gui-input-block">
-                <input type="text" name="ywy" data-toggle="gui-textbox" data-options="" style="width: 100%">
-            </div>
-        </div>
-    </div>
-	<div class="gui-row" >
+        <!--<div class="gui-col-sm6">-->
+            <!--<label class="gui-form-label" for="">业务员：</label>-->
+            <!--<div class="gui-input-block">-->
+                <!--<input type="text" name="ywy" data-toggle="gui-textbox" data-options="" style="width: 100%">-->
+            <!--</div>-->
+        <!--</div>-->
         <div class="gui-col-sm6">
             <label class="gui-form-label" for="">金额：</label>
             <div class="gui-input-block">
                 <input type="text" name="je" data-toggle="gui-textbox" data-options="" style="width: 100%">
             </div>
         </div>
-        <div class="gui-col-sm6">
+    </div>
+	<div class="gui-row" >
+
+        <div class="gui-col-sm12">
             <label class="gui-form-label" for="">收款账户：</label>
             <div class="gui-input-block">
                 <input type="text" name="skzh" data-toggle="gui-textbox" data-options="" style="width: 100%">
@@ -71,6 +72,10 @@
             $('#patentCwwlEdit input[name="ywy"]'),
             {url: 'kzzx/user/query', valueField: 'userid', textField: 'username', allowNull: true,width:'100%'}
         );
+
+        $('#patentCwwlEdit input[name="ywrq"]').iDatebox({
+            value: new Date().Format("yyyy-MM-dd")
+        })
     })
 
 </script>

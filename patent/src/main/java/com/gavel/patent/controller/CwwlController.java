@@ -80,16 +80,26 @@ public class CwwlController extends BaseController {
     @RequestMapping(value = BaseURL.UPDATE, method = RequestMethod.POST)
     @ResponseBody
     public Object update(@RequestBody JSONObject param) {
-        BaseEditJSON editJson = BaseEditJSON.parseJSON(param);
-        cwwlService.update(editJson);
+        try {
+            BaseEditJSON editJson = BaseEditJSON.parseJSON(param);
+            cwwlService.update(editJson);
+        } catch (Exception e){
+            ThreadContext.getReturnData().setSuccess(false);
+            ThreadContext.getReturnData().setMessage(e.getMessage());
+        }
         return ThreadContext.getReturnData();
     }
 
     @RequestMapping(value = BaseURL.DELETE, method = RequestMethod.POST)
     @ResponseBody
     public Object delete(@RequestBody JSONObject param) {
-        BaseEditJSON editJson = BaseEditJSON.parseJSON(param);
-        cwwlService.delete(editJson);
+        try {
+            BaseEditJSON editJson = BaseEditJSON.parseJSON(param);
+            cwwlService.delete(editJson);
+        } catch (Exception e){
+            ThreadContext.getReturnData().setSuccess(false);
+            ThreadContext.getReturnData().setMessage(e.getMessage());
+        }
         return ThreadContext.getReturnData();
     }
 
