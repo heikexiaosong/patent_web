@@ -2701,4 +2701,6 @@ GO
 
 
 
-ALTER TABLE patent.dbo.USERS ADD USERS_INIT varchar(8) NULL
+ALTER TABLE patent.dbo.USERS ADD USERS_INIT varchar(8) NULL;
+
+ALTER TABLE patent.dbo.CWWL ADD CWWL_DKR nvarchar(100) NULL;

@@ -47,8 +47,10 @@ public class Cwwl extends BaseEntity {
 	private Integer sysversion;
 	@FieldMeta(fieldName = "CWWL_YWY", caption = "业务员", index = 18)
 	private String ywy;
-	@FieldMeta(fieldName = "CWWL_STAT", caption = "状态", index = 18)
+	@FieldMeta(fieldName = "CWWL_STAT", caption = "状态", index = 19)
 	private String stat;
+	@FieldMeta(fieldName = "CWWL_DKR", caption = "打款人", index = 20)
+	private String dkr;
 
 	public String getId() {
 		return id;
@@ -165,6 +167,14 @@ public class Cwwl extends BaseEntity {
 
 	public void setStat(String stat) {
 		this.stat = stat;
+	}
+
+	public String getDkr() {
+		return dkr;
+	}
+
+	public void setDkr(String dkr) {
+		this.dkr = dkr;
 	}
 }
 
