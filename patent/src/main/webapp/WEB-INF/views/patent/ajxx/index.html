@@ -10,6 +10,7 @@
 	       }">
         <a class="toolbar-reload toolbar" href="javascript:void(0)"></a>
         <!--<a class="toolbar-print toolbar"  href="javascript:void(0)"></a>-->
+        <a class="toolbar-import toolbar" href="javascript:void(0)"></a>
         <a class="toolbar-export toolbar" href="javascript:void(0)"></a>
         <a class="toolbar-review toolbar" href="javascript:void(0)"></a>
         <a class="toolbar-add toolbar" href="javascript:void(0)"></a>
@@ -157,6 +158,20 @@
             }
         };
         $div.Container(options);
+
+        $("#patentAjxx .toolbar-import").iMenubutton({
+            event:'openDialog',
+            iconCls: 'fa fa-upload',
+            text:'导入',
+            dialog:{
+                title:'案件导入',
+                id:'patentKhglAdd',
+                width:840,
+                height: 510,
+                href:'patent/ajxx/importpage',
+                tag:'add'
+            }
+        });
     });
 
 

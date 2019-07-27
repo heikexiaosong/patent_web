@@ -7,16 +7,16 @@
     <div class="layui-col-xs6 layui-col-sm6 layui-col-md4">
         <div class="grid-demo grid-demo-bg1">
 
-            <div class="layui-upload-drag" id="test10" style="margin: 20px  10px">
+            <div class="layui-upload-drag" id="ajxxUpload" style="margin: 20px  10px">
                 <i class="layui-icon"></i>
-                <p id="upload-text">点击上传，或将文件拖拽到此处</p>
+                <p id="ajxx-upload-text">点击上传，或将文件拖拽到此处</p>
             </div>
 
             <br>
 
             <div class="layui-form-item">
                 <div class="layui-input-block">
-                    <a class="layui-btn" lay-submit="" id="test9"  lay-filter="demo1">开始上传</a>
+                    <a class="layui-btn" lay-submit="" id="ajxx-test9"  lay-filter="demo1">开始上传</a>
                 </div>
             </div>
 
@@ -38,11 +38,11 @@
 
         //拖拽上传
         var uploadInst = upload.render({
-            elem: '#test10'
-            ,url: 'patent/khgl/excel/import' //上传接口
+            elem: '#ajxxUpload'
+            ,url: 'patent/ajxx/excel/import' //上传接口
             ,accept: 'file'
             ,auto: false
-            ,bindAction: '#test9'
+            ,bindAction: '#ajxx-test9'
             ,done: function(res){
                 console.log(res)
                 alert(res.message||"数据导入失败");
@@ -58,7 +58,7 @@
                     console.log(index); //得到文件索引
                     console.log(file); //得到文件对象
 
-                    $("#upload-text").html(file.name);
+                    $("#ajxx-upload-text").html(file.name);
 
                     console.log(result); //得到文件base64编码，比如图片
 
