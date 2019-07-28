@@ -21,9 +21,13 @@ public class CwwlDaoImpl extends BaseDaoImpl implements CwwlDao {
 	    SqlMap sqlMap = new SqlMap();
         sqlMap.setPageNo(condition.getPageNo());
         sqlMap.setRowCount(condition.getPageSize());
-        sqlMap.append("select CWWL_ID, CWWL_YWRQ, CWWL_KH, CWWL_YW, CWWL_JE, CWWL_SKZH, CWWL_SJSKJE, CWWL_FP, CWWL_QBCB, CWWL_GF ");
-        sqlMap.append(", CWWL_YJ, CWWL_TC, CWWL_ZLMC, CWWL_WHRID, CWWL_WHR, CWWL_WHSJ, CWWL_SYSVERSION, CWWL_YWY, CWWL_STAT, CWWL_DKR ");
+        sqlMap.append("select CWWL_ID, CWWL_YWRQ, CWWL_KH, CWWL_YW, CWWL_JE, CWWL_SKZH, CWWL_SJSKJE, CWWL_FP, CWWL_QBCB");
+        sqlMap.append("       , CWWL_GF , CWWL_YJ, CWWL_TC, CWWL_ZLMC, CWWL_WHRID, CWWL_WHR, CWWL_WHSJ, CWWL_SYSVERSION ");
+        sqlMap.append("       , CWWL_YWY, CWWL_STAT, CWWL_DKR, CWWL_WQRY, CWWL_NQRY, u1.USERS_USERNAME as CWWL_YWYMC, u2.USERS_USERNAME as CWWL_WQRYMC, u3.USERS_USERNAME as CWWL_NQRYMC");
         sqlMap.append("from CWWL ");
+        sqlMap.append("     left join USERS u1 on u1.USERS_USERID = CWWL_YWY ");
+        sqlMap.append("     left join USERS u2 on u2.USERS_USERID = CWWL_WQRY ");
+        sqlMap.append("     left join USERS u3 on u3.USERS_USERID = CWWL_NQRY ");
         sqlMap.append("where 1=1  ");
         if (StringUtils.isNotEmpty(condition.getId())){
             sqlMap.append("  and " + SqlUtil.getWhereSql("CWWL_ID", condition.getId()));
@@ -63,9 +67,13 @@ public class CwwlDaoImpl extends BaseDaoImpl implements CwwlDao {
         SqlMap sqlMap = new SqlMap();
         sqlMap.setPageNo(condition.getPageNo());
         sqlMap.setRowCount(condition.getPageSize());
-        sqlMap.append("select CWWL_ID, CWWL_YWRQ, CWWL_KH, CWWL_YW, CWWL_JE, CWWL_SKZH, CWWL_SJSKJE, CWWL_FP, CWWL_QBCB, CWWL_GF ");
-        sqlMap.append(", CWWL_YJ, CWWL_TC, CWWL_ZLMC, CWWL_WHRID, CWWL_WHR, CWWL_WHSJ, CWWL_SYSVERSION, CWWL_YWY, CWWL_STAT, CWWL_DKR ");
+        sqlMap.append("select CWWL_ID, CWWL_YWRQ, CWWL_KH, CWWL_YW, CWWL_JE, CWWL_SKZH, CWWL_SJSKJE, CWWL_FP, CWWL_QBCB");
+        sqlMap.append("       , CWWL_GF , CWWL_YJ, CWWL_TC, CWWL_ZLMC, CWWL_WHRID, CWWL_WHR, CWWL_WHSJ, CWWL_SYSVERSION ");
+        sqlMap.append("       , CWWL_YWY, CWWL_STAT, CWWL_DKR, CWWL_WQRY, CWWL_NQRY, u1.USERS_USERNAME as CWWL_YWYMC, u2.USERS_USERNAME as CWWL_WQRYMC, u3.USERS_USERNAME as CWWL_NQRYMC");
         sqlMap.append("from CWWL ");
+        sqlMap.append("     left join USERS u1 on u1.USERS_USERID = CWWL_YWY ");
+        sqlMap.append("     left join USERS u2 on u2.USERS_USERID = CWWL_WQRY ");
+        sqlMap.append("     left join USERS u3 on u3.USERS_USERID = CWWL_NQRY ");
         sqlMap.append("where ( CWWL_STAT = 'pending' or ( CWWL_STAT = 'claim' and CWWL_YWY = :CWWL_YWY  )  )  ");
         sqlMap.setParamValue("CWWL_YWY", UserInfoUtil.getUserId());
 
@@ -95,7 +103,6 @@ public class CwwlDaoImpl extends BaseDaoImpl implements CwwlDao {
             sqlMap.append("  and " + SqlUtil.getWhereSql("CWWL_STAT", condition.getStat()));
             sqlMap.setParamValue("CWWL_STAT", condition.getStat());
         }
-
 
         sqlMap.query(CwwlVO.class);
         return sqlMap.getRecordSet();

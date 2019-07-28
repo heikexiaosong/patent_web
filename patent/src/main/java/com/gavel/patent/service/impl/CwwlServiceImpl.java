@@ -44,12 +44,17 @@ public class CwwlServiceImpl extends BaseEditServiceImpl implements CwwlService 
             if ( cwwl.getId()!=null ){
                 Cwwl exist = cwwlDao.queryById(Cwwl.class, cwwl.getId());
                 if ( exist!=null && "claim".equalsIgnoreCase(exist.getStat()) ){
-                    throw new RuntimeException("记录已认领, 不能进行修改");
+                    throw new RuntimeException("不能修改或认领已认领的记录");
                 }
             }
 
             if ( cwwl.getStat()==null || cwwl.getStat().trim().length()==0  ){
                 cwwl.setStat("pending");
+            }
+
+            if ( "claim".equalsIgnoreCase(cwwl.getStat())
+                    && ( cwwl.getQbcb()==null || cwwl.getGf()==null ) ){
+                throw new RuntimeException("认领时必须输入[全部成本]和[官费]项");
             }
 
             int yj = cwwl.getSjskje()==null ? 0 : cwwl.getSjskje();

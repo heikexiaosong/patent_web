@@ -2704,3 +2704,24 @@ GO
 ALTER TABLE patent.dbo.USERS ADD USERS_INIT varchar(8) NULL;
 
 ALTER TABLE patent.dbo.CWWL ADD CWWL_DKR nvarchar(100) NULL;
+
+create table PROCESS
+(
+	PROCESS_ID varchar(32) not null
+		constraint PK_PROCESS
+			primary key,
+	PROCESS_TYPE varchar(20),
+	PROCESS_BID varchar(32),
+	PROCESS_NAME nvarchar(100),
+	PROCESS_ZT varchar(8),
+	PROCESS_CLR varchar(32),
+	PROCESS_CLSJ datetime,
+	PROCESS_OPERA nvarchar(30),
+	PROCESS_STEP int constraint DF_PROCESS_PROCESS_STEP default 0,
+	PROCESS_DCLR nvarchar(1000)
+)
+go
+
+ALTER TABLE patent.dbo.CWWL ADD CWWL_WQRY varchar(30) NULL;
+
+ALTER TABLE patent.dbo.CWWL ADD CWWL_NQRY varchar(20) NULL;

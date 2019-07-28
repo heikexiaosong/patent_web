@@ -77,9 +77,15 @@ public class KxrlController extends BaseController {
     @RequestMapping(value = BaseURL.UPDATE, method = RequestMethod.POST)
     @ResponseBody
     public Object update(@RequestBody JSONObject param) {
-        BaseEditJSON editJson = BaseEditJSON.parseJSON(param);
-        editJson.getMaster().put("stat", "claim");
-        cwwlService.update(editJson);
+        try {
+            BaseEditJSON editJson = BaseEditJSON.parseJSON(param);
+            editJson.getMaster().put("stat", "claim");
+            cwwlService.update(editJson);
+        } catch (Exception e){
+            ThreadContext.getReturnData().setSuccess(false);
+            ThreadContext.getReturnData().setMessage(e.getMessage());
+        }
+
         return ThreadContext.getReturnData();
     }
 

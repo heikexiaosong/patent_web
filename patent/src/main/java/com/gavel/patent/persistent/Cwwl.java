@@ -52,6 +52,12 @@ public class Cwwl extends BaseEntity {
 	@FieldMeta(fieldName = "CWWL_DKR", caption = "打款人", index = 20)
 	private String dkr;
 
+	@FieldMeta(fieldName = "CWWL_WQRY", caption = "外勤", index = 20)
+	private String wqry;
+
+	@FieldMeta(fieldName = "CWWL_NQRY", caption = "内勤", index = 20)
+	private String nqry;
+
 	public String getId() {
 		return id;
 	}	
@@ -175,6 +181,22 @@ public class Cwwl extends BaseEntity {
 
 	public void setDkr(String dkr) {
 		this.dkr = dkr;
+	}
+
+	public String getWqry() {
+		return wqry;
+	}
+
+	public void setWqry(String wqry) {
+		this.wqry = wqry;
+	}
+
+	public String getNqry() {
+		return nqry;
+	}
+
+	public void setNqry(String nqry) {
+		this.nqry = nqry;
 	}
 }
 

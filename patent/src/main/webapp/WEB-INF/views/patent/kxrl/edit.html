@@ -4,9 +4,9 @@
     <input type="hidden"  name="stat" value="claim" >
 	<div class="gui-row" >
         <div class="gui-col-sm6">
-            <label class="gui-form-label" for="">客户：</label>
+            <label class="gui-form-label" for="">打款人：</label>
             <div class="gui-input-block">
-                <input type="text" name="kh" data-toggle="gui-textbox" data-options="" style="width: 100%" readonly>
+                <input type="text" name="dkr" data-toggle="gui-textbox" data-options="" style="width: 100%" readonly>
             </div>
         </div>
         <div class="gui-col-sm6">
@@ -18,16 +18,10 @@
     </div>
 
     <div class="gui-row" >
-        <div class="gui-col-sm6">
+        <div class="gui-col-sm12">
             <label class="gui-form-label" for="">业务：</label>
             <div class="gui-input-block">
                 <input type="text" name="yw" data-toggle="gui-textbox" data-options="" style="width: 100%" readonly>
-            </div>
-        </div>
-        <div class="gui-col-sm6">
-            <label class="gui-form-label" for="">业务员：</label>
-            <div class="gui-input-block">
-                <input type="text" name="ywy" data-toggle="gui-textbox" data-options="" style="width: 100%" readonly>
             </div>
         </div>
     </div>
@@ -61,26 +55,65 @@
     </div>
 	<div class="gui-row" >
         <div class="gui-col-sm6">
-            <label class="gui-form-label" for="">全部成本：</label>
+            <label class="gui-form-label" for="">全部成本<span style="color: red">(＊)</span>：</label>
             <div class="gui-input-block">
                 <input type="text" name="qbcb" data-toggle="gui-textbox" data-options="" style="width: 100%">
             </div>
         </div>
         <div class="gui-col-sm6">
-            <label class="gui-form-label" for="">官费：</label>
+            <label class="gui-form-label" for="">官费<span style="color: red">(＊)</span>：</label>
             <div class="gui-input-block">
                 <input type="text" name="gf" data-toggle="gui-textbox" data-options="" style="width: 100%">
             </div>
         </div>
     </div>
+
+    <div class="gui-row" >
+        <div class="gui-col-sm6">
+            <label class="gui-form-label" for="">外勤：</label>
+            <div class="gui-input-block">
+                <input type="text" name="wqry" data-toggle="gui-textbox" data-options="" style="width: 100%">
+            </div>
+        </div>
+        <div class="gui-col-sm6">
+            <label class="gui-form-label" for="">内勤：</label>
+            <div class="gui-input-block">
+                <input type="text" name="nqry" data-toggle="gui-textbox" data-options="" style="width: 100%">
+            </div>
+        </div>
+    </div>
 	<div class="gui-row" >
-        <div class="gui-col-sm12">
+        <div class="gui-col-sm6">
+            <label class="gui-form-label" for="">客户：</label>
+            <div class="gui-input-block">
+                <input type="text" name="kh" data-toggle="gui-textbox" data-options="" style="width: 100%">
+            </div>
+        </div>
+        <div class="gui-col-sm6">
             <label class="gui-form-label" for="">专利名称：</label>
             <div class="gui-input-block">
                 <input type="text" name="zlmc" data-toggle="gui-textbox" data-options="" style="width: 100%">
             </div>
         </div>
     </div>
+
+    <!--<div class="gui-row" >-->
+        <!--<div class="gui-col-sm6">-->
+            <!--<label class="gui-form-label" for="">客户：</label>-->
+            <!--<div class="gui-input-block">-->
+                <!--<input type="text" name="kh" data-toggle="gui-textbox" data-options="" style="width: 100%" readonly>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="gui-col-sm6">-->
+            <!--<label class="gui-form-label" for="">专利名称：</label>-->
+            <!--<div class="gui-input-block">-->
+                <!--<input type="text" name="zlmc" data-toggle="gui-textbox" data-options="" style="width: 100%">-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+
+
+
 </div>
 <script>
     $(function () {
@@ -92,6 +125,16 @@
 
         ComboboBox.init(
             $('#patentKxrlEdit input[name="ywy"]'),
+            {url: 'kzzx/user/query', valueField: 'userid', textField: 'username', allowNull: true,width:'100%'}
+        );
+
+        ComboboBox.init(
+            $('#patentKxrlEdit input[name="wqry"]'),
+            {url: 'kzzx/user/query', valueField: 'userid', textField: 'username', allowNull: true,width:'100%'}
+        );
+
+        ComboboBox.init(
+            $('#patentKxrlEdit input[name="nqry"]'),
             {url: 'kzzx/user/query', valueField: 'userid', textField: 'username', allowNull: true,width:'100%'}
         );
 
