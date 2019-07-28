@@ -74,8 +74,9 @@ public class CwwlDaoImpl extends BaseDaoImpl implements CwwlDao {
         sqlMap.append("     left join USERS u1 on u1.USERS_USERID = CWWL_YWY ");
         sqlMap.append("     left join USERS u2 on u2.USERS_USERID = CWWL_WQRY ");
         sqlMap.append("     left join USERS u3 on u3.USERS_USERID = CWWL_NQRY ");
-        sqlMap.append("where ( CWWL_STAT = 'pending' or ( CWWL_STAT = 'claim' and CWWL_YWY = :CWWL_YWY  )  )  ");
-        sqlMap.setParamValue("CWWL_YWY", UserInfoUtil.getUserId());
+        sqlMap.append("where ( CWWL_STAT = 'pending' or ( CWWL_STAT = 'claim' and ( CWWL_WQRY = :CWWL_WQRY  or  CWWL_NQRY = :CWWL_NQRY  ) )  )  ");
+        sqlMap.setParamValue("CWWL_WQRY", UserInfoUtil.getUserId());
+        sqlMap.setParamValue("CWWL_NQRY", UserInfoUtil.getUserId());
 
         if (StringUtils.isNotEmpty(condition.getId())){
             sqlMap.append("  and " + SqlUtil.getWhereSql("CWWL_ID", condition.getId()));
