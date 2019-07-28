@@ -16,13 +16,27 @@
 	    <!--<a class="toolbar-copy toolbar" href="javascript:void(0)"></a>-->
 	    <a class="toolbar-edit toolbar" href="javascript:void(0)"></a>
 	    <a class="toolbar-delete toolbar" href="javascript:void(0)"></a>
-	    <a type="submit" class="btn btn-primary serach toolbar-search"></a>
-	    <div class="bdsug" style="height: auto; display: none" >
-	        <form action="" class="query-criteria">
-	            <ul><li class="bdsug-store bdsug-overflow">
-	            </li></ul>
-	        </form>
-	    </div>
+		<a class="toolbar-submit1 toolbar" href="javascript:void(0)"></a>
+		<a class="toolbar-goback1 toolbar" href="javascript:void(0)"></a>
+		<a class="toolbar-withdraw1 toolbar" href="javascript:void(0)"></a>
+		<div class="bdsug" style="height: auto;">
+			<form action="" class="query-criteria">
+				<ul>
+					<li class="bdsug-store bdsug-overflow">
+
+                        <span style="margin: 10px">
+                            <label >状态：</label>
+							<input type="text" name="zt"   class="gui-textbox" style="width: 200px; height: 24px">
+                        </span>
+
+						<span class="serach">
+                             <button type="button" class="btn btn-primary ng-binding datagrid-search query">搜索</button>
+                        </span>
+
+					</li>
+				</ul>
+			</form>
+		</div>
 	</div>
 </div>
 <!-- 表格工具栏结束 -->
@@ -30,6 +44,10 @@
     /*js初始化*/
     $(function () {
     	var $div=$('#patentZcqk');
+
+        $('#patentZcqk input[name="zt"]').iCombobox({textField: "text", valueField: "value",height:30, data: [{text: "待我处理", value: "P", selected: !0}, {text: "已处理", value: "C"}]});
+
+
         var options={
             url:'patent/zcqk',
             queryParams:{
@@ -39,13 +57,19 @@
                 {title: "请款人", field: "username", fieldType:"ftString", width: 100},
                 {title: "请款用途", field: "qkyt", fieldType:"ftString", width: 200},
                 {title: "金额", field: "je", fieldType:"ftInteger", width: 80, align: 'right'},
+                {title: "状态", field: "zt", fieldType:"ftString", width: 100, align: 'center',
+                    formatter: function (value, index, row) {
+                        var map = {I: '待提交', P: "总经理审批", W: "财务打款", C: "完成"};
+                        var text = map[value];
+                        return text || value;
+                    } //I: 初始化; P: 提交待总经理审批; W: 待财务打款; C: 打款完成， 流程总结
+                },
                 {title: "联系单位", field: "lxdw", fieldType:"ftString", width: 160},
                 {title: "付款方式", field: "fkfs", fieldType:"ftString", width: 100},
                 {title: "户名", field: "hm", fieldType:"ftString", width: 100},
                 {title: "开户行", field: "khh", fieldType:"ftString", width: 180},
                 {title: "银行帐号", field: "yhzh", fieldType:"ftString", width: 40},
                 {title: "备注", field: "bz", fieldType:"ftString", width: 80},
-                {title: "状态", field: "zt", fieldType:"ftString", width: 8},
                 {title: "维护人", field: "whr", fieldType:"ftString", width: 240},
                 {title: "维护时间", field: "whsj", fieldType:"ftDateTime", width: 140},
                 {title: "创建人", field: "cjr", fieldType:"ftString", width: 240},
@@ -58,7 +82,75 @@
                 href:'patent/zcqk/edit'
             }
         };
-        $div.Container(options); 
+        $div.Container(options);
+
+
+        $div.find('.toolbar-submit1').iMenubutton({
+                text:'提交',
+                iconCls:'fa fa-refresh',
+                onClick: function () {
+                    var seletedRow=$('#patentZcqk .toolbar-table').datagrid("getSelected");
+                    if(!!!seletedRow){
+                        $.messager.alert("提示","请选择一条数据进行提交");
+                        return false;
+                    }
+                    HTTP.post("patent/zcqk/workflow", $.extend({}, seletedRow, {operate: "1"}),function (result) {
+                        if(result["success"]){
+                            $.messager.alert("提示","提交成功");
+                            $div.find('.toolbar-reload').click();
+                        }else{
+                            $.messager.alert("提示",result["message"]||"提交失败");
+                        }
+                    })
+                }
+            }
+
+        );
+
+        $div.find('.toolbar-goback1').iMenubutton({
+                text:'退回',
+                iconCls:'fa fa-refresh',
+            onClick: function () {
+                var seletedRow=$('#patentZcqk .toolbar-table').datagrid("getSelected");
+                if(!!!seletedRow){
+                    $.messager.alert("提示","请选择一条数据进行退回");
+                    return false;
+                }
+                HTTP.post("patent/zcqk/workflow", $.extend({}, seletedRow, {operate: "2"}),function (result) {
+                    if(result["success"]){
+                        $.messager.alert("提示","退回成功");
+                        $div.find('.toolbar-reload').click();
+                    }else{
+                        $.messager.alert("提示",result["message"]||"退回失败");
+                    }
+                })
+            }
+            }
+
+        );
+
+        $div.find('.toolbar-withdraw1').iMenubutton({
+                text:'撤回',
+                iconCls:'fa fa-refresh',
+            onClick: function () {
+                var seletedRow=$('#patentZcqk .toolbar-table').datagrid("getSelected");
+                if(!!!seletedRow){
+                    $.messager.alert("提示","请选择一条数据进行撤回");
+                    return false;
+                }
+                HTTP.post("patent/zcqk/workflow", $.extend({}, seletedRow, {operate: "3"}),function (result) {
+                    if(result["success"]){
+                        $.messager.alert("提示","撤回成功");
+                        $div.find('.toolbar-reload').click();
+                    }else{
+                        $.messager.alert("提示",result["message"]||"撤回失败");
+                    }
+                })
+            }
+            }
+
+        );
+
     });
 
 

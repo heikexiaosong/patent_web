@@ -76,10 +76,8 @@
 
         $('#patentAjxx input[name="end"]').iDatebox({});
 
-        ComboboBox.init($('#patentAjxx input[name="type"]'),
-            { data: [{value: "", text: ""}, {value: "1", text: "发明"}, {value: "2", text: "实用新型"}, {value: "3", text: "外观设计"}, {value: "4", text: "商标注册"}, {value: "5", text: "版权登记"}], allowNull: true,width:'100%'});
-
-
+        $('#patentAjxx input[name="type"]').iCombobox({textField: "text", valueField: "value",height:30, data: [{value: "", text: ""}, {value: "1", text: "发明"}, {value: "2", text: "实用新型"},
+                {value: "3", text: "外观设计"}, {value: "4", text: "商标注册"}, {value: "5", text: "版权登记"}]});
 
         var $div = $('#patentAjxx');
         var options = {

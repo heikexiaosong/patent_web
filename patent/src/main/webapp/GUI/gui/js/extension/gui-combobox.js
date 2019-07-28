@@ -42,7 +42,7 @@
                 comboBoxObj.empty();
                 if(result['success']){
                     if(result['data']&&result['data']['records']){
-                        if(options['allowNull']){
+                        if(options['allowNull']==true){
                             data.push({
                                 value:'',
                                 text:'',

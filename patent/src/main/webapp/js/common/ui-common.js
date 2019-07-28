@@ -159,9 +159,7 @@ if (typeof jQuery === 'undefined') {
                 del: onDel,
                 changeTybz: changeTybz,
                 editEnable: function (row) {
-                    if ( row!=null && row["zt"]!=null && row["zt"] != "I" ) {
-                        return false;
-                    }
+                   return true;
                 }
             };
 
