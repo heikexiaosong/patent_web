@@ -8,6 +8,7 @@
                 <input type="text" name="code" data-toggle="gui-textbox" data-options="" style="width: 100%">
             </div>
         </div>
+
     </div>
 
     <div class="gui-row" >
@@ -112,13 +113,13 @@
 </div>
 <script>
     $(function () {
-            var $dialog=$('#patentAjxxEdit');
+            var $dialog=$('#patentTrademarkEdit');
 
-        ComboboBox.init($('#patentAjxxEdit input[name="kh"]'),
+        ComboboBox.init($('#patentTrademarkEdit input[name="kh"]'),
             {url: 'patent/khgl/query', valueField: 'khmc', textField: 'khmc', allowNull: true,width:'100%', onSelected(item){debugger;}});
 
         ComboboBox.init(
-            $('#patentAjxxEdit input[name="bm"]'),
+            $('#patentTrademarkEdit input[name="bm"]'),
             {url: 'kzzx/user/query', valueField: 'userid', textField: 'username', allowNull: true,width:'100%'}
         );
     })

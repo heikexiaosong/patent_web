@@ -23,10 +23,6 @@
                     <li class="bdsug-store bdsug-overflow">
 
                         <span style="margin: 10px">
-                            <label style="width: 70px;">案件类型：</label><input type="text" name="type"   class="gui-textbox" style="width: 140px; height: 24px">
-                        </span>
-
-                        <span style="margin: 10px">
                             <label style="width: 70px;">申请名称：</label><input type="text" name="sqmc"   class="gui-textbox" style="width: 140px; height: 24px">
                         </span>
 
@@ -75,9 +71,6 @@
 
         $('#patentAjxx input[name="end"]').iDatebox({});
 
-        $('#patentAjxx input[name="type"]').iCombobox({textField: "text", valueField: "value",height:24, data: [{value: "", text: ""}, {value: "1", text: "发明"}, {value: "2", text: "实用新型"},
-                {value: "3", text: "外观设计"}, {value: "4", text: "商标注册"}, {value: "5", text: "版权登记"}]});
-
         // ComboboBox.init($('#patentAjxx input[name="kh"]'),
         //     {url: 'patent/khgl/query', valueField: 'khmc', textField: 'khmc', allowNull: true,width:'100%'});
 
@@ -99,20 +92,8 @@
                 );
             },
             columns: [[
-                {title: "编码", field: "bm", patentAjxxEditfieldType: "ftString", width: 100, hidden: true},
+                {title: "编码", field: "bm", patentAjxxEditfieldType: "ftString", width: 100},
                 {title: "编号", field: "code", fieldType: "ftString", width: 160},
-                {
-                    title: "案件类型",
-                    field: "type",
-                    fieldType: "ftString",
-                    width: 100,
-                    align: 'center',
-                    formatter: function (value, index, row) {
-                        var map = {1: '发明', 2: "实用新型", 3: "外观设计", 4: "商标注册", 5: "版权登记"};
-                        var text = map[value];
-                        return text || value;
-                    }
-                },
                 {title: "客户", field: "kh", fieldType: "ftString", width: 120},
                 {title: "申请人", field: "sqr", fieldType: "ftString", width: 120},
                 {title: "申请号", field: "sqh", fieldType: "ftString", width: 120},
@@ -145,9 +126,7 @@
                         return text || "否";
                     }
                 },
-                {title: "证书", field: "zs", fieldType: "ftString", width: 120},
-                {title: "类别", field: "lb", fieldType: "ftString", width: 120},
-                {title: "递交人", field: "djr", fieldType: "ftString", width: 120}
+                {title: "证书", field: "zs", fieldType: "ftString", width: 120}
             ]],
             dialog: {
                 id: 'patentAjxxEdit',

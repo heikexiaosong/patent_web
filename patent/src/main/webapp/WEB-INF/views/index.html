@@ -75,7 +75,7 @@
             </div>
         </div>
     </div>
-    <div id="west" data-options="region:'west',split:true,width:180,border:false,headerCls:'border_right',bodyCls:'border_right'",
+    <div id="west" data-options="region:'west',split:true,width:150,border:false,headerCls:'border_right',bodyCls:'border_right'",
          title="" iconCls="fa fa-dashboard">
         <div id="RightAccordion"  style="overflow-y: auto"></div>
     </div>
@@ -579,7 +579,7 @@
                     $("#RightAccordion").iAccordion('remove', 0);
                 }
             }
-            $.each(treeData, function (i, e) {// 循环创建手风琴的项
+            $.each(treeData, function (i, e) {
                 var pid = e.pid;
                 var isSelected = i == 0 ? true : false;
                 $('#RightAccordion').iAccordion('add', {
@@ -614,6 +614,9 @@
                     }
                 });
             });
+
+            $('#RightAccordion').iAccordion('select', '案件管理');
+
 
         var lis=$('.item_container').find('li a');
         for(var i=0;i<lis.length;i++){

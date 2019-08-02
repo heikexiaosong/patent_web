@@ -1,55 +1,54 @@
-<div id="patentAjxx" class="gui-div">
-    <table class="toolbar-table" data-options="id: 'patentAjxxTable',herf:'kzzx/gridset/query'">
+<div id="patentCopyright" class="gui-div">
+    <table class="toolbar-table" data-options="id: 'patentCopyrightTable',herf:'kzzx/gridset/query'">
     </table>
 
     <!-- 表格工具栏开始 -->
-    <div id="patentAjxxTable-toolbar" class="gui-toolbar"
+    <div id="patentCopyrightTable-toolbar" class="gui-toolbar"
          data-options="grid:{
 	           type:'datagrid',
-	           id:'patentAjxxTable'
+	           id:'patentCopyrightTable'
 	       }">
         <a class="toolbar-reload toolbar" href="javascript:void(0)"></a>
         <!--<a class="toolbar-print toolbar"  href="javascript:void(0)"></a>-->
+        <a class="toolbar-import toolbar" href="javascript:void(0)"></a>
         <a class="toolbar-export toolbar" href="javascript:void(0)"></a>
         <a class="toolbar-review toolbar" href="javascript:void(0)"></a>
         <a class="toolbar-add toolbar" href="javascript:void(0)"></a>
         <!--<a class="toolbar-copy toolbar" href="javascript:void(0)"></a>-->
         <a class="toolbar-edit toolbar" href="javascript:void(0)"></a>
-        <a class="toolbar-delete toolbar" href="javascript:void(0)"></a>
+        <!--<a class="toolbar-delete toolbar" href="javascript:void(0)"></a>-->
         <div class="bdsug" style="height: auto;">
             <form action="" class="query-criteria">
                 <ul>
                     <li class="bdsug-store bdsug-overflow">
-                        <span style="margin: 10px">
-                            <label style="width: 70px;">业务员：</label><input type="text" name="bm"   class="gui-textbox" style="width: 140px; height: 24px">
-                        </span>
-
-                        <span style="margin: 10px">
-                            <label style="width: 70px;">客户：</label><input type="text" name="kh"   class="gui-textbox" style="width: 140px; height: 24px">
-                        </span>
-
-                        <span style="margin: 10px">
-                            <label style="width: 70px;">申请号：</label><input type="text" name="sqh"   class="gui-textbox" style="width: 140px; height: 24px">
-                        </span>
-
-
-                    </li>
-
-                    <li class="bdsug-store bdsug-overflow">
-
-                        <span style="margin: 10px">
-                            <label style="width: 70px;">申请人：</label><input type="text" name="sqr"   class="gui-textbox" style="width: 140px; height: 24px">
-                        </span>
 
                         <span style="margin: 10px">
                             <label style="width: 70px;">申请名称：</label><input type="text" name="sqmc"   class="gui-textbox" style="width: 140px; height: 24px">
                         </span>
 
                         <span style="margin: 10px">
-                            <label style="width: 70px;">日期：</label>
+                            <label style="width: 70px;">申请人：</label><input type="text" name="sqr"   class="gui-textbox" style="width: 140px; height: 24px">
+                        </span>
+
+                        <span style="margin: 10px">
+                            <label style="width: 70px;">申请号：</label><input type="text" name="sqh"   class="gui-textbox" style="width: 140px; height: 24px">
+                        </span>
+
+                    </li>
+
+                    <li class="bdsug-store bdsug-overflow">
+
+                        <span style="margin: 10px">
+                            <label style="width: 70px;">申请日期：</label>
                             <input type="text" name="start"   class="gui-textbox" style="width: 120px;height: 24px">
                             -
                             <input type="text" name="end"   class="gui-textbox" style="width: 120px;height: 24px">
+                        </span>
+
+
+
+                        <span style="margin: 10px">
+                            <label style="width: 70px;">客户：</label><input type="text" name="kh"   class="gui-textbox" style="width: 140px; height: 24px">
                         </span>
 
                         <span class="serach">
@@ -68,13 +67,17 @@
     /*js初始化*/
     $(function () {
 
-        $('#patentAjxx input[name="start"]').iDatebox({});
+        $('#patentCopyright input[name="start"]').iDatebox({});
 
-        $('#patentAjxx input[name="end"]').iDatebox({});
+        $('#patentCopyright input[name="end"]').iDatebox({});
 
-        var $div = $('#patentAjxx');
+        // ComboboBox.init($('#patentCopyright input[name="kh"]'),
+        //     {url: 'patent/khgl/query', valueField: 'khmc', textField: 'khmc', allowNull: true,width:'100%'});
+
+
+        var $div = $('#patentCopyright');
         var options = {
-            url: 'patent/ajxx',
+            url: 'patent/copyright',
             queryParams: {},
             onLoadSuccess:function(data){
                 $(".note").tooltip(
@@ -89,12 +92,11 @@
                 );
             },
             columns: [[
-                {title: "编码", field: "bm", patentAjxxEditfieldType: "ftString", width: 100},
+                {title: "编码", field: "bm", fieldType: "ftString", width: 100},
                 {title: "编号", field: "code", fieldType: "ftString", width: 160},
                 {title: "客户", field: "kh", fieldType: "ftString", width: 120},
                 {title: "申请人", field: "sqr", fieldType: "ftString", width: 120},
-                {title: "申请号", field: "sqh", fieldType: "ftString", width: 120},
-                {title: "案件名称", field: "sqmc", fieldType: "ftString", width: 120, formatter: function(value, row, index) {
+                {title: "版权名称", field: "sqmc", fieldType: "ftString", width: 120, formatter: function(value, row, index) {
                         var abValue = value;
                         if (value.length>=22) {
                             abValue = value.substring(0,19) + "...";
@@ -103,36 +105,38 @@
                         return content;
                     }
                 },
-                {title: "撰写人", field: "jxr", fieldType: "ftString", width: 120},
+                {title: "设计人", field: "jxr", fieldType: "ftString", width: 120},
                 {title: "申请日", field: "sqrq", fieldType: "ftDateTime", width: 140},
-                {title: "申请费", field: "sqf", fieldType: "ftInteger", width: 140, align: 'right'},
+                {title: "递交人", field: "djr", fieldType: "ftString", width: 120},
                 {title: "状态", field: "stat", fieldType: "ftString", width: 120, formatter: function(value, row, index) {
                         var content = value || "";
                         return '<span  title="' + content + '" class="note">' + content + '</span>';
                     }
                 },
-                {
-                    title: "是否监控年费",
-                    field: "nfjk",
-                    fieldType: "ftString",
-                    width: 64,
-                    align: 'center',
-                    formatter: function (value, index, row) {
-                        var map = {Y: '是', N: "否"};
-                        var text = map[value];
-                        return text || "否";
-                    }
-                },
                 {title: "证书", field: "zs", fieldType: "ftString", width: 120}
             ]],
             dialog: {
-                id: 'patentAjxxEdit',
+                id: 'patentCopyrightEdit',
                 width: 900,
                 height: 540,
-                href: 'patent/ajxx/edit'
+                href: 'patent/copyright/edit'
             }
         };
         $div.Container(options);
+
+        $("#patentCopyright .toolbar-import").iMenubutton({
+            event:'openDialog',
+            iconCls: 'fa fa-upload',
+            text:'导入',
+            dialog:{
+                title:'案件导入',
+                id:'patentKhglAdd',
+                width:840,
+                height: 510,
+                href:'patent/copyright/importpage',
+                tag:'add'
+            }
+        });
     });
 
 

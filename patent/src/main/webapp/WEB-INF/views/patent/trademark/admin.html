@@ -1,12 +1,12 @@
-<div id="patentAjxx" class="gui-div">
-    <table class="toolbar-table" data-options="id: 'patentAjxxTable',herf:'kzzx/gridset/query'">
+<div id="patentTrademark" class="gui-div">
+    <table class="toolbar-table" data-options="id: 'patentTrademarkTable',herf:'kzzx/gridset/query'">
     </table>
 
     <!-- 表格工具栏开始 -->
-    <div id="patentAjxxTable-toolbar" class="gui-toolbar"
+    <div id="patentTrademarkTable-toolbar" class="gui-toolbar"
          data-options="grid:{
 	           type:'datagrid',
-	           id:'patentAjxxTable'
+	           id:'patentTrademarkTable'
 	       }">
         <a class="toolbar-reload toolbar" href="javascript:void(0)"></a>
         <!--<a class="toolbar-print toolbar"  href="javascript:void(0)"></a>-->
@@ -68,13 +68,13 @@
     /*js初始化*/
     $(function () {
 
-        $('#patentAjxx input[name="start"]').iDatebox({});
+        $('#patentTrademark input[name="start"]').iDatebox({});
 
-        $('#patentAjxx input[name="end"]').iDatebox({});
+        $('#patentTrademark input[name="end"]').iDatebox({});
 
-        var $div = $('#patentAjxx');
+        var $div = $('#patentTrademark');
         var options = {
-            url: 'patent/ajxx',
+            url: 'patent/trademark',
             queryParams: {},
             onLoadSuccess:function(data){
                 $(".note").tooltip(
@@ -89,12 +89,11 @@
                 );
             },
             columns: [[
-                {title: "编码", field: "bm", patentAjxxEditfieldType: "ftString", width: 100},
+                {title: "编码", field: "bm", fieldType: "ftString", width: 100},
                 {title: "编号", field: "code", fieldType: "ftString", width: 160},
                 {title: "客户", field: "kh", fieldType: "ftString", width: 120},
                 {title: "申请人", field: "sqr", fieldType: "ftString", width: 120},
-                {title: "申请号", field: "sqh", fieldType: "ftString", width: 120},
-                {title: "案件名称", field: "sqmc", fieldType: "ftString", width: 120, formatter: function(value, row, index) {
+                {title: "商标名称", field: "sqmc", fieldType: "ftString", width: 120, formatter: function(value, row, index) {
                         var abValue = value;
                         if (value.length>=22) {
                             abValue = value.substring(0,19) + "...";
@@ -103,33 +102,22 @@
                         return content;
                     }
                 },
-                {title: "撰写人", field: "jxr", fieldType: "ftString", width: 120},
+                {title: "logo设计者", field: "jxr", fieldType: "ftString", width: 120},
+                {title: "类别", field: "lb", fieldType: "ftString", width: 120},
                 {title: "申请日", field: "sqrq", fieldType: "ftDateTime", width: 140},
-                {title: "申请费", field: "sqf", fieldType: "ftInteger", width: 140, align: 'right'},
+                {title: "申请号", field: "sqh", fieldType: "ftString", width: 120},
                 {title: "状态", field: "stat", fieldType: "ftString", width: 120, formatter: function(value, row, index) {
                         var content = value || "";
                         return '<span  title="' + content + '" class="note">' + content + '</span>';
                     }
                 },
-                {
-                    title: "是否监控年费",
-                    field: "nfjk",
-                    fieldType: "ftString",
-                    width: 64,
-                    align: 'center',
-                    formatter: function (value, index, row) {
-                        var map = {Y: '是', N: "否"};
-                        var text = map[value];
-                        return text || "否";
-                    }
-                },
                 {title: "证书", field: "zs", fieldType: "ftString", width: 120}
             ]],
             dialog: {
-                id: 'patentAjxxEdit',
+                id: 'patentTrademarkEdit',
                 width: 900,
                 height: 540,
-                href: 'patent/ajxx/edit'
+                href: 'patent/trademark/edit'
             }
         };
         $div.Container(options);
