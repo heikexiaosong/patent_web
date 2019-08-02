@@ -1,6 +1,8 @@
 package com.gavel.patent.service.impl;
 
+import com.gavel.common.base.entity.BaseEntity;
 import com.gavel.common.base.service.impl.BaseEditServiceImpl;
+import com.gavel.common.business.service.CommonService;
 import com.gavel.common.excel.ExcelTool;
 import com.gavel.common.excel.ExcelUtils;
 import com.gavel.common.utils.UserInfoUtil;
@@ -20,6 +22,7 @@ import java.io.*;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Objects;
 
@@ -34,6 +37,9 @@ public class AjxxServiceImpl extends BaseEditServiceImpl implements AjxxService 
     @Autowired
     private AjxxDao ajxxDao;
 
+    @Autowired
+    private CommonService commonService;
+
     @Override
     public void initService() {
         addMaster(new Ajxx());
@@ -43,6 +49,16 @@ public class AjxxServiceImpl extends BaseEditServiceImpl implements AjxxService 
 	public RecordSet<AjxxVO> query(AjxxCondition condition) {
 	    return ajxxDao.query(condition);
 	}
+
+    @Override
+    public void beforeInsert(BaseEntity entity) {
+        if ( entity!=null && entity instanceof Ajxx  ){
+            Ajxx ajxx = (Ajxx) entity;
+            int seq = commonService.getSequence("PATENT", "CODE");
+            String id = String.format("%s%08d", DATE_FORMAT.format(Calendar.getInstance().getTime()), seq);
+            ajxx.setCode(id);
+        }
+    }
 
     @Override
     public void imp(InputStream ins) throws Exception {

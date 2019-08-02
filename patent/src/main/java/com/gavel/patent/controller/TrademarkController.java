@@ -75,6 +75,7 @@ public class TrademarkController extends BaseController {
     public Object query(@RequestBody JSONObject param) {
         AjxxCondition condition = DataConvert.getCondition(param, AjxxCondition.class);
         condition.setFilter(!UserInfoUtil.isRole("admin"));
+        condition.setType("2");
         RecordSet<AjxxVO> records = ajxxService.query(condition);
         return buildReturnData(records, AjxxVO.class);
     }
