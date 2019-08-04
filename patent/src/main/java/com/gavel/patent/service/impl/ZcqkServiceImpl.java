@@ -3,7 +3,6 @@ package com.gavel.patent.service.impl;
 import com.gavel.common.base.entity.BaseEntity;
 import com.gavel.common.base.service.impl.BaseEditServiceImpl;
 import com.gavel.common.utils.UserInfoUtil;
-import com.gavel.common.wf.WFConst;
 import com.gavel.kzzx.dao.UserRoleDao;
 import com.gavel.kzzx.persistent.UserRole;
 import com.gavel.patent.dao.ProcessDao;
@@ -100,6 +99,8 @@ public class ZcqkServiceImpl extends BaseEditServiceImpl implements ZcqkService 
             throw new RuntimeException("流程已完成, 不能进行操作.");
         }
 
+        boolean isManager = false;
+
         if (Strings.isNullOrEmpty(record.getZt()) || "I".equalsIgnoreCase(record.getZt()) ){
 
             if ( !UserInfoUtil.getUserId().equalsIgnoreCase(record.getQkr()) ){
@@ -114,21 +115,48 @@ public class ZcqkServiceImpl extends BaseEditServiceImpl implements ZcqkService 
             if ( userRoleList!=null && userRoleList.size()>0 ){
                 for (UserRole userRole : userRoleList) {
                     builder.append(userRole.getUserid()).append(";");
+                    if ( userRole.getUserid().equalsIgnoreCase(UserInfoUtil.getUserId()) ){
+                        isManager = true;
+                    }
                 }
             }
 
+            if ( !isManager ) {
+                com.gavel.patent.persistent.Process process = new com.gavel.patent.persistent.Process();
+                process.setBid(record.getId());
+                process.setType("支出请款");
+                process.setName("["  + DATE_FORMAT.format(Calendar.getInstance().getTime()) + "]" + UserInfoUtil.getUserName() + "的支出请款申请");
+                process.setStep(1);
+                process.setZt("P"); // P: 待处理; C: 处理完成
+                process.setDclr(builder.toString());
+                processDao.insert(process);
 
-            com.gavel.patent.persistent.Process process = new com.gavel.patent.persistent.Process();
-            process.setBid(record.getId());
-            process.setType("支出请款");
-            process.setName("["  + DATE_FORMAT.format(Calendar.getInstance().getTime()) + "]" + UserInfoUtil.getUserName() + "的支出请款申请");
-            process.setStep(1);
-            process.setZt("P");
-            process.setDclr(builder.toString());
-            processDao.insert(process);
+                record.setZt("P");
+                zcqkDao.update(record);
+            } else {
+                UserRole financial = new UserRole();
+                financial.setRoleid("financial");
+                userRoleList = userRoleDao.queryListByEntity(financial);
 
-            record.setZt("P"); // P: 待处理; C: 处理完成
-            zcqkDao.update(record);
+                builder.delete(0, builder.length()-1);
+                if ( userRoleList!=null && userRoleList.size()>0 ){
+                    for (UserRole userRole : userRoleList) {
+                        builder.append(userRole.getUserid()).append(";");
+                    }
+                }
+
+                com.gavel.patent.persistent.Process process = new com.gavel.patent.persistent.Process();
+                process.setBid(record.getId());
+                process.setType("支出请款");
+                process.setName("["  + DATE_FORMAT.format(Calendar.getInstance().getTime()) + "]" + UserInfoUtil.getUserName() + "的支出请款申请");
+                process.setStep(1);
+                process.setZt("P"); // P: 待处理; C: 处理完成
+                process.setDclr(builder.toString());
+                processDao.insert(process);
+
+                record.setZt("W");
+                zcqkDao.update(record);
+            }
             return;
         }
 

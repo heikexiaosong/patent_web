@@ -17,8 +17,6 @@
 	    <a class="toolbar-edit toolbar" href="javascript:void(0)"></a>
 	    <a class="toolbar-delete toolbar" href="javascript:void(0)"></a>
 		<a class="toolbar-submit1 toolbar" href="javascript:void(0)"></a>
-		<a class="toolbar-goback1 toolbar" href="javascript:void(0)"></a>
-		<a class="toolbar-withdraw1 toolbar" href="javascript:void(0)"></a>
 		<div class="bdsug" style="height: auto;">
 			<form action="" class="query-criteria">
 				<ul>
@@ -188,50 +186,6 @@
                         }
                     })
                 }
-            }
-
-        );
-
-        $div.find('.toolbar-goback1').iMenubutton({
-                text:'退回',
-                iconCls:'fa fa-refresh',
-            onClick: function () {
-                var seletedRow=$('#patentZcqk .toolbar-table').datagrid("getSelected");
-                if(!!!seletedRow){
-                    $.messager.alert("提示","请选择一条数据进行退回");
-                    return false;
-                }
-                HTTP.post("patent/zcqk/workflow", $.extend({}, seletedRow, {operate: "2"}),function (result) {
-                    if(result["success"]){
-                        $.messager.alert("提示","退回成功");
-                        $div.find('.toolbar-reload').click();
-                    }else{
-                        $.messager.alert("提示",result["message"]||"退回失败");
-                    }
-                })
-            }
-            }
-
-        );
-
-        $div.find('.toolbar-withdraw1').iMenubutton({
-                text:'撤回',
-                iconCls:'fa fa-refresh',
-            onClick: function () {
-                var seletedRow=$('#patentZcqk .toolbar-table').datagrid("getSelected");
-                if(!!!seletedRow){
-                    $.messager.alert("提示","请选择一条数据进行撤回");
-                    return false;
-                }
-                HTTP.post("patent/zcqk/workflow", $.extend({}, seletedRow, {operate: "3"}),function (result) {
-                    if(result["success"]){
-                        $.messager.alert("提示","撤回成功");
-                        $div.find('.toolbar-reload').click();
-                    }else{
-                        $.messager.alert("提示",result["message"]||"撤回失败");
-                    }
-                })
-            }
             }
 
         );
