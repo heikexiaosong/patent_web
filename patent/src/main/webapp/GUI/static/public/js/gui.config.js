@@ -40,7 +40,9 @@ var gui = {
                 selectParentGrid: "请先选中主表中要操作的一条数据",
                 permissionDenied: "对不起，你没有操作权限",
                 confirmDelete: "你确定要删除所选的数据吗？",
-                confirmMsg: "确定要执行该操作吗？"
+                confirmMsg: "确定要执行该操作吗？",
+
+                confirmSubmit: "你确定要提交此申请吗？"
             }
         }
     }

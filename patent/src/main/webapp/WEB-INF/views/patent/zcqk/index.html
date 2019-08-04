@@ -45,7 +45,9 @@
     $(function () {
     	var $div=$('#patentZcqk');
 
-        $('#patentZcqk input[name="zt"]').iCombobox({textField: "text", valueField: "value",height:24, data: [{text: "待我处理", value: "P", selected: !0}, {text: "已处理", value: "C"}]});
+        var $patentZcqkZT = $('#patentZcqk input[name="zt"]');
+
+        $patentZcqkZT.iCombobox({textField: "text", valueField: "value",height:24, data: [{text: "待我处理", value: "P", selected: !0}, {text: "已处理", value: "C"}]});
 
 
         var options={
@@ -80,6 +82,72 @@
                 width: 900,
                 height: 506,
                 href:'patent/zcqk/edit'
+            },
+            onPreHandler: function (dialog, record) {
+                debugger;
+
+                if ( dialog["tag"] === 'review' ) {
+                    var buttonsGroup = [];
+
+                    //  I: 初始化; P: 提交待总经理审批; W: 待财务打款; C: 打款完成， 流程总结
+
+                    if ( record["zt"] === 'I'  ) {
+                        buttonsGroup.push({ btnCls: "gui-btn-save", iconCls: "fa fa-plus", text: "提交", onClick: function () {
+                                $.messager.confirm(gui.language.message.title.confirmTips, gui.language.message.msg.confirmSubmit, function (a) {
+                                    HTTP.post("patent/zcqk/workflow", $.extend({}, record, {operate: "1"}),function (result) {
+                                        if(result["success"]){
+                                            $('#' + dialog.id).dialog('destroy');
+                                            $.messager.alert("提示","提交成功");
+                                            $patentZcqkZT.iCombobox('setValue', 'C');
+                                            $('#patentZcqk input[name="zt"]').val("C");
+                                            $('#patentZcqk .toolbar-reload').click();
+
+                                        }else{
+                                            $.messager.alert("提示",result["message"]||"提交失败");
+                                        }
+                                    })
+                                });
+                            }});
+					} else if ( record["zt"] === 'P'  ) {
+                        buttonsGroup.push({ btnCls: "gui-btn-save", iconCls: "fa fa-plus", text: "同意", onClick: function () {
+                                $.messager.confirm(gui.language.message.title.confirmTips, gui.language.message.msg.confirmSubmit, function (a) {
+                                    HTTP.post("patent/zcqk/workflow", $.extend({}, record, {operate: "1"}),function (result) {
+                                        if(result["success"]){
+                                            $('#' + dialog.id).dialog('destroy');
+                                            $.messager.alert("提示","提交成功");
+                                            $patentZcqkZT.iCombobox('setValue', 'C');
+                                            $('#patentZcqk input[name="zt"]').val("C");
+                                            $('#patentZcqk .toolbar-reload').click();
+
+                                        }else{
+                                            $.messager.alert("提示",result["message"]||"提交失败");
+                                        }
+                                    })
+                                });
+                            }});
+                    } else if ( record["zt"] === 'W'  ) {
+                        buttonsGroup.push({ btnCls: "gui-btn-save", iconCls: "fa fa-plus", text: "已支付", onClick: function () {
+                                $.messager.confirm(gui.language.message.title.confirmTips, gui.language.message.msg.confirmSubmit, function (a) {
+                                    HTTP.post("patent/zcqk/workflow", $.extend({}, record, {operate: "1"}),function (result) {
+                                        if(result["success"]){
+                                            $('#' + dialog.id).dialog('destroy');
+                                            $.messager.alert("提示","提交成功");
+                                            $patentZcqkZT.iCombobox('setValue', 'C');
+                                            $('#patentZcqk input[name="zt"]').val("C");
+                                            $('#patentZcqk .toolbar-reload').click();
+
+                                        }else{
+                                            $.messager.alert("提示",result["message"]||"提交失败");
+                                        }
+                                    })
+                                });
+                            }});
+                    }
+
+
+
+                    dialog.buttonsGroup = buttonsGroup;
+				}
             }
         };
         $div.Container(options);

@@ -12007,15 +12007,22 @@ var openDialog = function (a) {
         if(b.dialog.messager&&b.dialog.messager()){
             return false;
         }
+
+        if ( !!b.opts &&  typeof b.opts["onPreHandler"] === 'function' ) {
+            b.opts["onPreHandler"](b.dialog, getSelectedRowData(b.grid.type, b.grid.id));
+        }
+
         b.dialog.mbId = b.id, $("#" + b.dialog.id).iDialog("createDialog", b.dialog);
         if(b.dialog&&b.dialog.tag){
             $("#" + b.dialog.id).attr('tag',b.dialog.tag);
         }
         var c = b.dialog,
             d = b.parentGrid;
-        if ("object" == typeof d) openDialogAndloadDataByParentGrid(b);
-        else if (c.url||b.dialog.tag=='edit'||b.dialog.tag=='copy') openDialogAndloadDataByUrl(b);
-        else {
+        if ("object" == typeof d) {
+            openDialogAndloadDataByParentGrid(b);
+        } else if (c.url||b.dialog.tag=='edit'||b.dialog.tag=='copy') {
+            openDialogAndloadDataByUrl(b);
+        } else {
             "undefined" != c.onBeforeOpen && executeCallBackFun(c.onBeforeOpen, b),
                 b.href = appendSourceUrlParam(c.href);
             var e = $("#" + c.id);

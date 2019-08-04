@@ -162,6 +162,7 @@
                             event:'openDialog',
                             iconCls: 'fa fa-pencil',
                             text:toolbar_name['edit'],
+                            opts: opt,
                             dialog:$.extend({},{
                                 title:toolbar_name['edit'],
                                 url:true,
@@ -182,6 +183,7 @@
                             event:'openDialog',
                             iconCls: 'fa fa-pencil',
                             text:toolbar_name['edit'],
+                            opts: opt,
                             dialog:$.extend({},{
                                 title:toolbar_name['edit'],
                                 url:true,
@@ -203,6 +205,7 @@
                     /*review*/
                     _that.$ele.find('.toolbar-review').iMenubutton({
                         event:'openDialog', iconCls: 'fa fa-eye', text:toolbar_name['review'],
+                        opts: opt,
                         dialog:$.extend({},{
                             title:toolbar_name['review'],
                             tag:'review',
