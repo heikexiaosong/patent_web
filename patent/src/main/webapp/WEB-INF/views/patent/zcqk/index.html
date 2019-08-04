@@ -109,7 +109,7 @@
                                 });
                             }});
 					} else if ( record["zt"] === 'P'  ) {
-                        buttonsGroup.push({ btnCls: "gui-btn-save", iconCls: "fa fa-plus", text: "同意", onClick: function () {
+                        buttonsGroup.push({ btnCls: "gui-btn-save", iconCls: "fa fa-check", text: "同意", onClick: function () {
                                 $.messager.confirm(gui.language.message.title.confirmTips, gui.language.message.msg.confirmSubmit, function (a) {
                                     HTTP.post("patent/zcqk/workflow", $.extend({}, record, {operate: "1"}),function (result) {
                                         if(result["success"]){
@@ -125,8 +125,25 @@
                                     })
                                 });
                             }});
+
+                        buttonsGroup.push({ btnCls: "gui-btn-danger", iconCls: "fa fa-reply", text: "打回", onClick: function () {
+                                $.messager.confirm(gui.language.message.title.confirmTips, gui.language.message.msg.confirmSubmit, function (a) {
+                                    HTTP.post("patent/zcqk/workflow", $.extend({}, record, {operate: "2"}),function (result) {
+                                        if(result["success"]){
+                                            $('#' + dialog.id).dialog('destroy');
+                                            $.messager.alert("提示","提交成功");
+                                            $patentZcqkZT.iCombobox('setValue', 'C');
+                                            $('#patentZcqk input[name="zt"]').val("C");
+                                            $('#patentZcqk .toolbar-reload').click();
+
+                                        }else{
+                                            $.messager.alert("提示",result["message"]||"提交失败");
+                                        }
+                                    })
+                                });
+                            }});
                     } else if ( record["zt"] === 'W'  ) {
-                        buttonsGroup.push({ btnCls: "gui-btn-save", iconCls: "fa fa-plus", text: "已支付", onClick: function () {
+                        buttonsGroup.push({ btnCls: "gui-btn-save", iconCls: "fa fa-paypal", text: "已支付", onClick: function () {
                                 $.messager.confirm(gui.language.message.title.confirmTips, gui.language.message.msg.confirmSubmit, function (a) {
                                     HTTP.post("patent/zcqk/workflow", $.extend({}, record, {operate: "1"}),function (result) {
                                         if(result["success"]){
