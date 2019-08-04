@@ -149,34 +149,49 @@ public class ZcqkServiceImpl extends BaseEditServiceImpl implements ZcqkService 
 
         if ( "P".equalsIgnoreCase(record.getZt()) ){
 
-            UserRole financial = new UserRole();
-            financial.setRoleid("financial");
-            List<UserRole> userRoleList = userRoleDao.queryListByEntity(financial);
+            if ( operate!=null && "2".equalsIgnoreCase(operate.trim()) ){
 
-            StringBuilder builder = new StringBuilder();
-            if ( userRoleList!=null && userRoleList.size()>0 ){
-                for (UserRole userRole : userRoleList) {
-                    builder.append(userRole.getUserid()).append(";");
+                step.setZt("C");
+                step.setOpera("打回");
+                step.setClr(UserInfoUtil.getUserId());
+                step.setClsj(Calendar.getInstance().getTime());
+                processDao.update(step);
+
+                record.setZt("I"); // P: 待处理; C: 处理完成
+                zcqkDao.update(record);
+
+
+            } else {
+                UserRole financial = new UserRole();
+                financial.setRoleid("financial");
+                List<UserRole> userRoleList = userRoleDao.queryListByEntity(financial);
+
+                StringBuilder builder = new StringBuilder();
+                if ( userRoleList!=null && userRoleList.size()>0 ){
+                    for (UserRole userRole : userRoleList) {
+                        builder.append(userRole.getUserid()).append(";");
+                    }
                 }
+
+
+                com.gavel.patent.persistent.Process nextStep = new com.gavel.patent.persistent.Process();
+                nextStep.setBid(record.getId());
+                nextStep.setType(step.getType());
+                nextStep.setName(step.getName());
+                nextStep.setStep(step.getStep() + 1);
+                nextStep.setZt("P");
+                nextStep.setDclr(builder.toString());
+                processDao.insert(nextStep);
+
+                step.setZt("C");
+                step.setOpera("同意");
+                step.setClr(UserInfoUtil.getUserId());
+                step.setClsj(Calendar.getInstance().getTime());
+                processDao.update(step);
+
+                record.setZt("W"); // P: 待处理; C: 处理完成
+                zcqkDao.update(record);
             }
-
-
-            com.gavel.patent.persistent.Process nextStep = new com.gavel.patent.persistent.Process();
-            nextStep.setBid(record.getId());
-            nextStep.setType(step.getType());
-            nextStep.setName(step.getName());
-            nextStep.setStep(step.getStep() + 1);
-            nextStep.setZt("P");
-            nextStep.setDclr(builder.toString());
-            processDao.insert(nextStep);
-
-            step.setZt("C");
-            step.setClr(UserInfoUtil.getUserId());
-            step.setClsj(Calendar.getInstance().getTime());
-            processDao.update(step);
-
-            record.setZt("W"); // P: 待处理; C: 处理完成
-            zcqkDao.update(record);
             return;
         }
 
