@@ -65,6 +65,82 @@
 <!-- 表格工具栏结束 -->
 <script>
     /*js初始化*/
+
+
+    function onStatClick(id){
+
+
+
+        function createDialog(ele, record) {
+            $('<div id="'+ele+'" style="position:relative"/>').iDialog({
+                title: record["sqmc"],
+                width:800,
+                height:428,
+                onOpen:function ($container) {},
+                onClose: function () {$(this).form("clear");$(this).iDialog('destroy');}
+            });
+            //var $div=$('');
+
+            var htmls = [];
+
+            var content = record["stat"];
+
+            content = content + "\n" + new Date().Format("yyyy-MM-dd") + ": ";
+
+            htmls.push('<textarea id="msg-display" class="textbox">' + content + '</textarea>');
+
+            htmls.push('<div class="dialog-button"><a class="toolbar-qrcode-print l-btn gui-btn-save l-btn-small" style="margin-right: 20px"     href="javascript:void(0)"></a></div>');
+
+
+            $('#'+ele).html('').append(htmls.join(""));
+            $('#'+ele).iDialog('open');
+
+
+            $('#' + ele + ' .toolbar-qrcode-print').iMenubutton({
+                width: 100,
+                onClick:function () {
+
+                    var content =  $('#'+ele).find('#msg-display').val();
+
+                    record["stat"] = content;
+
+                    record["flag"] = "U";
+
+                    var payload = {"master":record,"details":[]};
+
+
+                    HTTP.post('patent/ajxx/update', payload, function (result) {
+
+                        console.log(result);
+                        debugger;
+
+                        $('#'+ele).iDialog('destroy');
+
+                    });
+                },
+                text: '更新状态',
+                iconCls: 'fa fa-plus'
+            });
+        }
+
+
+        HTTP.post('patent/ajxx/get', {id: id}, function (result) {
+
+            console.log(result);
+            debugger;
+
+            var record = result.data.records;
+
+            createDialog("stat",  record);
+
+
+        });
+
+
+
+    }
+
+
     $(function () {
 
         $('#patentCopyright input[name="start"]').iDatebox({});
@@ -108,9 +184,21 @@
                 {title: "设计人", field: "jxr", fieldType: "ftString", width: 120},
                 {title: "申请日", field: "sqrq", fieldType: "ftDateTime", width: 140},
                 {title: "递交人", field: "djr", fieldType: "ftString", width: 120},
+
                 {title: "状态", field: "stat", fieldType: "ftString", width: 120, formatter: function(value, row, index) {
                         var content = value || "";
-                        return '<span  title="' + content + '" class="note">' + content + '</span>';
+                        if ( !!value && value.length > 0 ){
+                            var lines = value.split("\n");
+                            if ( lines.length > 1 ){
+                                for (var i = lines.length-1; i >= 0; i--) {
+                                    if ( !!lines[i] && lines[i].length > 0  ){
+                                        content = lines[i];
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                        return '<a  title="' + content + '" class="note" onclick="onStatClick(\'' + row["id"] + '\')">' + content + '</a>';
                     }
                 },
                 {title: "证书", field: "zs", fieldType: "ftString", width: 120}

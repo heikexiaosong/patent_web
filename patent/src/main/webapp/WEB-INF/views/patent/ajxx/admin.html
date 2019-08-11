@@ -176,8 +176,19 @@
                     }
                 },
                 {title: "状态", field: "stat", fieldType: "ftString", width: 120, formatter: function(value, row, index) {
-                        var content = value || "";
-                        return '<a  title="' + content + '" class="note" onclick="onStatClick(\'' + row["id"] + '\')">' + content + '</a>';
+                    var content = value || "";
+                    if ( !!value && value.length > 0 ){
+                        var lines = value.split("\n");
+                        if ( lines.length > 1 ){
+                            for (var i = lines.length-1; i >= 0; i--) {
+                                if ( !!lines[i] && lines[i].length > 0  ){
+                                    content = lines[i];
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    return '<a  title="' + content + '" class="note" onclick="onStatClick(\'' + row["id"] + '\')">' + content + '</a>';
                     }
                 },
                 {title: "客户", field: "kh", fieldType: "ftString", width: 120},
