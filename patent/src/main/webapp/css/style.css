@@ -125,3 +125,23 @@
     font-size: 1px;
 }
 
+
+
+#msg-display{
+    margin-top: 20px;
+    margin-bottom: 20px;
+    width: 94%;
+    margin-left: 3%;
+    height: 300px;
+}
+.input-textbox{
+    height: 30px;
+    padding-left: 8px;
+    border: none;
+}
+.input-row{
+    margin: 6px 0 6px;
+    display: inline-block;
+    width: 100%;
+}
+

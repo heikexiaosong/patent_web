@@ -2725,3 +2725,33 @@ go
 ALTER TABLE patent.dbo.CWWL ADD CWWL_WQRY varchar(30) NULL;
 
 ALTER TABLE patent.dbo.CWWL ADD CWWL_NQRY varchar(20) NULL;
+
+
+/* -- 增加字段: MKQX_SYSVERSION int not null  -- */
+alter table MKQX add
+  MKQX_SYSVERSION int null
+GO
+alter table MKQX add
+  CONSTRAINT DF_MKQX_MKQX_SYSVERSION default(1) for MKQX_SYSVERSION
+GO
+
+/* -- 增加NOT NULL约束，要求该字段所有记录没有空值 -- */
+update MKQX                    /* 替换已有记录空值 */
+set MKQX_SYSVERSION = 1
+where MKQX_SYSVERSION is null
+GO
+
+
+/* -- 增加字段: MKCZ_SYSVERSION int not null  -- */
+alter table MKCZ add
+  MKCZ_SYSVERSION int null
+GO
+alter table MKCZ add
+  CONSTRAINT DF_MKCZ_MKCZ_SYSVERSION default(1) for MKCZ_SYSVERSION
+GO
+
+/* -- 增加NOT NULL约束，要求该字段所有记录没有空值 -- */
+update MKCZ                    /* 替换已有记录空值 */
+set MKCZ_SYSVERSION = 1
+where MKCZ_SYSVERSION is null
+GO

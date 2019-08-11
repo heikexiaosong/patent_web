@@ -6,7 +6,7 @@
             http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
             http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
 
-    <bean id="requestResourceAspectBean" class="com.gavel.aspect.RequestResourceAspect" />
+    <bean id="requestResourceAspectBean" class="com.gavel.framework.aspect.RequestResourceAspect" />
     <aop:config>
         <aop:aspect id="requestResourceAspect" ref="requestResourceAspectBean">
             <aop:pointcut id="target" expression="execution(* com.gavel..*.controller.*.*(..))" />
