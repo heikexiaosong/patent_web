@@ -2755,3 +2755,27 @@ update MKCZ                    /* 替换已有记录空值 */
 set MKCZ_SYSVERSION = 1
 where MKCZ_SYSVERSION is null
 GO
+
+
+
+
+
+
+// 序号 姓名	英文名	身份证号码	国籍
+
+create table FMR
+(
+    FMR_ID varchar(32) not null ,
+    FMR_XH int null ,
+    FMR_NAME nvarchar(50) null ,
+    FMR_ENAME nvarchar(50) null ,
+    FMR_IDCARD nvarchar(20) null ,
+    FMR_BZ nvarchar(1000) null ,
+    FMR_GJ varchar(20) null
+)
+GO
+
+alter table FMR with nocheck add
+    CONSTRAINT PK_FMR PRIMARY KEY CLUSTERED
+    (FMR_ID) ON [PRIMARY]
+GO
