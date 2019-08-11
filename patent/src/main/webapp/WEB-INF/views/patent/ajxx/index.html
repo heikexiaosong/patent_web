@@ -193,7 +193,7 @@
                                 }
                             }
                         }
-                        return '<span  title="' + content + '" class="note" onclick="onStatClick(\'' + row["id"] + '\')">' + content + '</span>';
+                        return '<span  title="' + (value||"") + '" class="note" onclick="onStatClick(\'' + row["id"] + '\')">' + content + '</span>';
                     }
                 },
                 {title: "客户", field: "kh", fieldType: "ftString", width: 120},

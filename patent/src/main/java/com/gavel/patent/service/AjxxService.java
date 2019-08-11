@@ -1,6 +1,7 @@
 package com.gavel.patent.service;
 
 import com.gavel.common.base.service.BaseEditService;
+import com.gavel.patent.vo.FmrVO;
 import com.gavel.persistence.sql.RecordSet;
 
 import com.gavel.patent.vo.AjxxCondition;
@@ -15,4 +16,6 @@ public interface AjxxService extends BaseEditService {
     RecordSet<AjxxVO> query(AjxxCondition condition);
 
     void imp(InputStream ins) throws Exception;
+
+    RecordSet<FmrVO> querydetail(String code);
 }

@@ -5,8 +5,13 @@ import com.gavel.common.base.service.impl.BaseEditServiceImpl;
 import com.gavel.common.business.service.CommonService;
 import com.gavel.common.excel.ExcelTool;
 import com.gavel.common.excel.ExcelUtils;
+import com.gavel.common.utils.StringUtils;
 import com.gavel.common.utils.UserInfoUtil;
+import com.gavel.patent.dao.FmrDao;
+import com.gavel.patent.persistent.Fmr;
 import com.gavel.patent.persistent.Khgl;
+import com.gavel.patent.vo.FmrCondition;
+import com.gavel.patent.vo.FmrVO;
 import com.gavel.persistence.sql.RecordSet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,6 +28,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -38,11 +44,15 @@ public class AjxxServiceImpl extends BaseEditServiceImpl implements AjxxService 
     private AjxxDao ajxxDao;
 
     @Autowired
+    private FmrDao fmrDao;
+
+    @Autowired
     private CommonService commonService;
 
     @Override
     public void initService() {
         addMaster(new Ajxx());
+        addDetail(new Fmr());
     }
 
     @Override
@@ -110,6 +120,20 @@ public class AjxxServiceImpl extends BaseEditServiceImpl implements AjxxService 
                 }
             }
         }
+    }
+
+    @Override
+    public RecordSet<FmrVO> querydetail(String code) {
+
+        if (StringUtils.isEmpty(code)){
+            return RecordSet.EMPTY_RECORDSET;
+        }
+
+
+        FmrCondition condition = new FmrCondition();
+        condition.setCode(code);
+        return fmrDao.query(condition);
+
     }
 
     public static void main(String[] args) throws Exception {

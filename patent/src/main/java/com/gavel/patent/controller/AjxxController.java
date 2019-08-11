@@ -7,6 +7,7 @@ import com.gavel.common.converter.DataConvert;
 import com.gavel.common.utils.DateUtils;
 import com.gavel.common.utils.ReturnData;
 import com.gavel.common.utils.UserInfoUtil;
+import com.gavel.patent.vo.FmrVO;
 import com.google.common.collect.Sets;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -182,5 +183,23 @@ public class AjxxController extends BaseController {
         return ThreadContext.getReturnData();
 
     }
+
+
+    @RequestMapping(value = "query/detail", method = RequestMethod.POST)
+    @ResponseBody
+    public Object querydetail(@RequestBody JSONObject param) {
+        try {
+            String code = param.getString("code");
+            RecordSet<FmrVO> records = ajxxService.querydetail(code);
+            return buildReturnData(records, FmrVO.class);
+        } catch (Exception e) {
+            ThreadContext.getReturnData().setSuccess(false);
+            ThreadContext.getReturnData().setMessage(e.getMessage());
+        }
+
+        return ThreadContext.getReturnData();
+    }
+
+
 
 }

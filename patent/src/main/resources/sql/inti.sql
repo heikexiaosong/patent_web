@@ -2758,6 +2758,17 @@ GO
 
 
 
+alter table GRIDSET add
+  GRIDSET_SYSVERSION int null
+GO
+alter table GRIDSET add
+  CONSTRAINT DF_GRIDSET_GRIDSET_SYSVERSION default(1) for GRIDSET_SYSVERSION
+GO
+update GRIDSET                    /* 替换已有记录空值 */
+set GRIDSET_SYSVERSION = 1
+where GRIDSET_SYSVERSION is null
+GO
+
 
 
 
@@ -2766,6 +2777,7 @@ GO
 create table FMR
 (
     FMR_ID varchar(32) not null ,
+    FMR_CODE varchar(32) not null ,
     FMR_XH int null ,
     FMR_NAME nvarchar(50) null ,
     FMR_ENAME nvarchar(50) null ,
@@ -2778,4 +2790,11 @@ GO
 alter table FMR with nocheck add
     CONSTRAINT PK_FMR PRIMARY KEY CLUSTERED
     (FMR_ID) ON [PRIMARY]
+GO
+
+ALTER TABLE patent.dbo.YHQX ADD YHQX_CJR nvarchar(30) NULL
+GO
+ALTER TABLE patent.dbo.YHQX ADD YHQX_CJRID varchar(20) NULL
+GO
+ALTER TABLE patent.dbo.YHQX ADD YHQX_CJSJ datetime NULL
 GO

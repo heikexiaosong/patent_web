@@ -188,7 +188,7 @@
                             }
                         }
                     }
-                    return '<a  title="' + content + '" class="note" onclick="onStatClick(\'' + row["id"] + '\')">' + content + '</a>';
+                    return '<a  title="' + (value||"") + '" class="note" onclick="onStatClick(\'' + row["id"] + '\')">' + content + '</a>';
                     }
                 },
                 {title: "客户", field: "kh", fieldType: "ftString", width: 120},

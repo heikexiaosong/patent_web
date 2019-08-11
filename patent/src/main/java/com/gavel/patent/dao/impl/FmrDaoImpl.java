@@ -19,7 +19,7 @@ public class FmrDaoImpl extends BaseDaoImpl implements FmrDao {
         sqlMap.setPageNo(condition.getPageNo());
         sqlMap.setRowCount(condition.getPageSize());
 
-        sqlMap.append("select FMR_ID, FMR_XH, FMR_NAME, FMR_ENAME, FMR_IDCARD, FMR_BZ, FMR_GJ ");
+        sqlMap.append("select FMR_ID, FMR_CODE, FMR_XH, FMR_NAME, FMR_ENAME, FMR_IDCARD, FMR_BZ, FMR_GJ ");
         sqlMap.append("from FMR ");
         sqlMap.append("where 1=1  ");
         if (StringUtils.isNotEmpty(condition.getId())) {
@@ -28,6 +28,12 @@ public class FmrDaoImpl extends BaseDaoImpl implements FmrDao {
 
         }
 
+        if (StringUtils.isNotEmpty(condition.getCode())) {
+            sqlMap.append("  and " + SqlUtil.getWhereSql("FMR_CODE", condition.getCode()));
+            sqlMap.setParamValue("FMR_CODE", condition.getCode());
+
+        }
+        sqlMap.append(" order by FMR_XH ");
 
         sqlMap.query(FmrVO.class);
         return sqlMap.getRecordSet();
