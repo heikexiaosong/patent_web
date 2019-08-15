@@ -97,6 +97,11 @@ public class DailytaskServiceImpl extends BaseEditServiceImpl implements Dailyta
                     continue;
                 }
 
+                if ( ajxxVO.getSqrq()==null ){
+                    continue;
+                }
+
+
                 Jfxx jfxx = new Jfxx();
                 jfxx.setCode(ajxxVO.getCode());
                 jfxx.setSqmc(ajxxVO.getSqmc());
