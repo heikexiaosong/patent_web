@@ -15,4 +15,6 @@ public interface JfxxService extends BaseEditService {
     RecordSet<JfxxVO> query(JfxxCondition condition);
 
     List<Jfxx> loadJfxx(int year);
+
+    void paying(Jfxx jfxx);
 }

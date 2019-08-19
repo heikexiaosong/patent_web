@@ -6,6 +6,7 @@ import com.gavel.common.base.controller.BaseController;
 import com.gavel.common.converter.DataConvert;
 import com.gavel.common.utils.DateUtils;
 import com.gavel.common.utils.ReturnData;
+import com.gavel.patent.persistent.Jfxx;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -141,5 +142,21 @@ public class JfxxController extends BaseController {
             return true;
         }
     }
+
+
+    @RequestMapping(value = "/jfxx/paying", method = RequestMethod.POST)
+    @ResponseBody
+    public Object paying(@RequestBody JSONObject param) {
+        try {
+            Jfxx jfxx = DataConvert.getData(param, Jfxx.class);
+            jfxxService.paying(jfxx);
+        } catch (Exception e){
+            ThreadContext.getReturnData().setSuccess(false);
+            ThreadContext.getReturnData().setMessage(e.getMessage());
+        }
+        return ThreadContext.getReturnData();
+
+    }
+
 
 }

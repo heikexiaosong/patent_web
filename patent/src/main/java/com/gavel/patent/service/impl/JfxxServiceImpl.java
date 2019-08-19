@@ -13,6 +13,7 @@ import com.gavel.patent.service.JfxxService;
 import com.gavel.patent.vo.JfxxCondition;
 import com.gavel.patent.vo.JfxxVO;
 
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 
@@ -39,6 +40,16 @@ public class JfxxServiceImpl extends BaseEditServiceImpl implements JfxxService 
         List<Jfxx> result =  jfxxDao.query(year);
 
         return  result==null ? Collections.EMPTY_LIST : result;
+    }
+
+    @Override
+    public void paying(Jfxx jfxx) {
+        Jfxx exist = jfxxDao.queryById(Jfxx.class, jfxx.getId());
+        if ( exist!=null ){
+            exist.setZt("paid");
+            exist.setJfrq(Calendar.getInstance().getTime());
+            jfxxDao.update(exist);
+        }
     }
 
 }

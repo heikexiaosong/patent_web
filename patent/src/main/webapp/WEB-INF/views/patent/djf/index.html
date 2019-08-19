@@ -14,7 +14,9 @@
         <!--<a class="toolbar-review toolbar" href="javascript:void(0)"></a>-->
         <!--<a class="toolbar-add toolbar" href="javascript:void(0)"></a>-->
         <!--<a class="toolbar-copy toolbar" href="javascript:void(0)"></a>-->
-        <a class="toolbar-edit toolbar" href="javascript:void(0)"></a>
+        <!--<a class="toolbar-edit toolbar" href="javascript:void(0)"></a>-->
+
+        <a class="toolbar-pay toolbar" href="javascript:void(0)"></a>
         <!--<a class="toolbar-delete toolbar" href="javascript:void(0)"></a>-->
         <!--<a type="submit" class="btn btn-primary serach toolbar-search"></a>-->
         <div class="bdsug" style="height: auto;">
@@ -65,7 +67,7 @@
                 {title: "申请号", field: "sqh", fieldType: "ftString", width: 160},
                 {title: "案件名称", field: "sqmc", fieldType: "ftString", width: 160},
                 {title: "费用名称", field: "fymc", fieldType: "ftString", width: 160},
-                {title: "缴费金额", field: "jfje", fieldType: "ftInteger", width: 100, align: 'right'},
+                {title: "待缴金额", field: "jfje", fieldType: "ftInteger", width: 100, align: 'right'},
                 {title: "缴费期限", field: "jfqx", fieldType: "ftDate", width: 110}
             ]],
             dialog: {
@@ -76,6 +78,28 @@
             }
         };
         $div.Container(options);
+
+        $div.find('.toolbar-pay').iMenubutton({
+                text:'已支付',
+                iconCls:'fa fa-edit',
+                onClick: function () {
+                    var seletedRow=$('#patentDjf .toolbar-table').datagrid("getSelected");
+                    if(!!!seletedRow){
+                        $.messager.alert("提示","请选择一条待支付数据");
+                        return false;
+                    }
+                    HTTP.post("patent/jfxx/paying", seletedRow, function (result) {
+                        if(result["success"]){
+                            $.messager.alert("提示","操作成功");
+                            $div.find('.toolbar-reload').click();
+                        }else{
+                            $.messager.alert("提示",result["message"]||"操作失败");
+                        }
+                    })
+                }
+            }
+
+        );
     });
 
 

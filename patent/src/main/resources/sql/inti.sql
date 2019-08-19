@@ -2798,3 +2798,10 @@ ALTER TABLE patent.dbo.YHQX ADD YHQX_CJRID varchar(20) NULL
 GO
 ALTER TABLE patent.dbo.YHQX ADD YHQX_CJSJ datetime NULL
 GO
+
+/* -- 修改字段: REG_REGNO1 varchar(15) null  -> REG_REGNO1 varchar(20) null  -- */
+alter table REG alter column
+  REG_REGNO1 varchar(20) null
+GO
+
+INSERT INTO patent.dbo.REG (REG_CNAME, REG_SNO, REG_LICENSE, REG_LDATE, REG_REGNO1, REG_REGNO2, REG_REGNO3, REG_DBID) VALUES ('集智创新案件管理平台', '8B225D5BBD48', 0, '2030-12-31 00:00:00.000', 'D27E-CDF8-952E-397', null, null, null);

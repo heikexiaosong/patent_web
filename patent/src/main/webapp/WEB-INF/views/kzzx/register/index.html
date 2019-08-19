@@ -1,0 +1,153 @@
+﻿<div id="divB" style="height: 100%">  </div>
+
+<script type="text/javascript" charset="utf-8">
+
+
+    function save_form(){
+
+        $$("reg-msg").setHTML("");
+
+        var form = $$('form1');
+        if(!form.validate())
+            return false;
+        //alert("hello");
+        console.log(form.getValues());
+        // form.save();
+
+
+        webix.ajax()
+            .headers({"Content-type":"application/json"})
+            .post("kzzx/register/register", form.getValues())
+            .then( function (data) {
+                console.log(data.json());
+
+                var res = data.json();
+
+                if ( res.success ){
+                    $$("reg-msg").setHTML("<span style='color: green'>注册成功</span>");
+                } else {
+                    $$("reg-msg").setHTML("<span style='color: red'>" + (res.message ||  "无效的注册码") + "</span>");
+                }
+
+            });
+
+
+    };
+
+    var grid1 = {
+        view:"dashboard",
+        id:"grid1",
+        gridColumns:24, gridRows:8,
+        cells:[
+            {
+                view:"panel",
+                x:0, y:0, dx:12, dy:8,
+                resize:false, drag:false,
+                //header:"Countries",
+                body:{
+                    view:"form", id: "form1", scroll:false, elements:  [
+
+                        /**
+                         * cname: "1"
+                         dataState: "Inactive"
+                         detail: true
+                         ldate: 1566005247000
+                         license: 3
+                         master: false
+                         pageNo: 0
+                         pageSize: 0
+                         recordCount: 0
+                         regno1: "11"
+                         sno: "1"
+                         */
+                        { view:"text", value:'', label:"企业名称", labelAlign:'right', name:"cname"},
+                        { view:"counter", label:"数量", labelAlign:'right', name:"license"},
+                        { view:"datepicker", label:"到期时间", labelAlign:'right', stringResult:true, name:"ldate"},
+                        { view:"text", value:'', label:"序列号", labelAlign:'right', name:"sno", readonly:true},
+                        { view:"text", value:'', label:"注册码", labelAlign:'right', name:"regno1"},
+                        { view:"label", label:"", id: "reg-msg", height:50, align:"center" },
+                        {},
+                        { margin:40, cols:[
+                                { view:"button", value:"注 册" , css:"webix_primary", click:save_form }
+                            ]
+                        }
+                    ]
+                }
+            },
+            {
+                view:"panel",
+                x:12, y:0, dx:24, dy:8,
+                resize:false, drag:false,
+                body:{
+                    view:"datatable", id:"datatable1", select:false,
+                    scroll:"y", columns:[
+                        {id:"zjmc", width:140, header:"组件名称"},
+                        {id:"zjid", width:160, header:"组件编码"},
+                        {id:"zjm", width:110, header:"助记码"},
+                        {id:"version", header:"版本"}
+                    ],
+                    ready: function(){
+                        this.select(3);
+                    }
+                }
+            }
+        ]
+    };
+
+    /**
+     *  {title: "组件编码",  index: 1, field: "zjid", width: 160,align:'center'},
+     {title: "组件名称", index: 2, field: "zjmc", width: 160,align:'center'},
+     {title: "助记码",  index: 3, field: "zjm", width: 160,align:'center'},
+     {title: "注册",  index: 4, field: "reg", width: 160,align:'center',formatter:function (value,row, index) {
+                 var map = {Y: '已注册', N: "未注册"};
+                 var text = map[value];
+                 return text || "未注册";
+     }},
+     {title: "版本",  index: 5, field: "version", width: 160,align:'center'},
+     */
+
+
+    webix.i18n.setLocale("zh-CN");
+
+    webix.ready(function(){
+        webix.ui({
+            container:"divB",
+            view:"scrollview", body:grid1
+        });
+
+        $$("grid1").attachEvent("onBeforeDrag", function(context){
+            // returning false will block dragging for some panels
+            // context.source is the panel that is about to be dragged
+            return context.source.config.drag;
+        });
+
+
+
+        webix.ajax()
+            .headers({"Content-type":"application/json"})
+            .post("kzzx/register/reginfo", {})
+            .then( function (data) {
+                console.log(data.json());
+                console.log(data.json()["data"]["reginfo"]);
+                $$("form1").parse(data.json()["data"]["reginfo"]);
+
+            });
+
+
+        webix.ajax()
+            .headers({"Content-type":"application/json"})
+            .post("kzzx/register/regyyzj", {})
+            .then( function (data) {
+                console.log(data.json());
+                console.log(data.json()["data"]["data"]);
+                $$("datatable1").parse(data.json()["data"]["data"]);
+
+            });
+    });
+
+
+
+</script>
+
+
+</html>
