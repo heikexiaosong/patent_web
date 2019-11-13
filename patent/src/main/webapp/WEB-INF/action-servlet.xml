@@ -96,15 +96,4 @@
     <!-- 支持上传文件 -->
     <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"/>
 
-    <!-- 初始化job -->
-    <bean id="timerJobInit" class="com.gavel.timer.scheduler.TimerJobInit"  init-method="init"  lazy-init="false" />
-
-    <bean id="timerJobFactory" class="com.gavel.timer.scheduler.TimerJobFactory"/>
-
-    <!-- 关闭服务器的时候，等待quartz结束所有工作 -->
-    <bean id="schedulerFactoryBean" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
-        <property name = "jobFactory" ref="timerJobFactory"/>
-        <property name="waitForJobsToCompleteOnShutdown" value="true"/>
-    </bean>
-
 </beans>

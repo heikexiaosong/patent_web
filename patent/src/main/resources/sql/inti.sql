@@ -2805,3 +2805,135 @@ alter table REG alter column
 GO
 
 INSERT INTO patent.dbo.REG (REG_CNAME, REG_SNO, REG_LICENSE, REG_LDATE, REG_REGNO1, REG_REGNO2, REG_REGNO3, REG_DBID) VALUES ('集智创新案件管理平台', '8B225D5BBD48', 0, '2030-12-31 00:00:00.000', 'D27E-CDF8-952E-397', null, null, null);
+
+/* 2019-11-13 -- 修改字段: REG_REGNO1 varchar(15) null  -> REG_REGNO1 varchar(20) null  -- */
+/* -- 增加字段: MENUS_TYBZ varchar(1) null  -- */
+alter table MENUS add
+    MENUS_TYBZ varchar(1) null
+GO
+alter table MENUS add
+    CONSTRAINT DF_MENUS_MENUS_TYBZ default('N') for MENUS_TYBZ
+GO
+/* -- 增加字段: MENUS_TYRQ datetime null  -- */
+alter table MENUS add
+    MENUS_TYRQ datetime null
+GO
+update MENUS set MENUS_TYBZ = 'N'  where 1=1
+GO
+
+/* -- 增加字段: MENUS_ZDY varchar(1) null  -- */
+alter table MENUS add
+    MENUS_ZDY varchar(1) null
+GO
+
+/* -- 增加字段: XTCS_WHRID varchar(20) not null  -- */
+alter table XTCS add
+    XTCS_WHRID varchar(20) null
+GO
+
+/* -- 增加NOT NULL约束，要求该字段所有记录没有空值 -- */
+update XTCS                    /* 替换已有记录空值 */
+set XTCS_WHRID = ' '
+where XTCS_WHRID is null
+GO
+alter table XTCS alter column
+    XTCS_WHRID varchar(20) not null
+GO
+/* -- 增加字段: XTCS_WHR nvarchar(30) not null  -- */
+alter table XTCS add
+    XTCS_WHR nvarchar(30) null
+GO
+
+/* -- 增加NOT NULL约束，要求该字段所有记录没有空值 -- */
+update XTCS                    /* 替换已有记录空值 */
+set XTCS_WHR = ' '
+where XTCS_WHR is null
+GO
+alter table XTCS alter column
+    XTCS_WHR nvarchar(30) not null
+GO
+/* -- 增加字段: XTCS_WHSJ datetime not null  -- */
+alter table XTCS add
+    XTCS_WHSJ datetime null
+GO
+alter table XTCS add
+    CONSTRAINT DF_XTCS_XTCS_WHSJ default(getdate()) for XTCS_WHSJ
+GO
+
+/* -- 增加NOT NULL约束，要求该字段所有记录没有空值 -- */
+update XTCS                    /* 替换已有记录空值 */
+set XTCS_WHSJ = getdate()
+where XTCS_WHSJ is null
+GO
+alter table XTCS alter column
+    XTCS_WHSJ datetime not null
+GO
+/* -- 增加字段: XTCS_SYSVERSION int not null  -- */
+alter table XTCS add
+    XTCS_SYSVERSION int null
+GO
+alter table XTCS add
+    CONSTRAINT DF_XTCS_XTCS_SYSVERSION default(1) for XTCS_SYSVERSION
+GO
+
+/* -- 增加NOT NULL约束，要求该字段所有记录没有空值 -- */
+update XTCS                    /* 替换已有记录空值 */
+set XTCS_SYSVERSION = 1
+where XTCS_SYSVERSION is null
+GO
+alter table XTCS alter column
+    XTCS_SYSVERSION int not null
+GO
+
+/* -- 增加字段: XTCS_CJRID varchar(20) not null  -- */
+alter table XTCS add
+    XTCS_CJRID varchar(20) null
+GO
+alter table XTCS add
+    CONSTRAINT DF_XTCS_XTCS_CJRID default('SUPERUSER') for XTCS_CJRID
+GO
+
+/* -- 增加NOT NULL约束，要求该字段所有记录没有空值 -- */
+update XTCS                    /* 替换已有记录空值 */
+set XTCS_CJRID = 'SUPERUSER'
+where XTCS_CJRID is null
+GO
+alter table XTCS alter column
+    XTCS_CJRID varchar(20) not null
+GO
+/* -- 增加字段: XTCS_CJR nvarchar(30) not null  -- */
+alter table XTCS add
+    XTCS_CJR nvarchar(30) null
+GO
+alter table XTCS add
+    CONSTRAINT DF_XTCS_XTCS_CJR default('超级用户') for XTCS_CJR
+GO
+
+/* -- 增加NOT NULL约束，要求该字段所有记录没有空值 -- */
+update XTCS                    /* 替换已有记录空值 */
+set XTCS_CJR = '超级用户'
+where XTCS_CJR is null
+GO
+alter table XTCS alter column
+    XTCS_CJR nvarchar(30) not null
+GO
+/* -- 增加字段: XTCS_CJSJ datetime not null  -- */
+alter table XTCS add
+    XTCS_CJSJ datetime null
+GO
+alter table XTCS add
+    CONSTRAINT DF_XTCS_XTCS_CJSJ default(getdate()) for XTCS_CJSJ
+GO
+
+/* -- 增加NOT NULL约束，要求该字段所有记录没有空值 -- */
+update XTCS                    /* 替换已有记录空值 */
+set XTCS_CJSJ = getdate()
+where XTCS_CJSJ is null
+GO
+alter table XTCS alter column
+    XTCS_CJSJ datetime not null
+GO
+
+ALTER TABLE patent.dbo.CWWL ADD CWWL_DBF int DEFAULT 0 NULL
+EXEC sp_addextendedproperty 'MS_Description', '代理机构代报费', 'SCHEMA', 'dbo', 'TABLE', 'CWWL', 'COLUMN', 'CWWL_DBF'
+GO

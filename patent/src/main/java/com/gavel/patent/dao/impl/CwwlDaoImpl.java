@@ -22,7 +22,7 @@ public class CwwlDaoImpl extends BaseDaoImpl implements CwwlDao {
         sqlMap.setPageNo(condition.getPageNo());
         sqlMap.setRowCount(condition.getPageSize());
         sqlMap.append("select CWWL_ID, CWWL_YWRQ, CWWL_KH, CWWL_YW, CWWL_JE, CWWL_SKZH, CWWL_SJSKJE, CWWL_FP, CWWL_QBCB");
-        sqlMap.append("       , CWWL_GF , CWWL_YJ, CWWL_TC, CWWL_ZLMC, CWWL_WHRID, CWWL_WHR, CWWL_WHSJ, CWWL_SYSVERSION ");
+        sqlMap.append("       , CWWL_GF , CWWL_YJ, CWWL_TC, CWWL_ZLMC, CWWL_WHRID, CWWL_WHR, CWWL_WHSJ, CWWL_SYSVERSION, CWWL_DBF ");
         sqlMap.append("       , CWWL_YWY, CWWL_STAT, CWWL_DKR, CWWL_WQRY, CWWL_NQRY, u1.USERS_USERNAME as CWWL_YWYMC, u2.USERS_USERNAME as CWWL_WQRYMC, u3.USERS_USERNAME as CWWL_NQRYMC");
         sqlMap.append("from CWWL ");
         sqlMap.append("     left join USERS u1 on u1.USERS_USERID = CWWL_YWY ");
@@ -68,7 +68,7 @@ public class CwwlDaoImpl extends BaseDaoImpl implements CwwlDao {
         sqlMap.setPageNo(condition.getPageNo());
         sqlMap.setRowCount(condition.getPageSize());
         sqlMap.append("select CWWL_ID, CWWL_YWRQ, CWWL_KH, CWWL_YW, CWWL_JE, CWWL_SKZH, CWWL_SJSKJE, CWWL_FP, CWWL_QBCB");
-        sqlMap.append("       , CWWL_GF , CWWL_YJ, CWWL_TC, CWWL_ZLMC, CWWL_WHRID, CWWL_WHR, CWWL_WHSJ, CWWL_SYSVERSION ");
+        sqlMap.append("       , CWWL_GF , CWWL_YJ, CWWL_TC, CWWL_ZLMC, CWWL_WHRID, CWWL_WHR, CWWL_WHSJ, CWWL_SYSVERSION, CWWL_DBF ");
         sqlMap.append("       , CWWL_YWY, CWWL_STAT, CWWL_DKR, CWWL_WQRY, CWWL_NQRY, u1.USERS_USERNAME as CWWL_YWYMC, u2.USERS_USERNAME as CWWL_WQRYMC, u3.USERS_USERNAME as CWWL_NQRYMC");
         sqlMap.append("from CWWL ");
         sqlMap.append("     left join USERS u1 on u1.USERS_USERID = CWWL_YWY ");
