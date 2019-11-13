@@ -939,31 +939,31 @@ function requester(a,d,c) {
     var _data={
         "listid":c||''
     };
-    var fields = [];
-    if ( _data!=null&&d!=null ){
-        if ( typeof _data == 'object' ){
-            _data = JSON.stringify(_data);
-        }
-        $.ajax({
-            type:'POST',
-            url:d ,
-            data:_data,
-            contentType: "application/json",
-            dataType: "json",
-            async:false,
-            success: function (res) {
-                if(res['success']&&res['data']['records']){
-                    fields=res['data']['records'];
-
-                }else{
-                }
-            },
-            error: function () {
-            }
-        });
-    }else{
-        fields = [];
-    }
+    var fields = a;
+    // if ( _data!=null&&d!=null ){
+    //     if ( typeof _data == 'object' ){
+    //         _data = JSON.stringify(_data);
+    //     }
+    //     $.ajax({
+    //         type:'POST',
+    //         url:d ,
+    //         data:_data,
+    //         contentType: "application/json",
+    //         dataType: "json",
+    //         async:false,
+    //         success: function (res) {
+    //             if(res['success']&&res['data']['records']){
+    //                 fields=res['data']['records'];
+    //
+    //             }else{
+    //             }
+    //         },
+    //         error: function () {
+    //         }
+    //     });
+    // }else{
+    //     fields = [];
+    // }
     if (fields !=null && fields.length>0 ){
         $.each(fields, function (i, field) {
             var hidden=false;
