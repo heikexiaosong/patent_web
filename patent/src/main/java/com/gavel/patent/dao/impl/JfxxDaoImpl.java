@@ -23,9 +23,10 @@ public class JfxxDaoImpl extends BaseDaoImpl implements JfxxDao {
 	    SqlMap sqlMap = new SqlMap();
         sqlMap.setPageNo(condition.getPageNo());
         sqlMap.setRowCount(condition.getPageSize());
-        sqlMap.append("select JFXX_ID, JFXX_CODE, JFXX_SQMC, JFXX_SQH, JFXX_FYMC, JFXX_JFJE, JFXX_JFQX, JFXX_ZT, JFXX_JFRQ ");
+        sqlMap.append("select JFXX_ID, JFXX_CODE, AJXX_SQMC as JFXX_SQMC,  AJXX_SQH as JFXX_SQH, JFXX_FYMC, JFXX_JFJE, JFXX_JFQX, JFXX_ZT, JFXX_JFRQ ");
         sqlMap.append("       , JFXX_JFR, JFXX_SJ, JFXX_BZ, JFXX_WHRID, JFXX_WHR, JFXX_WHSJ, JFXX_SYSVERSION, JFXX_YEAR");
         sqlMap.append("from JFXX ");
+        sqlMap.append("      left join AJXX on AJXX_CODE = JFXX_CODE");
         sqlMap.append("where 1=1  ");
         if (StringUtils.isNotEmpty(condition.getId())){
             sqlMap.append("  and " + SqlUtil.getWhereSql("JFXX_ID", condition.getId()));
@@ -65,9 +66,10 @@ public class JfxxDaoImpl extends BaseDaoImpl implements JfxxDao {
     @Override
     public List<Jfxx> query(int year) {
         SqlMap sqlMap = new SqlMap();
-        sqlMap.append("select JFXX_ID, JFXX_CODE, JFXX_SQMC, JFXX_SQH, JFXX_FYMC, JFXX_JFJE, JFXX_JFQX, JFXX_ZT, JFXX_JFRQ ");
+        sqlMap.append("select JFXX_ID, JFXX_CODE,  AJXX_SQMC as JFXX_SQMC,  AJXX_SQH as JFXX_SQH, JFXX_FYMC, JFXX_JFJE, JFXX_JFQX, JFXX_ZT, JFXX_JFRQ ");
         sqlMap.append("       , JFXX_JFR, JFXX_SJ, JFXX_BZ, JFXX_WHRID, JFXX_WHR, JFXX_WHSJ, JFXX_SYSVERSION, JFXX_YEAR");
         sqlMap.append("from JFXX ");
+        sqlMap.append("      left join AJXX on AJXX_CODE = JFXX_CODE");
         sqlMap.append("where JFXX_YEAR = :JFXX_YEAR  ");
         sqlMap.setParamValue("JFXX_YEAR", year);
         return sqlMap.query(Jfxx.class);

@@ -57,6 +57,15 @@ public class CwwlServiceImpl extends BaseEditServiceImpl implements CwwlService 
                 throw new RuntimeException("认领时必须输入[全部成本]和[官费]项");
             }
 
+            if ( "claim".equalsIgnoreCase(cwwl.getStat()) ){
+               if ( cwwl.getWqry()==null || cwwl.getWqry().trim().length()==0  ) {
+                   cwwl.setWqry(UserInfoUtil.getUserId());
+               }
+                if ( cwwl.getNqry()==null || cwwl.getNqry().trim().length()==0  ) {
+                    cwwl.setNqry(UserInfoUtil.getUserId());
+                }
+            }
+
             int yj = cwwl.getSjskje()==null ? 0 : cwwl.getSjskje();
             if ( cwwl.getFp()!=null ){
                 yj -= cwwl.getFp();
