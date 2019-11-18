@@ -61,6 +61,9 @@ public class Cwwl extends BaseEntity {
 	@FieldMeta(fieldName = "CWWL_DBF", caption = "代理机构代报费", index = 20)
 	private Integer dbf;
 
+	@FieldMeta(fieldName = "CWWL_TYPE", caption = "类型", index = 20)
+	private String type;
+
 	public String getId() {
 		return id;
 	}	
@@ -208,6 +211,14 @@ public class Cwwl extends BaseEntity {
 
 	public void setDbf(Integer dbf) {
 		this.dbf = dbf;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 }
 

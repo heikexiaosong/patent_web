@@ -19,6 +19,8 @@ public class CwwlCondition extends BaseEntity {
 
 	private String stat;
 
+	private String type;
+
 	public String getId() {
 		return id;
 	}	
@@ -64,5 +66,13 @@ public class CwwlCondition extends BaseEntity {
 
 	public void setStat(String stat) {
 		this.stat = stat;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 }

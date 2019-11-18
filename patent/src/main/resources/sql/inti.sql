@@ -2937,3 +2937,38 @@ GO
 ALTER TABLE patent.dbo.CWWL ADD CWWL_DBF int DEFAULT 0 NULL
 EXEC sp_addextendedproperty 'MS_Description', '代理机构代报费', 'SCHEMA', 'dbo', 'TABLE', 'CWWL', 'COLUMN', 'CWWL_DBF'
 GO
+
+create table patent.dbo.ZCQK
+(
+    ZCQK_ID varchar(32) not null
+        constraint PK_ZCQK
+        primary key,
+    ZCQK_QKRQ datetime,
+    ZCQK_QKR nvarchar(30),
+    ZCQK_QKYT nvarchar(300),
+    ZCQK_JE int constraint DF_ZCQK_ZCQK_JE default 0,
+    ZCQK_LXDW nvarchar(100),
+    ZCQK_FKFS nvarchar(50),
+    ZCQK_HM nvarchar(100),
+    ZCQK_KHH nvarchar(100),
+    ZCQK_YHZH varchar(50),
+    ZCQK_BZ nvarchar(1000),
+    ZCQK_ZT varchar(1),
+    ZCQK_WFID varchar(20),
+    ZCQK_WFINSTID varchar(32),
+    ZCQK_WFPID varchar(10),
+    ZCQK_WFWUSERID varchar(1000),
+    ZCQK_WFWUSERNAME nvarchar(1000),
+    ZCQK_WFHUSERID varchar(1000),
+    ZCQK_WFHUSERNAME nvarchar(1000),
+    ZCQK_WHRID varchar(20) not null,
+    ZCQK_WHR nvarchar(30) not null,
+    ZCQK_WHSJ datetime constraint DF_ZCQK_ZCQK_WHSJ default getdate() not null,
+    ZCQK_SYSVERSION int constraint DF_ZCQK_ZCQK_SYSVERSION default 1 not null,
+    ZCQK_CJRID varchar(20) not null,
+    ZCQK_CJR nvarchar(30) not null,
+    ZCQK_CJSJ datetime constraint DF_ZCQK_ZCQK_CJSJ default getdate() not null
+)
+go
+
+ALTER TABLE patent.dbo.CWWL ADD CWWL_TYPE varchar(8) NULL
