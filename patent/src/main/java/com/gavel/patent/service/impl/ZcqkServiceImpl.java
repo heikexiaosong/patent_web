@@ -5,8 +5,10 @@ import com.gavel.common.base.service.impl.BaseEditServiceImpl;
 import com.gavel.common.utils.UserInfoUtil;
 import com.gavel.kzzx.dao.UserRoleDao;
 import com.gavel.kzzx.persistent.UserRole;
+import com.gavel.patent.dao.CwwlDao;
 import com.gavel.patent.dao.ProcessDao;
 import com.gavel.patent.dao.ZcqkDao;
+import com.gavel.patent.persistent.Cwwl;
 import com.gavel.patent.persistent.Zcqk;
 import com.gavel.patent.service.ZcqkService;
 import com.gavel.patent.vo.ZcqkCondition;
@@ -19,10 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.CopyOnWriteArraySet;
 
 
@@ -35,6 +34,10 @@ public class ZcqkServiceImpl extends BaseEditServiceImpl implements ZcqkService 
 
     @Autowired
     private ZcqkDao zcqkDao;
+
+    @Autowired
+    private CwwlDao cwwlDao;
+
 
     @Autowired
     private ProcessDao processDao;
@@ -119,6 +122,8 @@ public class ZcqkServiceImpl extends BaseEditServiceImpl implements ZcqkService 
                         isManager = true;
                     }
                 }
+            } else {
+                throw new RuntimeException("系统中没有设置总经理[角色: manager]， 请联系管理员.");
             }
 
             if ( !isManager ) {
@@ -143,6 +148,8 @@ public class ZcqkServiceImpl extends BaseEditServiceImpl implements ZcqkService 
                     for (UserRole userRole : userRoleList) {
                         builder.append(userRole.getUserid()).append(";");
                     }
+                } else {
+                    throw new RuntimeException("系统中没有设置财务人员[角色: financial]， 请联系管理员.");
                 }
 
                 com.gavel.patent.persistent.Process process = new com.gavel.patent.persistent.Process();
@@ -199,6 +206,8 @@ public class ZcqkServiceImpl extends BaseEditServiceImpl implements ZcqkService 
                     for (UserRole userRole : userRoleList) {
                         builder.append(userRole.getUserid()).append(";");
                     }
+                } else {
+                    throw new RuntimeException("系统中没有设置财务人员[角色: financial]， 请联系管理员.");
                 }
 
 
@@ -243,6 +252,25 @@ public class ZcqkServiceImpl extends BaseEditServiceImpl implements ZcqkService 
 
             record.setZt("C"); // P: 待处理; C: 处理完成
             zcqkDao.update(record);
+
+            // 生成支出单
+
+            Cwwl cwwl = new Cwwl();
+
+            cwwl.setYwrq(new Date());
+            cwwl.setYw(record.getQkyt());
+            cwwl.setKh(record.getLxdw());
+            cwwl.setJe(record.getJe());
+            cwwl.setSkzh(record.getYhzh());
+            cwwl.setSjskje(0-record.getJe());
+            cwwl.setFp(0);
+            cwwl.setQbcb(0);
+            cwwl.setGf(0);
+            cwwl.setDkr("集智创新");
+            cwwl.setDbf(0);
+            cwwl.setType("out");
+
+            cwwlDao.insert(cwwl);
             return;
         }
     }
