@@ -2972,3 +2972,10 @@ create table patent.dbo.ZCQK
 go
 
 ALTER TABLE patent.dbo.CWWL ADD CWWL_TYPE varchar(8) NULL
+
+
+
+/* 2019-12-06 -- 添加字段:  -- */
+ALTER TABLE patent.dbo.CWWL ADD CWWL_SQF int NULL
+ALTER TABLE patent.dbo.CWWL ADD CWWL_DJSQF int NULL
+ALTER TABLE patent.dbo.CWWL ADD CWWL_FBZMF int NULL

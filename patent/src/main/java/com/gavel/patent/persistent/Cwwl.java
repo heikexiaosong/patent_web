@@ -64,6 +64,15 @@ public class Cwwl extends BaseEntity {
 	@FieldMeta(fieldName = "CWWL_TYPE", caption = "类型", index = 20)
 	private String type;
 
+
+	@FieldMeta(fieldName = "CWWL_SQF", caption = "申请费", index = 20)
+	private Integer sqf;
+	@FieldMeta(fieldName = "CWWL_DJSQF", caption = "登记授权费", index = 20)
+	private Integer djsqf;
+	@FieldMeta(fieldName = "CWWL_FBZMF", caption = "副本证明费", index = 20)
+	private Integer fbzmf;
+
+
 	public String getId() {
 		return id;
 	}	
@@ -219,6 +228,30 @@ public class Cwwl extends BaseEntity {
 
 	public void setType(String type) {
 		this.type = type;
+	}
+
+	public Integer getSqf() {
+		return sqf;
+	}
+
+	public void setSqf(Integer sqf) {
+		this.sqf = sqf;
+	}
+
+	public Integer getDjsqf() {
+		return djsqf;
+	}
+
+	public void setDjsqf(Integer djsqf) {
+		this.djsqf = djsqf;
+	}
+
+	public Integer getFbzmf() {
+		return fbzmf;
+	}
+
+	public void setFbzmf(Integer fbzmf) {
+		this.fbzmf = fbzmf;
 	}
 }
 
