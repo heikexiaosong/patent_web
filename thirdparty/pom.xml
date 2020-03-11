@@ -1,0 +1,168 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.patent.platform</groupId>
+    <artifactId>thirdparty</artifactId>
+    <version>1.0.0</version>
+    <packaging>pom</packaging>
+    <name>thirdparty</name>
+
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-install-plugin</artifactId>
+                <version>2.2</version>
+                <executions>
+
+                    <execution>
+                        <id>gavel-common-1.0.0</id>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>install-file</goal>
+                        </goals>
+                        <configuration>
+                            <file>gavel-common-1.0.0.jar</file>
+                            <groupId>com.gavel.platform</groupId>
+                            <artifactId>gavel-common</artifactId>
+                            <version>1.0.0</version>
+                            <packaging>jar</packaging>
+                            <generatePom>true</generatePom>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>gavel-devonline-1.0.0</id>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>install-file</goal>
+                        </goals>
+                        <configuration>
+                            <file>gavel-devonline-1.0.0.jar</file>
+                            <groupId>com.gavel.platform</groupId>
+                            <artifactId>gavel-devonline</artifactId>
+                            <version>1.0.0</version>
+                            <packaging>jar</packaging>
+                            <generatePom>true</generatePom>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>gavel-expression-1.0.0</id>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>install-file</goal>
+                        </goals>
+                        <configuration>
+                            <file>gavel-expression-1.0.0.jar</file>
+                            <groupId>com.gavel.platform</groupId>
+                            <artifactId>gavel-expression</artifactId>
+                            <version>1.0.0</version>
+                            <packaging>jar</packaging>
+                            <generatePom>true</generatePom>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>gavel-file-1.0.0</id>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>install-file</goal>
+                        </goals>
+                        <configuration>
+                            <file>gavel-file-1.0.0.jar</file>
+                            <groupId>com.gavel.platform</groupId>
+                            <artifactId>gavel-file</artifactId>
+                            <version>1.0.0</version>
+                            <packaging>jar</packaging>
+                            <generatePom>true</generatePom>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>gavel-framework-1.0.0</id>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>install-file</goal>
+                        </goals>
+                        <configuration>
+                            <file>gavel-framework-1.0.0.jar</file>
+                            <groupId>com.gavel.platform</groupId>
+                            <artifactId>gavel-framework</artifactId>
+                            <version>1.0.0</version>
+                            <packaging>jar</packaging>
+                            <generatePom>true</generatePom>
+                        </configuration>
+                    </execution>
+
+
+                    <execution>
+                        <id>gavel-kzzx-1.0.0</id>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>install-file</goal>
+                        </goals>
+                        <configuration>
+                            <file>gavel-kzzx-1.0.0.jar</file>
+                            <groupId>com.gavel.platform</groupId>
+                            <artifactId>gavel-kzzx</artifactId>
+                            <version>1.0.0</version>
+                            <packaging>jar</packaging>
+                            <generatePom>true</generatePom>
+                        </configuration>
+                    </execution>
+
+
+                    <execution>
+                        <id>gavel-persistence-1.0.0</id>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>install-file</goal>
+                        </goals>
+                        <configuration>
+                            <file>gavel-persistence-1.0.0.jar</file>
+                            <groupId>com.gavel.platform</groupId>
+                            <artifactId>gavel-persistence</artifactId>
+                            <version>1.0.0</version>
+                            <packaging>jar</packaging>
+                            <generatePom>true</generatePom>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>gavel-wf-1.0.0</id>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>install-file</goal>
+                        </goals>
+                        <configuration>
+                            <file>gavel-wf-1.0.0.jar</file>
+                            <groupId>com.gavel.platform</groupId>
+                            <artifactId>gavel-wf</artifactId>
+                            <version>1.0.0</version>
+                            <packaging>jar</packaging>
+                            <generatePom>true</generatePom>
+                        </configuration>
+                    </execution>
+
+                </executions>
+            </plugin>
+            <!-- <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.4</version>
+                <configuration>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin> -->
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>2.5</version>
+                <configuration>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

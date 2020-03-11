@@ -9,6 +9,7 @@
     <name>patent</name>
 
     <modules>
+        <module>./thirdparty</module>
         <module>./patent</module>
     </modules>
 </project>
